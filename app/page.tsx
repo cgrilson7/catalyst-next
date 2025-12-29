@@ -2,64 +2,351 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo.jpeg"
+              alt="Catalyst"
+              width={32}
+              height={32}
+              className="rounded"
+            />
+            <span className="text-xl font-bold tracking-tight">Catalyst</span>
+          </div>
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+            <a href="#services" className="hover:text-black transition-colors">Services</a>
+            <a href="#expertise" className="hover:text-black transition-colors">Expertise</a>
+            <a href="#about" className="hover:text-black transition-colors">About</a>
+            <a href="#contact" className="gradient-bg text-white px-4 py-2 rounded-full hover:opacity-90 transition-opacity">
+              Get in Touch
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="max-w-3xl">
+            <h1 className="text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
+              Data that works{" "}
+              <span className="gradient-text">for you.</span>
+            </h1>
+            <p className="text-xl text-gray-600 leading-relaxed mb-8">
+              With Catalyst, you're not just managing data – you're harnessing its power.
+              We help eCommerce businesses transform raw data into actionable insights
+              that drive growth.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="#contact"
+                className="gradient-bg text-white text-center font-medium px-8 py-4 rounded-full hover:opacity-90 transition-opacity"
+              >
+                Start a Conversation
+              </a>
+              <a
+                href="#services"
+                className="border border-gray-200 text-center font-medium px-8 py-4 rounded-full hover:bg-gray-50 transition-colors"
+              >
+                Explore Services
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section id="services" className="py-20 px-6 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">What We Do</h2>
+          <p className="text-gray-600 mb-12 max-w-2xl">
+            End-to-end data solutions for eCommerce businesses ready to scale.
+          </p>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-2xl border border-gray-100">
+              <div className="w-12 h-12 gradient-bg rounded-xl mb-6 flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Analytics & Reporting</h3>
+              <p className="text-gray-600">
+                Revenue reporting, demand forecasting, and real-time dashboards that give
+                stakeholders clear visibility into business performance.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl border border-gray-100">
+              <div className="w-12 h-12 gradient-bg rounded-xl mb-6 flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Predictive Modeling</h3>
+              <p className="text-gray-600">
+                Customer churn prediction, acquisition modeling, and lifetime value
+                optimization to drive smarter marketing decisions.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl border border-gray-100">
+              <div className="w-12 h-12 gradient-bg rounded-xl mb-6 flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Data Infrastructure</h3>
+              <p className="text-gray-600">
+                Modern cloud data architecture with Snowflake and GCP. Streamlined
+                pipelines that reduce complexity and maintenance overhead.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl border border-gray-100">
+              <div className="w-12 h-12 gradient-bg rounded-xl mb-6 flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Customer Analytics</h3>
+              <p className="text-gray-600">
+                Deep understanding of customer behavior to power targeted campaigns
+                and reduce acquisition costs while growing lifetime value.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl border border-gray-100">
+              <div className="w-12 h-12 gradient-bg rounded-xl mb-6 flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Full-Stack Development</h3>
+              <p className="text-gray-600">
+                End-to-end application development with React, React Native, Next.js,
+                and cloud backends. From concept to App Store.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl border border-gray-100">
+              <div className="w-12 h-12 gradient-bg rounded-xl mb-6 flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Data Migration</h3>
+              <p className="text-gray-600">
+                Seamless transitions across legacy systems and new integrations.
+                We ensure data alignment without disrupting operations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Expertise Section */}
+      <section id="expertise" className="py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">Platform Expertise</h2>
+          <p className="text-gray-600 mb-12 max-w-2xl">
+            Certified specialists in the tools that power modern data operations.
+          </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { name: "Snowflake", desc: "Certified Partner" },
+              { name: "Google Cloud", desc: "GCP Specialists" },
+              { name: "React / Next.js", desc: "Full-Stack Apps" },
+              { name: "Supabase", desc: "Backend & Realtime" },
+              { name: "PostgreSQL", desc: "Database Design" },
+              { name: "Python", desc: "Data Science" },
+              { name: "TypeScript", desc: "Type-Safe Code" },
+              { name: "Tableau", desc: "Visualization" },
+            ].map((tech) => (
+              <div key={tech.name} className="p-6 border border-gray-100 rounded-xl hover:border-gray-200 transition-colors">
+                <h3 className="font-semibold mb-1">{tech.name}</h3>
+                <p className="text-sm text-gray-500">{tech.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Results Section */}
+      <section className="py-20 px-6 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-12">Proven Results</h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="text-5xl font-bold gradient-text mb-2">25%</div>
+              <p className="text-gray-600">Year-over-year growth driven by data-informed decisions</p>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold gradient-text mb-2">30%+</div>
+              <p className="text-gray-600">Increase in customer lifetime value through predictive modeling</p>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold gradient-text mb-2">15%</div>
+              <p className="text-gray-600">Reduction in customer acquisition costs year-over-year</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Case Studies Section */}
+      <section className="py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">Select Work</h2>
+          <p className="text-gray-600 mb-12 max-w-2xl">
+            A sample of the challenges we've helped solve.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="border border-gray-100 rounded-2xl p-8 hover:border-gray-200 transition-colors">
+              <div className="text-sm font-medium text-purple-600 mb-3">Enterprise Healthcare</div>
+              <h3 className="text-xl font-semibold mb-4">Consumer Platform Analytics</h3>
+              <p className="text-gray-600 mb-6">
+                Led data science for a consumer-facing prescription management platform
+                generating $700M+ annually. Built customer behavior models, demand
+                forecasting systems, and cross-functional analytics during a major
+                platform migration.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Churn prediction models
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Legacy system data alignment
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Snowflake optimization
+                </li>
+              </ul>
+            </div>
+
+            <div className="border border-gray-100 rounded-2xl p-8 hover:border-gray-200 transition-colors">
+              <div className="text-sm font-medium text-coral mb-3" style={{ color: '#F97316' }}>Consumer Startup (Stealth)</div>
+              <h3 className="text-xl font-semibold mb-4">Full-Stack Social Application</h3>
+              <p className="text-gray-600 mb-6">
+                Architected and built a social productivity app from zero to App Store.
+                React Native mobile apps, Next.js web platform, Supabase backend with
+                real-time subscriptions, push notifications, and AI-powered features.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  iOS & Android apps (live)
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Real-time data architecture
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  AI integration (OpenAI, Gemini)
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-20 px-6 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-3xl font-bold mb-6">About Colin</h2>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Colin G. Wilson is the founder of Catalyst Data Science, bringing years
+                of experience leading data science teams at scale. Based in Portland, Maine,
+                he's worked across healthcare, eCommerce, and consumer tech – from
+                enterprise platforms generating hundreds of millions in revenue to
+                early-stage startups shipping their first products.
+              </p>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                His approach combines deep technical expertise in cloud data infrastructure
+                with a practical focus on business outcomes. Whether it's building predictive
+                models that reduce acquisition costs, architecting data pipelines in
+                Snowflake, or shipping a full-stack application, the goal is always the
+                same: turn data into decisions.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <span className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm">
+                  Snowflake Certified
+                </span>
+                <span className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm">
+                  GCP Specialist
+                </span>
+                <span className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm">
+                  Portland, ME
+                </span>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="aspect-square bg-gradient-to-br from-purple-100 via-orange-50 to-yellow-50 rounded-2xl flex items-center justify-center">
+                <div className="text-8xl font-bold gradient-text">CW</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">Let's Talk Data</h2>
+          <p className="text-gray-600 mb-8 max-w-xl mx-auto">
+            Whether you need help with analytics, infrastructure, or building
+            something new – let's start a conversation.
+          </p>
+          <a
+            href="mailto:colin@catalystdatascience.com"
+            className="inline-block gradient-bg text-white font-medium px-8 py-4 rounded-full hover:opacity-90 transition-opacity"
+          >
+            colin@catalystdatascience.com
+          </a>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 px-6 border-t border-gray-100">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo.jpeg"
+              alt="Catalyst"
+              width={24}
+              height={24}
+              className="rounded"
+            />
+            <span className="font-semibold">Catalyst Data Science</span>
+          </div>
+          <p className="text-sm text-gray-500">
+            Portland, Maine · {new Date().getFullYear()}
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </footer>
     </div>
   );
 }
