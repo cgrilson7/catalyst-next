@@ -4,861 +4,313 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fantasy Baseball Draft Board 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; line-height: 1.6; }
-        h1 { color: #24292e; border-bottom: 1px solid #eaecef; padding-bottom: 10px; }
-        h2 { color: #24292e; border-bottom: 1px solid #eaecef; padding-bottom: 8px; margin-top: 40px; }
-        h3 { color: #24292e; margin-top: 30px; }
-        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
-        th, td { border: 1px solid #dfe2e5; padding: 8px 12px; text-align: left; }
-        th { background-color: #f6f8fa; font-weight: 600; }
-        tr:nth-child(even) { background-color: #f6f8fa; }
-        a { color: #0366d6; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        hr { border: none; border-top: 1px solid #eaecef; margin: 30px 0; }
-        code { background-color: #f6f8fa; padding: 2px 6px; border-radius: 3px; }
-        strong { color: #24292e; }
+        [x-cloak] { display: none !important; }
+        .sortable { cursor: pointer; user-select: none; }
+        .sortable:hover { background-color: #f3f4f6; }
+        .fa-row { background-color: #ecfdf5 !important; }
+        .partial-row { background-color: #fefce8 !important; }
+        .table-container { max-height: 600px; overflow-y: auto; }
+        thead th { position: sticky; top: 0; z-index: 10; }
     </style>
 </head>
-<body>
-<h1>Fantasy Baseball Draft Board 2026</h1>
-<p>Strategy-based draft rankings using FanGraphs projections and 2025 Fantrax league analysis.</p>
-<hr />
-<h2>Quick Links</h2>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="draft_board_volume_power.csv">draft_board_volume_power.csv</a></td>
-<td>Volume SP + Power strategy rankings</td>
-</tr>
-<tr>
-<td><a href="draft_board_power_rp.csv">draft_board_power_rp.csv</a></td>
-<td>Power + Elite RP strategy rankings</td>
-</tr>
-<tr>
-<td><a href="draft_board_speed_rates.csv">draft_board_speed_rates.csv</a></td>
-<td>Speed + Rates strategy rankings</td>
-</tr>
-<tr>
-<td><a href="draft_board_balanced.csv">draft_board_balanced.csv</a></td>
-<td>Balanced approach rankings</td>
-</tr>
-<tr>
-<td><a href="draft_board_elite_bullpen.csv">draft_board_elite_bullpen.csv</a></td>
-<td>Elite Bullpen strategy rankings</td>
-</tr>
-<tr>
-<td><a href="all_players.csv">all_players.csv</a></td>
-<td>Master player database (9,300+ players)</td>
-</tr>
-<tr>
-<td><a href="draft_board_analysis.py">draft_board_analysis.py</a></td>
-<td>Analysis script (run with strategy name)</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2>Strategy Definitions</h2>
-<table>
-<thead>
-<tr>
-<th>Strategy</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Volume Pitching + Power</strong></td>
-<td>Target: R, HR, RBI + QS, K, ERA, WHIP | Punt: SB, SV, HLD</td>
-</tr>
-<tr>
-<td><strong>Power Hitting + Elite RP</strong></td>
-<td>Target: HR, RBI, SLG + SV, HLD, ERA, WHIP | Punt: SB, QS</td>
-</tr>
-<tr>
-<td><strong>Speed + Rate Stats</strong></td>
-<td>Target: SB, AVG, OBP + ERA, WHIP, K | Punt: HR, RBI, QS</td>
-</tr>
-<tr>
-<td><strong>Balanced Approach</strong></td>
-<td>All categories weighted equally - best overall players</td>
-</tr>
-<tr>
-<td><strong>Elite Bullpen Focus</strong></td>
-<td>Target: SV, HLD, ERA, WHIP + AVG, OBP | Punt: HR, QS, K</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2>2025 League Results by Strategy</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Place</th>
-<th>Team</th>
-<th style="text-align: right;">Points</th>
-<th>Strategy Used</th>
-<th style="text-align: right;">Power</th>
-<th style="text-align: right;">Speed</th>
-<th style="text-align: right;">Vol SP</th>
-<th style="text-align: right;">Relief</th>
-<th style="text-align: right;">Rates</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;"><strong>1</strong></td>
-<td>Tyler &amp; Dustin Hart</td>
-<td style="text-align: right;">137.0</td>
-<td><strong>POWER + ELITE RP</strong></td>
-<td style="text-align: right;">12.0</td>
-<td style="text-align: right;">8.0</td>
-<td style="text-align: right;">3.5</td>
-<td style="text-align: right;">11.5</td>
-<td style="text-align: right;">11.7</td>
-</tr>
-<tr>
-<td style="text-align: right;"><strong>2</strong></td>
-<td>Ross &amp; Jack Kantor</td>
-<td style="text-align: right;">128.0</td>
-<td><strong>SPEED + RATES</strong></td>
-<td style="text-align: right;">8.7</td>
-<td style="text-align: right;">11.0</td>
-<td style="text-align: right;">11.0</td>
-<td style="text-align: right;">9.0</td>
-<td style="text-align: right;">7.7</td>
-</tr>
-<tr>
-<td style="text-align: right;"><strong>3</strong></td>
-<td>Zack Semler</td>
-<td style="text-align: right;">126.0</td>
-<td><strong>SPEED + RATES</strong></td>
-<td style="text-align: right;">7.3</td>
-<td style="text-align: right;">9.3</td>
-<td style="text-align: right;">12.0</td>
-<td style="text-align: right;">10.0</td>
-<td style="text-align: right;">8.0</td>
-</tr>
-<tr>
-<td style="text-align: right;"><strong>4</strong></td>
-<td>Jake Zuckman &amp; Andrew Meyers</td>
-<td style="text-align: right;">113.0</td>
-<td><strong>VOLUME + POWER</strong></td>
-<td style="text-align: right;">11.0</td>
-<td style="text-align: right;">7.7</td>
-<td style="text-align: right;">10.0</td>
-<td style="text-align: right;">7.5</td>
-<td style="text-align: right;">3.7</td>
-</tr>
-</tbody>
-</table>
-<p><em>Column values = average rank in category group (12=best, 1=worst). Top 4 teams all had clear strategies.</em></p>
-<hr />
-<h2>Top 15 Batters by Strategy</h2>
-<p><em>Players marked with * are partial blocks. $/Pt = Salary per Strategy Score point (lower = better value)</em></p>
-<h3>Volume Pitching + Power</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Rank</th>
-<th>Player</th>
-<th style="text-align: right;">Salary</th>
-<th style="text-align: right;">Score</th>
-<th style="text-align: right;">$/Pt</th>
-<th style="text-align: right;">HR</th>
-<th style="text-align: right;">R</th>
-<th style="text-align: right;">RBI</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">5</td>
-<td>Pete Alonso</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">6.69</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">35</td>
-<td style="text-align: right;">87</td>
-<td style="text-align: right;">101</td>
-</tr>
-<tr>
-<td style="text-align: right;">8</td>
-<td>Matt Olson*</td>
-<td style="text-align: right;">$24.0M</td>
-<td style="text-align: right;">5.69</td>
-<td style="text-align: right;">$4.22</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">93</td>
-<td style="text-align: right;">91</td>
-</tr>
-<tr>
-<td style="text-align: right;">10</td>
-<td>Ronald Acuña Jr.*</td>
-<td style="text-align: right;">$44.0M</td>
-<td style="text-align: right;">5.51</td>
-<td style="text-align: right;">$7.98</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">110</td>
-<td style="text-align: right;">84</td>
-</tr>
-<tr>
-<td style="text-align: right;">16</td>
-<td>Brent Rooker</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">4.92</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">82</td>
-<td style="text-align: right;">90</td>
-</tr>
-<tr>
-<td style="text-align: right;">23</td>
-<td>Fernando Tatis Jr.*</td>
-<td style="text-align: right;">$25.7M</td>
-<td style="text-align: right;">4.32</td>
-<td style="text-align: right;">$5.95</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">97</td>
-<td style="text-align: right;">77</td>
-</tr>
-<tr>
-<td style="text-align: right;">24</td>
-<td>Julio Rodríguez</td>
-<td style="text-align: right;">$33.1M</td>
-<td style="text-align: right;">4.31</td>
-<td style="text-align: right;">$7.67</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">84</td>
-<td style="text-align: right;">90</td>
-</tr>
-<tr>
-<td style="text-align: right;">26</td>
-<td>Freddie Freeman*</td>
-<td style="text-align: right;">$24.6M</td>
-<td style="text-align: right;">4.16</td>
-<td style="text-align: right;">$5.91</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">88</td>
-<td style="text-align: right;">91</td>
-</tr>
-<tr>
-<td style="text-align: right;">28</td>
-<td>Rafael Devers</td>
-<td style="text-align: right;">$18.4M</td>
-<td style="text-align: right;">4.11</td>
-<td style="text-align: right;">$4.48</td>
-<td style="text-align: right;">28</td>
-<td style="text-align: right;">81</td>
-<td style="text-align: right;">83</td>
-</tr>
-<tr>
-<td style="text-align: right;">29</td>
-<td>Bryce Harper</td>
-<td style="text-align: right;">$24.4M</td>
-<td style="text-align: right;">4.10</td>
-<td style="text-align: right;">$5.96</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">82</td>
-<td style="text-align: right;">86</td>
-</tr>
-<tr>
-<td style="text-align: right;">30</td>
-<td>Bobby Witt Jr.</td>
-<td style="text-align: right;">$35.7M</td>
-<td style="text-align: right;">4.07</td>
-<td style="text-align: right;">$8.78</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">97</td>
-<td style="text-align: right;">86</td>
-</tr>
-<tr>
-<td style="text-align: right;">31</td>
-<td>Ketel Marte</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">4.02</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">90</td>
-<td style="text-align: right;">79</td>
-</tr>
-<tr>
-<td style="text-align: right;">36</td>
-<td>Corbin Carroll</td>
-<td style="text-align: right;">$33.0M</td>
-<td style="text-align: right;">3.63</td>
-<td style="text-align: right;">$9.08</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">91</td>
-<td style="text-align: right;">85</td>
-</tr>
-<tr>
-<td style="text-align: right;">37</td>
-<td>Eugenio Suárez</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">3.59</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">71</td>
-<td style="text-align: right;">82</td>
-</tr>
-<tr>
-<td style="text-align: right;">38</td>
-<td>Austin Riley</td>
-<td style="text-align: right;">$21.7M</td>
-<td style="text-align: right;">3.57</td>
-<td style="text-align: right;">$6.09</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">77</td>
-<td style="text-align: right;">84</td>
-</tr>
-<tr>
-<td style="text-align: right;">44</td>
-<td>Manny Machado</td>
-<td style="text-align: right;">$8.5M</td>
-<td style="text-align: right;">3.30</td>
-<td style="text-align: right;">$2.58</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">75</td>
-<td style="text-align: right;">85</td>
-</tr>
-</tbody>
-</table>
-<h3>Speed + Rate Stats</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Rank</th>
-<th>Player</th>
-<th style="text-align: right;">Salary</th>
-<th style="text-align: right;">Score</th>
-<th style="text-align: right;">$/Pt</th>
-<th style="text-align: right;">SB</th>
-<th style="text-align: right;">AVG</th>
-<th style="text-align: right;">OBP</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">1</td>
-<td>Ronald Acuña Jr.*</td>
-<td style="text-align: right;">$44.0M</td>
-<td style="text-align: right;">6.84</td>
-<td style="text-align: right;">$6.43</td>
-<td style="text-align: right;">24</td>
-<td style="text-align: right;">.285</td>
-<td style="text-align: right;">.370</td>
-</tr>
-<tr>
-<td style="text-align: right;">3</td>
-<td>Bobby Witt Jr.</td>
-<td style="text-align: right;">$35.7M</td>
-<td style="text-align: right;">6.14</td>
-<td style="text-align: right;">$5.82</td>
-<td style="text-align: right;">31</td>
-<td style="text-align: right;">.292</td>
-<td style="text-align: right;">.340</td>
-</tr>
-<tr>
-<td style="text-align: right;">6</td>
-<td>Xavier Edwards</td>
-<td style="text-align: right;">$9.3M</td>
-<td style="text-align: right;">5.07</td>
-<td style="text-align: right;">$1.84</td>
-<td style="text-align: right;">25</td>
-<td style="text-align: right;">.285</td>
-<td style="text-align: right;">.350</td>
-</tr>
-<tr>
-<td style="text-align: right;">7</td>
-<td>Elly De La Cruz</td>
-<td style="text-align: right;">$15.1M</td>
-<td style="text-align: right;">4.79</td>
-<td style="text-align: right;">$3.15</td>
-<td style="text-align: right;">37</td>
-<td style="text-align: right;">.264</td>
-<td style="text-align: right;">.320</td>
-</tr>
-<tr>
-<td style="text-align: right;">9</td>
-<td>Fernando Tatis Jr.*</td>
-<td style="text-align: right;">$25.7M</td>
-<td style="text-align: right;">4.70</td>
-<td style="text-align: right;">$5.47</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">.275</td>
-<td style="text-align: right;">.340</td>
-</tr>
-<tr>
-<td style="text-align: right;">11</td>
-<td>José Ramírez</td>
-<td style="text-align: right;">$20.0M</td>
-<td style="text-align: right;">4.55</td>
-<td style="text-align: right;">$4.40</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">.275</td>
-<td style="text-align: right;">.350</td>
-</tr>
-<tr>
-<td style="text-align: right;">12</td>
-<td>Nico Hoerner*</td>
-<td style="text-align: right;">$5.0M</td>
-<td style="text-align: right;">4.48</td>
-<td style="text-align: right;">$1.12</td>
-<td style="text-align: right;">24</td>
-<td style="text-align: right;">.285</td>
-<td style="text-align: right;">.340</td>
-</tr>
-<tr>
-<td style="text-align: right;">13</td>
-<td>Corbin Carroll</td>
-<td style="text-align: right;">$33.0M</td>
-<td style="text-align: right;">4.46</td>
-<td style="text-align: right;">$7.40</td>
-<td style="text-align: right;">32</td>
-<td style="text-align: right;">.261</td>
-<td style="text-align: right;">.340</td>
-</tr>
-<tr>
-<td style="text-align: right;">17</td>
-<td>Trea Turner*</td>
-<td style="text-align: right;">$17.8M</td>
-<td style="text-align: right;">4.20</td>
-<td style="text-align: right;">$4.24</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">.280</td>
-<td style="text-align: right;">.330</td>
-</tr>
-<tr>
-<td style="text-align: right;">18</td>
-<td>Maikel Garcia</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">4.18</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">.275</td>
-<td style="text-align: right;">.320</td>
-</tr>
-<tr>
-<td style="text-align: right;">20</td>
-<td>Geraldo Perdomo</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">4.02</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">.270</td>
-<td style="text-align: right;">.360</td>
-</tr>
-<tr>
-<td style="text-align: right;">22</td>
-<td>Luis Arraez*</td>
-<td style="text-align: right;">$10.3M</td>
-<td style="text-align: right;">3.81</td>
-<td style="text-align: right;">$2.70</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">.305</td>
-<td style="text-align: right;">.360</td>
-</tr>
-<tr>
-<td style="text-align: right;">23</td>
-<td>Steven Kwan*</td>
-<td style="text-align: right;">$5.3M</td>
-<td style="text-align: right;">3.70</td>
-<td style="text-align: right;">$1.43</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">.278</td>
-<td style="text-align: right;">.360</td>
-</tr>
-<tr>
-<td style="text-align: right;">27</td>
-<td>Yandy Díaz</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">3.25</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">.294</td>
-<td style="text-align: right;">.380</td>
-</tr>
-<tr>
-<td style="text-align: right;">30</td>
-<td>Luke Keaschall</td>
-<td style="text-align: right;">$1.0M</td>
-<td style="text-align: right;">3.04</td>
-<td style="text-align: right;">$0.33</td>
-<td style="text-align: right;">19</td>
-<td style="text-align: right;">.267</td>
-<td style="text-align: right;">.330</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2>Top 15 Pitchers by Strategy</h2>
-<h3>Volume Pitching + Power (Starting Pitchers)</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Rank</th>
-<th>Player</th>
-<th style="text-align: right;">Salary</th>
-<th style="text-align: right;">Score</th>
-<th style="text-align: right;">$/Pt</th>
-<th style="text-align: right;">QS</th>
-<th style="text-align: right;">K</th>
-<th style="text-align: right;">ERA</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">1</td>
-<td>Garrett Crochet</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">9.14</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">238</td>
-<td style="text-align: right;">3.01</td>
-</tr>
-<tr>
-<td style="text-align: right;">2</td>
-<td>Chris Sale</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">7.00</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">205</td>
-<td style="text-align: right;">3.19</td>
-</tr>
-<tr>
-<td style="text-align: right;">3</td>
-<td>Cristopher Sánchez*</td>
-<td style="text-align: right;">$2.0M</td>
-<td style="text-align: right;">6.85</td>
-<td style="text-align: right;">$0.29</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">192</td>
-<td style="text-align: right;">3.16</td>
-</tr>
-<tr>
-<td style="text-align: right;">4</td>
-<td>Jacob deGrom</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">6.85</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">213</td>
-<td style="text-align: right;">3.48</td>
-</tr>
-<tr>
-<td style="text-align: right;">6</td>
-<td>Cole Ragans*</td>
-<td style="text-align: right;">$11.0M</td>
-<td style="text-align: right;">6.37</td>
-<td style="text-align: right;">$1.73</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">210</td>
-<td style="text-align: right;">3.23</td>
-</tr>
-<tr>
-<td style="text-align: right;">7</td>
-<td>Bryan Woo</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">6.12</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">19</td>
-<td style="text-align: right;">195</td>
-<td style="text-align: right;">3.59</td>
-</tr>
-<tr>
-<td style="text-align: right;">9</td>
-<td>Logan Gilbert*</td>
-<td style="text-align: right;">$13.8M</td>
-<td style="text-align: right;">5.58</td>
-<td style="text-align: right;">$2.47</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">182</td>
-<td style="text-align: right;">3.39</td>
-</tr>
-<tr>
-<td style="text-align: right;">11</td>
-<td>Dylan Cease</td>
-<td style="text-align: right;">$14.6M</td>
-<td style="text-align: right;">5.37</td>
-<td style="text-align: right;">$2.72</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">216</td>
-<td style="text-align: right;">3.60</td>
-</tr>
-<tr>
-<td style="text-align: right;">12</td>
-<td>George Kirby</td>
-<td style="text-align: right;">$23.9M</td>
-<td style="text-align: right;">5.27</td>
-<td style="text-align: right;">$4.54</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">174</td>
-<td style="text-align: right;">3.50</td>
-</tr>
-<tr>
-<td style="text-align: right;">13</td>
-<td>Jesús Luzardo</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">5.16</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">198</td>
-<td style="text-align: right;">3.57</td>
-</tr>
-<tr>
-<td style="text-align: right;">14</td>
-<td>Joe Ryan</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">5.05</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">199</td>
-<td style="text-align: right;">3.83</td>
-</tr>
-<tr>
-<td style="text-align: right;">15</td>
-<td>Hunter Greene</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">4.94</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">220</td>
-<td style="text-align: right;">3.94</td>
-</tr>
-<tr>
-<td style="text-align: right;">17</td>
-<td>Hunter Brown</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">4.89</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">199</td>
-<td style="text-align: right;">3.63</td>
-</tr>
-<tr>
-<td style="text-align: right;">18</td>
-<td>Nick Pivetta</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">4.67</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">209</td>
-<td style="text-align: right;">3.96</td>
-</tr>
-<tr>
-<td style="text-align: right;">19</td>
-<td>Framber Valdez</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">4.57</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">19</td>
-<td style="text-align: right;">178</td>
-<td style="text-align: right;">3.47</td>
-</tr>
-</tbody>
-</table>
-<h3>Power Hitting + Elite RP (Relief Pitchers)</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Rank</th>
-<th>Player</th>
-<th style="text-align: right;">Salary</th>
-<th style="text-align: right;">Score</th>
-<th style="text-align: right;">$/Pt</th>
-<th style="text-align: right;">SV</th>
-<th style="text-align: right;">HLD</th>
-<th style="text-align: right;">ERA</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">1</td>
-<td>Mason Miller</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">10.79</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">31</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2.38</td>
-</tr>
-<tr>
-<td style="text-align: right;">2</td>
-<td>Edwin Díaz*</td>
-<td style="text-align: right;">$5.3M</td>
-<td style="text-align: right;">9.55</td>
-<td style="text-align: right;">$0.55</td>
-<td style="text-align: right;">35</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">3.02</td>
-</tr>
-<tr>
-<td style="text-align: right;">3</td>
-<td>Cade Smith</td>
-<td style="text-align: right;">$6.0M</td>
-<td style="text-align: right;">8.66</td>
-<td style="text-align: right;">$0.69</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2.97</td>
-</tr>
-<tr>
-<td style="text-align: right;">4</td>
-<td>Jhoan Duran</td>
-<td style="text-align: right;">$2.4M</td>
-<td style="text-align: right;">8.42</td>
-<td style="text-align: right;">$0.28</td>
-<td style="text-align: right;">28</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2.78</td>
-</tr>
-<tr>
-<td style="text-align: right;">5</td>
-<td>Josh Hader</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">7.94</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">31</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">3.29</td>
-</tr>
-<tr>
-<td style="text-align: right;">6</td>
-<td>Devin Williams</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">7.85</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">32</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3.14</td>
-</tr>
-<tr>
-<td style="text-align: right;">7</td>
-<td>Aroldis Chapman</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">7.83</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">31</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">3.00</td>
-</tr>
-<tr>
-<td style="text-align: right;">8</td>
-<td>Andrés Muñoz</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">7.82</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">28</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2.91</td>
-</tr>
-<tr>
-<td style="text-align: right;">9</td>
-<td>David Bednar</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">7.79</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">32</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">3.30</td>
-</tr>
-<tr>
-<td style="text-align: right;">10</td>
-<td>Ryan Walker</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">7.34</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3.30</td>
-</tr>
-<tr>
-<td style="text-align: right;">12</td>
-<td>Jeff Hoffman</td>
-<td style="text-align: right;">$3.0M</td>
-<td style="text-align: right;">6.43</td>
-<td style="text-align: right;">$0.47</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3.46</td>
-</tr>
-<tr>
-<td style="text-align: right;">13</td>
-<td>Daniel Palencia</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">6.18</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">3.62</td>
-</tr>
-<tr>
-<td style="text-align: right;">14</td>
-<td>Abner Uribe</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">6.13</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">3.15</td>
-</tr>
-<tr>
-<td style="text-align: right;">15</td>
-<td>Griffin Jax*</td>
-<td style="text-align: right;">$4.4M</td>
-<td style="text-align: right;">6.12</td>
-<td style="text-align: right;">$0.72</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">3.13</td>
-</tr>
-<tr>
-<td style="text-align: right;">16</td>
-<td>Ryan Helsley</td>
-<td style="text-align: right;">FA</td>
-<td style="text-align: right;">5.85</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">24</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3.47</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2>Key Takeaways</h2>
-<h3>Best Value Contracts (Low $/Pt)</h3>
-<p><strong>Batters:</strong>
-- <strong>Luke Keaschall</strong> ($1.0M, $0.33/pt) - Speed strategy steal
-- <strong>Nico Hoerner</strong> ($5.0M, $1.12/pt) - Elite speed value
-- <strong>Steven Kwan</strong> ($5.3M, $1.43/pt) - Rate stats bargain
-- <strong>Xavier Edwards</strong> ($9.3M, $1.84/pt) - Speed + contact
-- <strong>Manny Machado</strong> ($8.5M, $2.58/pt) - Power on a discount</p>
-<p><strong>Pitchers:</strong>
-- <strong>Jhoan Duran</strong> ($2.4M, $0.28/pt) - Elite closer, elite price
-- <strong>Cristopher Sánchez</strong> ($2.0M, $0.29/pt) - Volume SP steal
-- <strong>Jeff Hoffman</strong> ($3.0M, $0.47/pt) - RP value
-- <strong>Edwin Díaz</strong> ($5.3M, $0.55/pt) - Top closer, cheap
-- <strong>Cade Smith</strong> ($6.0M, $0.69/pt) - Elite RP production</p>
-<h3>Free Agent Targets</h3>
-<p><strong>Volume + Power:</strong> Pete Alonso, Brent Rooker, Ketel Marte, Eugenio Suárez, Garrett Crochet, Chris Sale, Jacob deGrom</p>
-<p><strong>Power + Elite RP:</strong> Mason Miller, Josh Hader, Aroldis Chapman, Andrés Muñoz, David Bednar, Devin Williams</p>
-<p><strong>Speed + Rates:</strong> Maikel Garcia, Geraldo Perdomo, Yandy Díaz</p>
-<h3>Partial Blocks Worth Monitoring</h3>
-<ul>
-<li><strong>Cristopher Sánchez &amp; Cole Ragans</strong> (JD Barnett) - Elite SP value at $2M and $11M</li>
-<li><strong>Edwin Díaz &amp; Griffin Jax</strong> (Ross &amp; Jack Kantor) - Top RP value</li>
-<li><strong>Matt Olson &amp; Fernando Tatis Jr.</strong> (Tyler Hart) - Top power bats</li>
-<li><strong>Ronald Acuña Jr.</strong> (Steve Cornish) - Elite across all strategies</li>
-</ul>
-<hr />
-<p><em>Generated from FanGraphs 2026 projections and Fantrax league historical analysis</em></p>
+<body class="bg-gray-50 min-h-screen">
+    <div x-data="draftBoard()" x-cloak class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">Fantasy Baseball Draft Board 2026</h1>
+            <p class="text-gray-600">Strategy-based rankings using FanGraphs projections</p>
+        </header>
+
+        <!-- Strategy Tabs -->
+        <div class="mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-4 overflow-x-auto" aria-label="Tabs">
+                    <template x-for="(strat, key) in strategies" :key="key">
+                        <button @click="activeStrategy = key"
+                            :class="activeStrategy === key
+                                ? 'border-blue-500 text-blue-600 bg-white'
+                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                            class="whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm rounded-t-lg transition-colors">
+                            <span x-text="strat.name"></span>
+                        </button>
+                    </template>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Active Strategy Content -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-900" x-text="strategies[activeStrategy].name"></h2>
+                    <p class="text-gray-600 text-sm" x-text="strategies[activeStrategy].description"></p>
+                </div>
+                <a :href="strategies[activeStrategy].file"
+                   class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Download CSV
+                </a>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-4 mb-4 p-4 bg-gray-50 rounded-lg">
+                <div class="flex-1 min-w-[200px]">
+                    <input type="text" x-model="searchQuery" placeholder="Search player name..."
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" x-model="showFAOnly" class="rounded text-blue-600 focus:ring-blue-500">
+                    <span class="text-sm text-gray-700">Free Agents Only</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" x-model="hidePartialBlocks" class="rounded text-blue-600 focus:ring-blue-500">
+                    <span class="text-sm text-gray-700">Hide Partial Blocks</span>
+                </label>
+            </div>
+
+            <!-- Batters Table -->
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs mr-2">BATTERS</span>
+                    <span x-text="filteredBatters().length + ' players'"></span>
+                </h3>
+                <div class="table-container border rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th @click="sortBy('Rank', 'batters')" class="sortable px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                                <th @click="sortBy('Name', 'batters')" class="sortable px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Player</th>
+                                <th @click="sortBy('Team', 'batters')" class="sortable px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
+                                <th @click="sortBy('Salary_M', 'batters')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Salary</th>
+                                <th @click="sortBy('Strategy_Score', 'batters')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                                <th @click="sortBy('Dollar_Per_Score', 'batters')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">$/Pt</th>
+                                <th @click="sortBy('HR', 'batters')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">HR</th>
+                                <th @click="sortBy('R', 'batters')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">R</th>
+                                <th @click="sortBy('RBI', 'batters')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">RBI</th>
+                                <th @click="sortBy('SB', 'batters')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">SB</th>
+                                <th @click="sortBy('AVG', 'batters')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">AVG</th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <template x-for="player in filteredBatters()" :key="player.Name">
+                                <tr :class="getRowClass(player)">
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900" x-text="player.Rank"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900" x-text="player.Name"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500" x-text="player.Team"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="formatSalary(player.Salary_M)"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right font-semibold" x-text="player.Strategy_Score?.toFixed(2) || '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 text-right" x-text="formatDPS(player.Dollar_Per_Score)"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="player.HR || '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="player.R || '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="player.RBI || '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="player.SB || '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="player.AVG ? player.AVG.toFixed(3) : '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm" x-html="getStatusBadge(player)"></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pitchers Table -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mr-2">PITCHERS</span>
+                    <span x-text="filteredPitchers().length + ' players'"></span>
+                </h3>
+                <div class="table-container border rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th @click="sortBy('Rank', 'pitchers')" class="sortable px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                                <th @click="sortBy('Name', 'pitchers')" class="sortable px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Player</th>
+                                <th @click="sortBy('Position', 'pitchers')" class="sortable px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pos</th>
+                                <th @click="sortBy('Salary_M', 'pitchers')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Salary</th>
+                                <th @click="sortBy('Strategy_Score', 'pitchers')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                                <th @click="sortBy('Dollar_Per_Score', 'pitchers')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">$/Pt</th>
+                                <th @click="sortBy('QS', 'pitchers')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">QS</th>
+                                <th @click="sortBy('SO', 'pitchers')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">K</th>
+                                <th @click="sortBy('SV', 'pitchers')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">SV</th>
+                                <th @click="sortBy('HLD', 'pitchers')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">HLD</th>
+                                <th @click="sortBy('ERA', 'pitchers')" class="sortable px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">ERA</th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <template x-for="player in filteredPitchers()" :key="player.Name">
+                                <tr :class="getRowClass(player)">
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900" x-text="player.Rank"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900" x-text="player.Name"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500" x-text="player.Position"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="formatSalary(player.Salary_M)"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right font-semibold" x-text="player.Strategy_Score?.toFixed(2) || '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 text-right" x-text="formatDPS(player.Dollar_Per_Score)"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="player.QS || '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="player.SO || '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="player.SV || '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="player.HLD || '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="player.ERA ? player.ERA.toFixed(2) : '-'"></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm" x-html="getStatusBadge(player)"></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2025 League Results -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">2025 League Results by Strategy</h2>
+            <p class="text-gray-600 text-sm mb-4">Category values = average rank (12=best, 1=worst). Top 4 teams all had clear strategies.</p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Place</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Team</th>
+                            <th class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase">Points</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Strategy</th>
+                            <th class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase">Power</th>
+                            <th class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase">Speed</th>
+                            <th class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase">Vol SP</th>
+                            <th class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase">Relief</th>
+                            <th class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase">Rates</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <template x-for="team in leagueResults" :key="team.place">
+                            <tr :class="team.place <= 4 ? 'bg-green-50' : ''">
+                                <td class="px-3 py-2 whitespace-nowrap text-sm font-bold" x-text="team.place"></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900" x-text="team.team"></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 text-right" x-text="team.points"></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-sm">
+                                    <span :class="team.place <= 4 ? 'bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium' : 'text-gray-500'" x-text="team.strategy"></span>
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap text-sm text-right" :class="team.power >= 9 ? 'text-green-600 font-semibold' : (team.power <= 4 ? 'text-red-500' : 'text-gray-900')" x-text="team.power"></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-sm text-right" :class="team.speed >= 9 ? 'text-green-600 font-semibold' : (team.speed <= 4 ? 'text-red-500' : 'text-gray-900')" x-text="team.speed"></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-sm text-right" :class="team.volsp >= 9 ? 'text-green-600 font-semibold' : (team.volsp <= 4 ? 'text-red-500' : 'text-gray-900')" x-text="team.volsp"></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-sm text-right" :class="team.relief >= 9 ? 'text-green-600 font-semibold' : (team.relief <= 4 ? 'text-red-500' : 'text-gray-900')" x-text="team.relief"></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-sm text-right" :class="team.rates >= 9 ? 'text-green-600 font-semibold' : (team.rates <= 4 ? 'text-red-500' : 'text-gray-900')" x-text="team.rates"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 text-sm py-8">
+            Generated from FanGraphs 2026 projections and Fantrax league historical analysis
+        </footer>
+    </div>
+
+    <script>
+        const STRATEGY_DATA = {"volume_power": {"name": "Volume + Power", "description": "Target: R, HR, RBI + QS, K, ERA, WHIP | Punt: SB, SV, HLD", "file": "draft_board_volume_power.csv", "batters": [{"Rank": 5, "Name": "Pete Alonso", "Team": "BAL", "Salary_M": "", "Strategy_Score": 6.69, "Dollar_Per_Score": "", "HR": 35.1294, "R": 87.6208, "RBI": 101.037, "SB": 2.6104, "AVG": 0.25, "OBP": 0.34, "SLG": 0.49, "Block_Type": "", "Rostered_By": ""}, {"Rank": 8, "Name": "Matt Olson", "Team": "ATL", "Salary_M": 24.0, "Strategy_Score": 5.69, "Dollar_Per_Score": 4.22, "HR": 30.8217, "R": 93.5477, "RBI": 91.0061, "SB": 1.1675, "AVG": 0.26, "OBP": 0.35, "SLG": 0.48, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 10, "Name": "Ronald Acu\u00f1a Jr.", "Team": "ATL", "Salary_M": 44.0, "Strategy_Score": 5.51, "Dollar_Per_Score": 7.98, "HR": 30.7731, "R": 110.17, "RBI": 84.9044, "SB": 24.162, "AVG": 0.29, "OBP": 0.39, "SLG": 0.5, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 16, "Name": "Brent Rooker", "Team": "ATH", "Salary_M": "", "Strategy_Score": 4.92, "Dollar_Per_Score": "", "HR": 30.4818, "R": 82.3599, "RBI": 90.7507, "SB": 5.3677, "AVG": 0.26, "OBP": 0.33, "SLG": 0.49, "Block_Type": "", "Rostered_By": ""}, {"Rank": 23, "Name": "Fernando Tatis Jr.", "Team": "SDP", "Salary_M": 25.7, "Strategy_Score": 4.32, "Dollar_Per_Score": 5.95, "HR": 30.3064, "R": 97.4287, "RBI": 77.9354, "SB": 23.7437, "AVG": 0.27, "OBP": 0.36, "SLG": 0.5, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 24, "Name": "Julio Rodr\u00edguez", "Team": "SEA", "Salary_M": 33.1, "Strategy_Score": 4.31, "Dollar_Per_Score": 7.67, "HR": 29.7784, "R": 84.4803, "RBI": 90.6497, "SB": 22.5935, "AVG": 0.27, "OBP": 0.33, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 26, "Name": "Freddie Freeman", "Team": "LAD", "Salary_M": 24.6, "Strategy_Score": 4.16, "Dollar_Per_Score": 5.91, "HR": 23.9556, "R": 88.2507, "RBI": 91.6627, "SB": 7.4261, "AVG": 0.28, "OBP": 0.36, "SLG": 0.47, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 28, "Name": "Rafael Devers", "Team": "SFG", "Salary_M": 18.4, "Strategy_Score": 4.11, "Dollar_Per_Score": 4.48, "HR": 28.6226, "R": 81.9221, "RBI": 83.3638, "SB": 2.1866, "AVG": 0.25, "OBP": 0.35, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 29, "Name": "Bryce Harper", "Team": "PHI", "Salary_M": 24.4, "Strategy_Score": 4.1, "Dollar_Per_Score": 5.96, "HR": 26.9251, "R": 82.7258, "RBI": 86.7633, "SB": 9.172, "AVG": 0.27, "OBP": 0.37, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 30, "Name": "Bobby Witt Jr.", "Team": "KCR", "Salary_M": 35.7, "Strategy_Score": 4.07, "Dollar_Per_Score": 8.78, "HR": 26.4269, "R": 97.2182, "RBI": 86.2704, "SB": 31.3062, "AVG": 0.29, "OBP": 0.35, "SLG": 0.51, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 31, "Name": "Ketel Marte", "Team": "ARI", "Salary_M": "", "Strategy_Score": 4.02, "Dollar_Per_Score": "", "HR": 26.0001, "R": 90.264, "RBI": 79.3525, "SB": 5.8557, "AVG": 0.28, "OBP": 0.36, "SLG": 0.49, "Block_Type": "", "Rostered_By": ""}, {"Rank": 36, "Name": "Corbin Carroll", "Team": "ARI", "Salary_M": 33.0, "Strategy_Score": 3.63, "Dollar_Per_Score": 9.08, "HR": 26.8982, "R": 91.0918, "RBI": 85.6888, "SB": 32.5681, "AVG": 0.26, "OBP": 0.35, "SLG": 0.5, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 37, "Name": "Eugenio Su\u00e1rez", "Team": "", "Salary_M": "", "Strategy_Score": 3.59, "Dollar_Per_Score": "", "HR": 30.4321, "R": 71.4453, "RBI": 82.2477, "SB": 3.0288, "AVG": 0.23, "OBP": 0.31, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 38, "Name": "Austin Riley", "Team": "ATL", "Salary_M": 21.7, "Strategy_Score": 3.57, "Dollar_Per_Score": 6.09, "HR": 26.2878, "R": 77.1028, "RBI": 84.6615, "SB": 2.6802, "AVG": 0.26, "OBP": 0.32, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Steve Cornish"}, {"Rank": 44, "Name": "Manny Machado", "Team": "SDP", "Salary_M": 8.5, "Strategy_Score": 3.3, "Dollar_Per_Score": 2.58, "HR": 26.2769, "R": 75.1958, "RBI": 85.2932, "SB": 8.7805, "AVG": 0.27, "OBP": 0.33, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 46, "Name": "Jos\u00e9 Ram\u00edrez", "Team": "CLE", "Salary_M": 20.0, "Strategy_Score": 3.25, "Dollar_Per_Score": 6.15, "HR": 26.569, "R": 82.6963, "RBI": 87.0738, "SB": 29.8253, "AVG": 0.28, "OBP": 0.35, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 48, "Name": "Riley Greene", "Team": "DET", "Salary_M": 17.0, "Strategy_Score": 3.11, "Dollar_Per_Score": 5.46, "HR": 25.5058, "R": 73.2183, "RBI": 82.284, "SB": 3.2905, "AVG": 0.26, "OBP": 0.33, "SLG": 0.47, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 52, "Name": "Francisco Lindor", "Team": "NYM", "Salary_M": 16.6, "Strategy_Score": 2.91, "Dollar_Per_Score": 5.71, "HR": 26.2375, "R": 94.0617, "RBI": 73.2706, "SB": 22.9672, "AVG": 0.26, "OBP": 0.34, "SLG": 0.45, "Block_Type": "Partial", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 53, "Name": "Vinnie Pasquantino", "Team": "KCR", "Salary_M": 5.7, "Strategy_Score": 2.89, "Dollar_Per_Score": 1.97, "HR": 24.3882, "R": 71.9436, "RBI": 80.7921, "SB": 1.3744, "AVG": 0.27, "OBP": 0.34, "SLG": 0.47, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 54, "Name": "Salvador Perez", "Team": "KCR", "Salary_M": 6.0, "Strategy_Score": 2.84, "Dollar_Per_Score": 2.11, "HR": 25.3974, "R": 68.5338, "RBI": 83.2852, "SB": 0.4775, "AVG": 0.25, "OBP": 0.3, "SLG": 0.45, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 55, "Name": "George Springer", "Team": "TOR", "Salary_M": 5.1, "Strategy_Score": 2.79, "Dollar_Per_Score": 1.83, "HR": 25.7437, "R": 86.5848, "RBI": 72.7428, "SB": 13.1382, "AVG": 0.26, "OBP": 0.34, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 56, "Name": "Alex Bregman", "Team": "", "Salary_M": 7.9, "Strategy_Score": 2.78, "Dollar_Per_Score": 2.84, "HR": 22.6218, "R": 81.8935, "RBI": 78.9974, "SB": 2.6924, "AVG": 0.26, "OBP": 0.35, "SLG": 0.44, "Block_Type": "Partial", "Rostered_By": "Ethan Gobetz"}, {"Rank": 57, "Name": "Munetaka Murakami", "Team": "CHW", "Salary_M": "", "Strategy_Score": 2.64, "Dollar_Per_Score": "", "HR": 29.6117, "R": 67.8949, "RBI": 74.7422, "SB": 8.7333, "AVG": 0.23, "OBP": 0.33, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 58, "Name": "Teoscar Hern\u00e1ndez", "Team": "LAD", "Salary_M": "", "Strategy_Score": 2.63, "Dollar_Per_Score": "", "HR": 26.0267, "R": 69.2884, "RBI": 79.3912, "SB": 5.7187, "AVG": 0.25, "OBP": 0.31, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 60, "Name": "Corey Seager", "Team": "TEX", "Salary_M": "", "Strategy_Score": 2.59, "Dollar_Per_Score": "", "HR": 24.8444, "R": 70.871, "RBI": 73.8838, "SB": 2.4976, "AVG": 0.28, "OBP": 0.36, "SLG": 0.5, "Block_Type": "", "Rostered_By": ""}, {"Rank": 62, "Name": "Yandy D\u00edaz", "Team": "TBR", "Salary_M": "", "Strategy_Score": 2.54, "Dollar_Per_Score": "", "HR": 21.3908, "R": 84.7058, "RBI": 72.6718, "SB": 2.6888, "AVG": 0.29, "OBP": 0.37, "SLG": 0.47, "Block_Type": "", "Rostered_By": ""}, {"Rank": 64, "Name": "Seiya Suzuki", "Team": "CHC", "Salary_M": 4.0, "Strategy_Score": 2.48, "Dollar_Per_Score": 1.62, "HR": 23.8906, "R": 73.541, "RBI": 79.535, "SB": 6.9466, "AVG": 0.25, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 66, "Name": "Shea Langeliers", "Team": "ATH", "Salary_M": "", "Strategy_Score": 2.35, "Dollar_Per_Score": "", "HR": 26.6819, "R": 68.1468, "RBI": 71.5009, "SB": 5.0797, "AVG": 0.25, "OBP": 0.31, "SLG": 0.48, "Block_Type": "", "Rostered_By": ""}, {"Rank": 73, "Name": "Anthony Santander", "Team": "TOR", "Salary_M": "", "Strategy_Score": 2.22, "Dollar_Per_Score": "", "HR": 26.1, "R": 67.7429, "RBI": 74.8414, "SB": 2.0497, "AVG": 0.23, "OBP": 0.31, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 74, "Name": "Cody Bellinger", "Team": "", "Salary_M": 7.8, "Strategy_Score": 2.22, "Dollar_Per_Score": 3.52, "HR": 22.1517, "R": 74.3627, "RBI": 80.6855, "SB": 9.9782, "AVG": 0.27, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 76, "Name": "Taylor Ward", "Team": "BAL", "Salary_M": "", "Strategy_Score": 2.16, "Dollar_Per_Score": "", "HR": 24.1956, "R": 72.7864, "RBI": 75.3315, "SB": 4.724, "AVG": 0.24, "OBP": 0.33, "SLG": 0.44, "Block_Type": "", "Rostered_By": ""}, {"Rank": 78, "Name": "Jordan Westburg", "Team": "BAL", "Salary_M": "", "Strategy_Score": 2.07, "Dollar_Per_Score": "", "HR": 22.9251, "R": 74.6399, "RBI": 72.1468, "SB": 5.1886, "AVG": 0.26, "OBP": 0.32, "SLG": 0.47, "Block_Type": "", "Rostered_By": ""}, {"Rank": 80, "Name": "Brandon Nimmo", "Team": "TEX", "Salary_M": 6.0, "Strategy_Score": 2.06, "Dollar_Per_Score": 2.92, "HR": 22.5643, "R": 84.5793, "RBI": 71.2424, "SB": 9.6937, "AVG": 0.26, "OBP": 0.34, "SLG": 0.43, "Block_Type": "", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 82, "Name": "Elly De La Cruz", "Team": "CIN", "Salary_M": 15.1, "Strategy_Score": 2.0, "Dollar_Per_Score": 7.56, "HR": 23.2441, "R": 83.1261, "RBI": 81.8924, "SB": 37.6072, "AVG": 0.26, "OBP": 0.34, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Nolan Chidester"}, {"Rank": 83, "Name": "Mark Vientos", "Team": "NYM", "Salary_M": "", "Strategy_Score": 1.99, "Dollar_Per_Score": "", "HR": 24.7583, "R": 64.5727, "RBI": 73.8748, "SB": 1.2397, "AVG": 0.25, "OBP": 0.31, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 84, "Name": "Marcus Semien", "Team": "NYM", "Salary_M": "", "Strategy_Score": 1.93, "Dollar_Per_Score": "", "HR": 21.9217, "R": 84.2, "RBI": 74.0968, "SB": 9.544, "AVG": 0.24, "OBP": 0.31, "SLG": 0.4, "Block_Type": "", "Rostered_By": ""}, {"Rank": 85, "Name": "Jo Adell", "Team": "LAA", "Salary_M": "", "Strategy_Score": 1.92, "Dollar_Per_Score": "", "HR": 27.2618, "R": 60.6432, "RBI": 72.3703, "SB": 7.2502, "AVG": 0.24, "OBP": 0.3, "SLG": 0.47, "Block_Type": "", "Rostered_By": ""}, {"Rank": 86, "Name": "Zach Neto", "Team": "LAA", "Salary_M": "", "Strategy_Score": 1.92, "Dollar_Per_Score": "", "HR": 26.0401, "R": 83.0504, "RBI": 69.3989, "SB": 26.8771, "AVG": 0.25, "OBP": 0.32, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 87, "Name": "Willy Adames", "Team": "SFG", "Salary_M": "", "Strategy_Score": 1.87, "Dollar_Per_Score": "", "HR": 23.7966, "R": 77.679, "RBI": 73.3273, "SB": 10.9196, "AVG": 0.23, "OBP": 0.32, "SLG": 0.42, "Block_Type": "", "Rostered_By": ""}, {"Rank": 90, "Name": "Josh Naylor", "Team": "SEA", "Salary_M": "", "Strategy_Score": 1.81, "Dollar_Per_Score": "", "HR": 22.5343, "R": 70.5555, "RBI": 79.7969, "SB": 14.9529, "AVG": 0.27, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 92, "Name": "Jazz Chisholm Jr.", "Team": "NYY", "Salary_M": "", "Strategy_Score": 1.76, "Dollar_Per_Score": "", "HR": 26.5708, "R": 72.5299, "RBI": 75.8234, "SB": 27.26, "AVG": 0.24, "OBP": 0.32, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 93, "Name": "Spencer Torkelson", "Team": "DET", "Salary_M": "", "Strategy_Score": 1.73, "Dollar_Per_Score": "", "HR": 23.7819, "R": 68.1783, "RBI": 73.0258, "SB": 1.9633, "AVG": 0.23, "OBP": 0.32, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 96, "Name": "William Contreras", "Team": "MIL", "Salary_M": "", "Strategy_Score": 1.59, "Dollar_Per_Score": "", "HR": 19.9153, "R": 74.3872, "RBI": 74.4436, "SB": 6.1572, "AVG": 0.27, "OBP": 0.36, "SLG": 0.44, "Block_Type": "", "Rostered_By": ""}, {"Rank": 97, "Name": "Byron Buxton", "Team": "MIN", "Salary_M": 5.0, "Strategy_Score": 1.58, "Dollar_Per_Score": 3.17, "HR": 25.5534, "R": 71.7553, "RBI": 63.7502, "SB": 14.4183, "AVG": 0.25, "OBP": 0.32, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 98, "Name": "Matt Chapman", "Team": "SFG", "Salary_M": "", "Strategy_Score": 1.57, "Dollar_Per_Score": "", "HR": 22.163, "R": 70.8347, "RBI": 75.7314, "SB": 8.6897, "AVG": 0.24, "OBP": 0.33, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 99, "Name": "Hunter Goodman", "Team": "COL", "Salary_M": 1.5, "Strategy_Score": 1.55, "Dollar_Per_Score": 0.97, "HR": 23.995, "R": 59.4672, "RBI": 70.4358, "SB": 2.4368, "AVG": 0.25, "OBP": 0.3, "SLG": 0.49, "Block_Type": "Partial", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 100, "Name": "Ian Happ", "Team": "CHC", "Salary_M": "", "Strategy_Score": 1.55, "Dollar_Per_Score": "", "HR": 21.0899, "R": 78.3572, "RBI": 72.2207, "SB": 7.8477, "AVG": 0.24, "OBP": 0.34, "SLG": 0.42, "Block_Type": "", "Rostered_By": ""}, {"Rank": 101, "Name": "Ezequiel Tovar", "Team": "COL", "Salary_M": "", "Strategy_Score": 1.41, "Dollar_Per_Score": "", "HR": 20.7154, "R": 79.6018, "RBI": 68.5744, "SB": 10.6309, "AVG": 0.26, "OBP": 0.3, "SLG": 0.44, "Block_Type": "", "Rostered_By": ""}, {"Rank": 102, "Name": "Christian Walker", "Team": "HOU", "Salary_M": "", "Strategy_Score": 1.33, "Dollar_Per_Score": "", "HR": 24.2686, "R": 62.7133, "RBI": 70.4376, "SB": 3.0341, "AVG": 0.23, "OBP": 0.3, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 104, "Name": "Jose Altuve", "Team": "HOU", "Salary_M": 11.0, "Strategy_Score": 1.23, "Dollar_Per_Score": 8.95, "HR": 20.2339, "R": 74.7848, "RBI": 72.4479, "SB": 11.7606, "AVG": 0.27, "OBP": 0.33, "SLG": 0.43, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}], "pitchers": [{"Rank": 1, "Name": "Garrett Crochet", "Team": "BOS", "Position": "SP", "Salary_M": "", "Strategy_Score": 9.14, "Dollar_Per_Score": "", "QS": 20.7616, "SO": 238.814, "SV": 0.0, "HLD": 0.0, "ERA": 3.01, "WHIP": 1.07, "Block_Type": "", "Rostered_By": ""}, {"Rank": 2, "Name": "Chris Sale", "Team": "ATL", "Position": "SP", "Salary_M": "", "Strategy_Score": 7.0, "Dollar_Per_Score": "", "QS": 17.736, "SO": 205.46, "SV": 0.0, "HLD": 0.0, "ERA": 3.19, "WHIP": 1.09, "Block_Type": "", "Rostered_By": ""}, {"Rank": 3, "Name": "Cristopher S\u00e1nchez", "Team": "PHI", "Position": "SP", "Salary_M": 2.0, "Strategy_Score": 6.85, "Dollar_Per_Score": 0.29, "QS": 21.089, "SO": 192.403, "SV": 0.0, "HLD": 0.0, "ERA": 3.16, "WHIP": 1.18, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 4, "Name": "Jacob deGrom", "Team": "TEX", "Position": "SP", "Salary_M": "", "Strategy_Score": 6.85, "Dollar_Per_Score": "", "QS": 18.2323, "SO": 213.722, "SV": 0.0, "HLD": 0.0, "ERA": 3.48, "WHIP": 1.09, "Block_Type": "", "Rostered_By": ""}, {"Rank": 6, "Name": "Cole Ragans", "Team": "KCR", "Position": "SP", "Salary_M": 11.0, "Strategy_Score": 6.37, "Dollar_Per_Score": 1.73, "QS": 17.6211, "SO": 210.53, "SV": 0.0, "HLD": 0.0, "ERA": 3.23, "WHIP": 1.17, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 7, "Name": "Bryan Woo", "Team": "SEA", "Position": "SP", "Salary_M": "", "Strategy_Score": 6.12, "Dollar_Per_Score": "", "QS": 19.0891, "SO": 195.866, "SV": 0.0, "HLD": 0.0, "ERA": 3.59, "WHIP": 1.13, "Block_Type": "", "Rostered_By": ""}, {"Rank": 9, "Name": "Logan Gilbert", "Team": "SEA", "Position": "SP", "Salary_M": 13.8, "Strategy_Score": 5.58, "Dollar_Per_Score": 2.47, "QS": 16.1895, "SO": 182.023, "SV": 0.0, "HLD": 0.0, "ERA": 3.39, "WHIP": 1.1, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 11, "Name": "Dylan Cease", "Team": "TOR", "Position": "SP", "Salary_M": 14.6, "Strategy_Score": 5.37, "Dollar_Per_Score": 2.72, "QS": 17.3738, "SO": 216.007, "SV": 0.0, "HLD": 0.0, "ERA": 3.6, "WHIP": 1.22, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 12, "Name": "George Kirby", "Team": "SEA", "Position": "SP", "Salary_M": 23.9, "Strategy_Score": 5.27, "Dollar_Per_Score": 4.54, "QS": 17.1252, "SO": 174.012, "SV": 0.0, "HLD": 0.0, "ERA": 3.5, "WHIP": 1.12, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 13, "Name": "Jes\u00fas Luzardo", "Team": "PHI", "Position": "SP", "Salary_M": "", "Strategy_Score": 5.16, "Dollar_Per_Score": "", "QS": 17.3246, "SO": 198.811, "SV": 0.0, "HLD": 0.0, "ERA": 3.57, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 14, "Name": "Joe Ryan", "Team": "MIN", "Position": "SP", "Salary_M": "", "Strategy_Score": 5.05, "Dollar_Per_Score": "", "QS": 16.6926, "SO": 199.467, "SV": 0.0, "HLD": 0.0, "ERA": 3.83, "WHIP": 1.14, "Block_Type": "", "Rostered_By": ""}, {"Rank": 15, "Name": "Hunter Greene", "Team": "CIN", "Position": "SP", "Salary_M": "", "Strategy_Score": 4.94, "Dollar_Per_Score": "", "QS": 16.5559, "SO": 220.007, "SV": 0.0, "HLD": 0.0, "ERA": 3.94, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 17, "Name": "Hunter Brown", "Team": "HOU", "Position": "SP", "Salary_M": "", "Strategy_Score": 4.89, "Dollar_Per_Score": "", "QS": 17.6519, "SO": 199.991, "SV": 0.0, "HLD": 0.0, "ERA": 3.63, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 18, "Name": "Nick Pivetta", "Team": "SDP", "Position": "SP", "Salary_M": "", "Strategy_Score": 4.67, "Dollar_Per_Score": "", "QS": 17.127, "SO": 209.948, "SV": 0.0, "HLD": 0.0, "ERA": 3.96, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 19, "Name": "Framber Valdez", "Team": "", "Position": "SP", "Salary_M": "", "Strategy_Score": 4.57, "Dollar_Per_Score": "", "QS": 19.1945, "SO": 178.531, "SV": 0.0, "HLD": 0.0, "ERA": 3.47, "WHIP": 1.28, "Block_Type": "", "Rostered_By": ""}, {"Rank": 20, "Name": "Sonny Gray", "Team": "BOS", "Position": "SP", "Salary_M": 4.2, "Strategy_Score": 4.55, "Dollar_Per_Score": 0.92, "QS": 17.0218, "SO": 189.835, "SV": 0.0, "HLD": 0.0, "ERA": 3.68, "WHIP": 1.21, "Block_Type": "", "Rostered_By": "Steve Cornish"}, {"Rank": 21, "Name": "Blake Snell", "Team": "LAD", "Position": "SP", "Salary_M": 10.5, "Strategy_Score": 4.42, "Dollar_Per_Score": 2.38, "QS": 15.9606, "SO": 200.444, "SV": 0.0, "HLD": 0.0, "ERA": 3.52, "WHIP": 1.25, "Block_Type": "", "Rostered_By": "Nolan Chidester"}, {"Rank": 22, "Name": "Nathan Eovaldi", "Team": "TEX", "Position": "SP", "Salary_M": "", "Strategy_Score": 4.32, "Dollar_Per_Score": "", "QS": 16.8483, "SO": 171.35, "SV": 0.0, "HLD": 0.0, "ERA": 3.6, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 25, "Name": "Zack Wheeler", "Team": "PHI", "Position": "SP", "Salary_M": "", "Strategy_Score": 4.2, "Dollar_Per_Score": "", "QS": 13.0375, "SO": 145.14, "SV": 0.0, "HLD": 0.0, "ERA": 3.2, "WHIP": 1.09, "Block_Type": "", "Rostered_By": ""}, {"Rank": 27, "Name": "Yoshinobu Yamamoto", "Team": "LAD", "Position": "SP", "Salary_M": 23.8, "Strategy_Score": 4.16, "Dollar_Per_Score": 5.72, "QS": 15.8287, "SO": 169.568, "SV": 0.0, "HLD": 0.0, "ERA": 3.43, "WHIP": 1.2, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 32, "Name": "Pablo L\u00f3pez", "Team": "MIN", "Position": "SP", "Salary_M": 12.6, "Strategy_Score": 3.98, "Dollar_Per_Score": 3.16, "QS": 16.6539, "SO": 181.049, "SV": 0.0, "HLD": 0.0, "ERA": 3.81, "WHIP": 1.21, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 33, "Name": "Spencer Schwellenbach", "Team": "ATL", "Position": "SP", "Salary_M": 7.3, "Strategy_Score": 3.83, "Dollar_Per_Score": 1.91, "QS": 16.0494, "SO": 162.638, "SV": 0.0, "HLD": 0.0, "ERA": 3.65, "WHIP": 1.18, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 34, "Name": "Freddy Peralta", "Team": "MIL", "Position": "SP", "Salary_M": 7.5, "Strategy_Score": 3.81, "Dollar_Per_Score": 1.97, "QS": 15.6516, "SO": 199.68, "SV": 0.0, "HLD": 0.0, "ERA": 3.91, "WHIP": 1.23, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 35, "Name": "MacKenzie Gore", "Team": "WSN", "Position": "SP", "Salary_M": 2.0, "Strategy_Score": 3.77, "Dollar_Per_Score": 0.53, "QS": 15.8066, "SO": 192.89, "SV": 0.0, "HLD": 0.0, "ERA": 3.76, "WHIP": 1.25, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 39, "Name": "Luis Castillo", "Team": "SEA", "Position": "SP", "Salary_M": 18.7, "Strategy_Score": 3.51, "Dollar_Per_Score": 5.33, "QS": 16.4458, "SO": 171.802, "SV": 0.0, "HLD": 0.0, "ERA": 3.86, "WHIP": 1.22, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 40, "Name": "Michael King", "Team": "SDP", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.48, "Dollar_Per_Score": "", "QS": 15.7364, "SO": 182.292, "SV": 0.0, "HLD": 0.0, "ERA": 3.79, "WHIP": 1.24, "Block_Type": "", "Rostered_By": ""}, {"Rank": 41, "Name": "Spencer Strider", "Team": "ATL", "Position": "SP", "Salary_M": 12.5, "Strategy_Score": 3.39, "Dollar_Per_Score": 3.68, "QS": 14.5594, "SO": 187.188, "SV": 0.0, "HLD": 0.0, "ERA": 3.83, "WHIP": 1.23, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 42, "Name": "Tyler Glasnow", "Team": "LAD", "Position": "SP", "Salary_M": 14.0, "Strategy_Score": 3.31, "Dollar_Per_Score": 4.23, "QS": 13.782, "SO": 171.981, "SV": 0.0, "HLD": 0.0, "ERA": 3.59, "WHIP": 1.21, "Block_Type": "", "Rostered_By": "Nolan Chidester"}, {"Rank": 43, "Name": "Brandon Woodruff", "Team": "MIL", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.3, "Dollar_Per_Score": "", "QS": 14.3198, "SO": 168.101, "SV": 0.0, "HLD": 0.0, "ERA": 3.84, "WHIP": 1.17, "Block_Type": "", "Rostered_By": ""}, {"Rank": 45, "Name": "Ranger Su\u00e1rez", "Team": "", "Position": "SP", "Salary_M": 5.0, "Strategy_Score": 3.28, "Dollar_Per_Score": 1.53, "QS": 16.0555, "SO": 154.273, "SV": 0.0, "HLD": 0.0, "ERA": 3.55, "WHIP": 1.24, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 47, "Name": "Aaron Nola", "Team": "PHI", "Position": "SP", "Salary_M": 11.1, "Strategy_Score": 3.2, "Dollar_Per_Score": 3.47, "QS": 15.8772, "SO": 175.84, "SV": 0.0, "HLD": 0.0, "ERA": 3.99, "WHIP": 1.22, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 49, "Name": "Kyle Bradish", "Team": "BAL", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.99, "Dollar_Per_Score": "", "QS": 14.4754, "SO": 166.64, "SV": 0.0, "HLD": 0.0, "ERA": 3.7, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 50, "Name": "Matthew Boyd", "Team": "CHC", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.98, "Dollar_Per_Score": "", "QS": 16.5066, "SO": 164.94, "SV": 0.0, "HLD": 0.0, "ERA": 3.93, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}, {"Rank": 51, "Name": "Shane McClanahan", "Team": "TBR", "Position": "SP", "Salary_M": 5.5, "Strategy_Score": 2.97, "Dollar_Per_Score": 1.85, "QS": 13.5896, "SO": 153.623, "SV": 0.0, "HLD": 0.0, "ERA": 3.56, "WHIP": 1.2, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 59, "Name": "Jack Flaherty", "Team": "DET", "Position": "SP", "Salary_M": 4.7, "Strategy_Score": 2.63, "Dollar_Per_Score": 1.79, "QS": 14.3886, "SO": 178.924, "SV": 0.0, "HLD": 0.0, "ERA": 3.91, "WHIP": 1.27, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 61, "Name": "David Peterson", "Team": "NYM", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.57, "Dollar_Per_Score": "", "QS": 17.1399, "SO": 160.561, "SV": 0.0, "HLD": 0.0, "ERA": 3.68, "WHIP": 1.35, "Block_Type": "", "Rostered_By": ""}, {"Rank": 63, "Name": "Tanner Bibee", "Team": "CLE", "Position": "SP", "Salary_M": 3.9, "Strategy_Score": 2.53, "Dollar_Per_Score": 1.54, "QS": 15.8009, "SO": 171.217, "SV": 0.0, "HLD": 0.0, "ERA": 4.08, "WHIP": 1.27, "Block_Type": "Partial", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 65, "Name": "Yusei Kikuchi", "Team": "LAA", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.4, "Dollar_Per_Score": "", "QS": 15.0256, "SO": 181.773, "SV": 0.0, "HLD": 0.0, "ERA": 4.1, "WHIP": 1.28, "Block_Type": "", "Rostered_By": ""}, {"Rank": 67, "Name": "Shota Imanaga", "Team": "CHC", "Position": "SP", "Salary_M": 1.5, "Strategy_Score": 2.35, "Dollar_Per_Score": 0.64, "QS": 14.6676, "SO": 155.64, "SV": 0.0, "HLD": 0.0, "ERA": 4.12, "WHIP": 1.2, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 68, "Name": "Eury P\u00e9rez", "Team": "MIA", "Position": "SP", "Salary_M": 15.7, "Strategy_Score": 2.32, "Dollar_Per_Score": 6.76, "QS": 12.9536, "SO": 171.754, "SV": 0.0, "HLD": 0.0, "ERA": 3.99, "WHIP": 1.22, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 69, "Name": "Jos\u00e9 Soriano", "Team": "LAA", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.3, "Dollar_Per_Score": "", "QS": 16.4599, "SO": 164.636, "SV": 0.0, "HLD": 0.0, "ERA": 3.65, "WHIP": 1.38, "Block_Type": "", "Rostered_By": ""}, {"Rank": 70, "Name": "Carlos Rod\u00f3n", "Team": "NYY", "Position": "SP", "Salary_M": 5.0, "Strategy_Score": 2.3, "Dollar_Per_Score": 2.18, "QS": 14.0791, "SO": 174.421, "SV": 0.0, "HLD": 0.0, "ERA": 4.03, "WHIP": 1.26, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 71, "Name": "Joe Musgrove", "Team": "SDP", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.29, "Dollar_Per_Score": "", "QS": 14.0353, "SO": 150.212, "SV": 0.0, "HLD": 0.0, "ERA": 3.9, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 72, "Name": "Zac Gallen", "Team": "", "Position": "SP", "Salary_M": 17.6, "Strategy_Score": 2.23, "Dollar_Per_Score": 7.88, "QS": 16.2406, "SO": 181.619, "SV": 0.0, "HLD": 0.0, "ERA": 4.22, "WHIP": 1.32, "Block_Type": "", "Rostered_By": "Zack Semler"}, {"Rank": 75, "Name": "Drew Rasmussen", "Team": "TBR", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.19, "Dollar_Per_Score": "", "QS": 14.5429, "SO": 156.43, "SV": 0.0, "HLD": 0.0, "ERA": 3.92, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}, {"Rank": 77, "Name": "Robbie Ray", "Team": "SFG", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.14, "Dollar_Per_Score": "", "QS": 15.0126, "SO": 187.191, "SV": 0.0, "HLD": 0.0, "ERA": 4.2, "WHIP": 1.31, "Block_Type": "", "Rostered_By": ""}, {"Rank": 79, "Name": "Nolan McLean", "Team": "NYM", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.06, "Dollar_Per_Score": "", "QS": 15.1649, "SO": 154.152, "SV": 0.0, "HLD": 0.0, "ERA": 3.74, "WHIP": 1.32, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 81, "Name": "Merrill Kelly", "Team": "ARI", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.01, "Dollar_Per_Score": "", "QS": 16.0579, "SO": 169.22, "SV": 0.0, "HLD": 0.0, "ERA": 4.15, "WHIP": 1.31, "Block_Type": "", "Rostered_By": ""}, {"Rank": 88, "Name": "Gavin Williams", "Team": "CLE", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.86, "Dollar_Per_Score": "", "QS": 15.0641, "SO": 180.401, "SV": 0.0, "HLD": 0.0, "ERA": 4.07, "WHIP": 1.35, "Block_Type": "", "Rostered_By": ""}, {"Rank": 89, "Name": "Shane Bieber", "Team": "TOR", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.83, "Dollar_Per_Score": "", "QS": 13.8616, "SO": 139.639, "SV": 0.0, "HLD": 0.0, "ERA": 3.86, "WHIP": 1.24, "Block_Type": "", "Rostered_By": ""}]}, "power_rp": {"name": "Power + Elite RP", "description": "Target: HR, RBI, SLG + SV, HLD, ERA, WHIP | Punt: SB, QS", "file": "draft_board_power_rp.csv", "batters": [{"Rank": 11, "Name": "Pete Alonso", "Team": "BAL", "Salary_M": "", "Strategy_Score": 6.96, "Dollar_Per_Score": "", "HR": 35.1294, "R": 87.6208, "RBI": 101.037, "SB": 2.6104, "AVG": 0.25, "OBP": 0.34, "SLG": 0.49, "Block_Type": "", "Rostered_By": ""}, {"Rank": 19, "Name": "Matt Olson", "Team": "ATL", "Salary_M": 24.0, "Strategy_Score": 5.65, "Dollar_Per_Score": 4.25, "HR": 30.8217, "R": 93.5477, "RBI": 91.0061, "SB": 1.1675, "AVG": 0.26, "OBP": 0.35, "SLG": 0.48, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 20, "Name": "Ronald Acu\u00f1a Jr.", "Team": "ATL", "Salary_M": 44.0, "Strategy_Score": 5.45, "Dollar_Per_Score": 8.08, "HR": 30.7731, "R": 110.17, "RBI": 84.9044, "SB": 24.162, "AVG": 0.29, "OBP": 0.39, "SLG": 0.5, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 22, "Name": "Brent Rooker", "Team": "ATH", "Salary_M": "", "Strategy_Score": 5.2, "Dollar_Per_Score": "", "HR": 30.4818, "R": 82.3599, "RBI": 90.7507, "SB": 5.3677, "AVG": 0.26, "OBP": 0.33, "SLG": 0.49, "Block_Type": "", "Rostered_By": ""}, {"Rank": 31, "Name": "Julio Rodr\u00edguez", "Team": "SEA", "Salary_M": 33.1, "Strategy_Score": 4.61, "Dollar_Per_Score": 7.18, "HR": 29.7784, "R": 84.4803, "RBI": 90.6497, "SB": 22.5935, "AVG": 0.27, "OBP": 0.33, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 34, "Name": "Fernando Tatis Jr.", "Team": "SDP", "Salary_M": 25.7, "Strategy_Score": 4.5, "Dollar_Per_Score": 5.71, "HR": 30.3064, "R": 97.4287, "RBI": 77.9354, "SB": 23.7437, "AVG": 0.27, "OBP": 0.36, "SLG": 0.5, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 35, "Name": "Bryce Harper", "Team": "PHI", "Salary_M": 24.4, "Strategy_Score": 4.49, "Dollar_Per_Score": 5.44, "HR": 26.9251, "R": 82.7258, "RBI": 86.7633, "SB": 9.172, "AVG": 0.27, "OBP": 0.37, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 38, "Name": "Bobby Witt Jr.", "Team": "KCR", "Salary_M": 35.7, "Strategy_Score": 4.36, "Dollar_Per_Score": 8.19, "HR": 26.4269, "R": 97.2182, "RBI": 86.2704, "SB": 31.3062, "AVG": 0.29, "OBP": 0.35, "SLG": 0.51, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 43, "Name": "Ketel Marte", "Team": "ARI", "Salary_M": "", "Strategy_Score": 4.26, "Dollar_Per_Score": "", "HR": 26.0001, "R": 90.264, "RBI": 79.3525, "SB": 5.8557, "AVG": 0.28, "OBP": 0.36, "SLG": 0.49, "Block_Type": "", "Rostered_By": ""}, {"Rank": 48, "Name": "Rafael Devers", "Team": "SFG", "Salary_M": 18.4, "Strategy_Score": 4.14, "Dollar_Per_Score": 4.44, "HR": 28.6226, "R": 81.9221, "RBI": 83.3638, "SB": 2.1866, "AVG": 0.25, "OBP": 0.35, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 49, "Name": "Freddie Freeman", "Team": "LAD", "Salary_M": 24.6, "Strategy_Score": 4.13, "Dollar_Per_Score": 5.96, "HR": 23.9556, "R": 88.2507, "RBI": 91.6627, "SB": 7.4261, "AVG": 0.28, "OBP": 0.36, "SLG": 0.47, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 57, "Name": "Corbin Carroll", "Team": "ARI", "Salary_M": 33.0, "Strategy_Score": 3.91, "Dollar_Per_Score": 8.44, "HR": 26.8982, "R": 91.0918, "RBI": 85.6888, "SB": 32.5681, "AVG": 0.26, "OBP": 0.35, "SLG": 0.5, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 60, "Name": "Austin Riley", "Team": "ATL", "Salary_M": 21.7, "Strategy_Score": 3.67, "Dollar_Per_Score": 5.91, "HR": 26.2878, "R": 77.1028, "RBI": 84.6615, "SB": 2.6802, "AVG": 0.26, "OBP": 0.32, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Steve Cornish"}, {"Rank": 62, "Name": "Eugenio Su\u00e1rez", "Team": "", "Salary_M": "", "Strategy_Score": 3.66, "Dollar_Per_Score": "", "HR": 30.4321, "R": 71.4453, "RBI": 82.2477, "SB": 3.0288, "AVG": 0.23, "OBP": 0.31, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 65, "Name": "Jos\u00e9 Ram\u00edrez", "Team": "CLE", "Salary_M": 20.0, "Strategy_Score": 3.58, "Dollar_Per_Score": 5.58, "HR": 26.569, "R": 82.6963, "RBI": 87.0738, "SB": 29.8253, "AVG": 0.28, "OBP": 0.35, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 67, "Name": "Manny Machado", "Team": "SDP", "Salary_M": 8.5, "Strategy_Score": 3.48, "Dollar_Per_Score": 2.44, "HR": 26.2769, "R": 75.1958, "RBI": 85.2932, "SB": 8.7805, "AVG": 0.27, "OBP": 0.33, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 69, "Name": "Riley Greene", "Team": "DET", "Salary_M": 17.0, "Strategy_Score": 3.37, "Dollar_Per_Score": 5.05, "HR": 25.5058, "R": 73.2183, "RBI": 82.284, "SB": 3.2905, "AVG": 0.26, "OBP": 0.33, "SLG": 0.47, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 73, "Name": "Corey Seager", "Team": "TEX", "Salary_M": "", "Strategy_Score": 3.25, "Dollar_Per_Score": "", "HR": 24.8444, "R": 70.871, "RBI": 73.8838, "SB": 2.4976, "AVG": 0.28, "OBP": 0.36, "SLG": 0.5, "Block_Type": "", "Rostered_By": ""}, {"Rank": 74, "Name": "Vinnie Pasquantino", "Team": "KCR", "Salary_M": 5.7, "Strategy_Score": 3.23, "Dollar_Per_Score": 1.77, "HR": 24.3882, "R": 71.9436, "RBI": 80.7921, "SB": 1.3744, "AVG": 0.27, "OBP": 0.34, "SLG": 0.47, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 82, "Name": "Salvador Perez", "Team": "KCR", "Salary_M": 6.0, "Strategy_Score": 2.91, "Dollar_Per_Score": 2.06, "HR": 25.3974, "R": 68.5338, "RBI": 83.2852, "SB": 0.4775, "AVG": 0.25, "OBP": 0.3, "SLG": 0.45, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 83, "Name": "Shea Langeliers", "Team": "ATH", "Salary_M": "", "Strategy_Score": 2.91, "Dollar_Per_Score": "", "HR": 26.6819, "R": 68.1468, "RBI": 71.5009, "SB": 5.0797, "AVG": 0.25, "OBP": 0.31, "SLG": 0.48, "Block_Type": "", "Rostered_By": ""}, {"Rank": 85, "Name": "Munetaka Murakami", "Team": "CHW", "Salary_M": "", "Strategy_Score": 2.87, "Dollar_Per_Score": "", "HR": 29.6117, "R": 67.8949, "RBI": 74.7422, "SB": 8.7333, "AVG": 0.23, "OBP": 0.33, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 86, "Name": "Teoscar Hern\u00e1ndez", "Team": "LAD", "Salary_M": "", "Strategy_Score": 2.87, "Dollar_Per_Score": "", "HR": 26.0267, "R": 69.2884, "RBI": 79.3912, "SB": 5.7187, "AVG": 0.25, "OBP": 0.31, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 97, "Name": "George Springer", "Team": "TOR", "Salary_M": 5.1, "Strategy_Score": 2.63, "Dollar_Per_Score": 1.94, "HR": 25.7437, "R": 86.5848, "RBI": 72.7428, "SB": 13.1382, "AVG": 0.26, "OBP": 0.34, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 103, "Name": "Yandy D\u00edaz", "Team": "TBR", "Salary_M": "", "Strategy_Score": 2.55, "Dollar_Per_Score": "", "HR": 21.3908, "R": 84.7058, "RBI": 72.6718, "SB": 2.6888, "AVG": 0.29, "OBP": 0.37, "SLG": 0.47, "Block_Type": "", "Rostered_By": ""}, {"Rank": 104, "Name": "Seiya Suzuki", "Team": "CHC", "Salary_M": 4.0, "Strategy_Score": 2.55, "Dollar_Per_Score": 1.57, "HR": 23.8906, "R": 73.541, "RBI": 79.535, "SB": 6.9466, "AVG": 0.25, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 105, "Name": "Francisco Lindor", "Team": "NYM", "Salary_M": 16.6, "Strategy_Score": 2.55, "Dollar_Per_Score": 6.52, "HR": 26.2375, "R": 94.0617, "RBI": 73.2706, "SB": 22.9672, "AVG": 0.26, "OBP": 0.34, "SLG": 0.45, "Block_Type": "Partial", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 108, "Name": "Alex Bregman", "Team": "", "Salary_M": 7.9, "Strategy_Score": 2.53, "Dollar_Per_Score": 3.12, "HR": 22.6218, "R": 81.8935, "RBI": 78.9974, "SB": 2.6924, "AVG": 0.26, "OBP": 0.35, "SLG": 0.44, "Block_Type": "Partial", "Rostered_By": "Ethan Gobetz"}, {"Rank": 110, "Name": "Jo Adell", "Team": "LAA", "Salary_M": "", "Strategy_Score": 2.48, "Dollar_Per_Score": "", "HR": 27.2618, "R": 60.6432, "RBI": 72.3703, "SB": 7.2502, "AVG": 0.24, "OBP": 0.3, "SLG": 0.47, "Block_Type": "", "Rostered_By": ""}, {"Rank": 112, "Name": "Hunter Goodman", "Team": "COL", "Salary_M": 1.5, "Strategy_Score": 2.32, "Dollar_Per_Score": 0.65, "HR": 23.995, "R": 59.4672, "RBI": 70.4358, "SB": 2.4368, "AVG": 0.25, "OBP": 0.3, "SLG": 0.49, "Block_Type": "Partial", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 114, "Name": "Mark Vientos", "Team": "NYM", "Salary_M": "", "Strategy_Score": 2.29, "Dollar_Per_Score": "", "HR": 24.7583, "R": 64.5727, "RBI": 73.8748, "SB": 1.2397, "AVG": 0.25, "OBP": 0.31, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 115, "Name": "Jordan Westburg", "Team": "BAL", "Salary_M": "", "Strategy_Score": 2.27, "Dollar_Per_Score": "", "HR": 22.9251, "R": 74.6399, "RBI": 72.1468, "SB": 5.1886, "AVG": 0.26, "OBP": 0.32, "SLG": 0.47, "Block_Type": "", "Rostered_By": ""}, {"Rank": 117, "Name": "Cody Bellinger", "Team": "", "Salary_M": 7.8, "Strategy_Score": 2.24, "Dollar_Per_Score": 3.48, "HR": 22.1517, "R": 74.3627, "RBI": 80.6855, "SB": 9.9782, "AVG": 0.27, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 125, "Name": "Anthony Santander", "Team": "TOR", "Salary_M": "", "Strategy_Score": 2.17, "Dollar_Per_Score": "", "HR": 26.1, "R": 67.7429, "RBI": 74.8414, "SB": 2.0497, "AVG": 0.23, "OBP": 0.31, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 127, "Name": "Byron Buxton", "Team": "MIN", "Salary_M": 5.0, "Strategy_Score": 2.12, "Dollar_Per_Score": 2.36, "HR": 25.5534, "R": 71.7553, "RBI": 63.7502, "SB": 14.4183, "AVG": 0.25, "OBP": 0.32, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 129, "Name": "Taylor Ward", "Team": "BAL", "Salary_M": "", "Strategy_Score": 2.04, "Dollar_Per_Score": "", "HR": 24.1956, "R": 72.7864, "RBI": 75.3315, "SB": 4.724, "AVG": 0.24, "OBP": 0.33, "SLG": 0.44, "Block_Type": "", "Rostered_By": ""}, {"Rank": 130, "Name": "Elly De La Cruz", "Team": "CIN", "Salary_M": 15.1, "Strategy_Score": 2.02, "Dollar_Per_Score": 7.47, "HR": 23.2441, "R": 83.1261, "RBI": 81.8924, "SB": 37.6072, "AVG": 0.26, "OBP": 0.34, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Nolan Chidester"}, {"Rank": 135, "Name": "Josh Naylor", "Team": "SEA", "Salary_M": "", "Strategy_Score": 1.89, "Dollar_Per_Score": "", "HR": 22.5343, "R": 70.5555, "RBI": 79.7969, "SB": 14.9529, "AVG": 0.27, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 137, "Name": "Zach Neto", "Team": "LAA", "Salary_M": "", "Strategy_Score": 1.83, "Dollar_Per_Score": "", "HR": 26.0401, "R": 83.0504, "RBI": 69.3989, "SB": 26.8771, "AVG": 0.25, "OBP": 0.32, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 140, "Name": "Jazz Chisholm Jr.", "Team": "NYY", "Salary_M": "", "Strategy_Score": 1.79, "Dollar_Per_Score": "", "HR": 26.5708, "R": 72.5299, "RBI": 75.8234, "SB": 27.26, "AVG": 0.24, "OBP": 0.32, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 155, "Name": "Brandon Nimmo", "Team": "TEX", "Salary_M": 6.0, "Strategy_Score": 1.59, "Dollar_Per_Score": 3.78, "HR": 22.5643, "R": 84.5793, "RBI": 71.2424, "SB": 9.6937, "AVG": 0.26, "OBP": 0.34, "SLG": 0.43, "Block_Type": "", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 156, "Name": "Jake Burger", "Team": "TEX", "Salary_M": "", "Strategy_Score": 1.58, "Dollar_Per_Score": "", "HR": 23.6519, "R": 59.0299, "RBI": 69.4616, "SB": 1.9246, "AVG": 0.25, "OBP": 0.3, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 159, "Name": "Spencer Torkelson", "Team": "DET", "Salary_M": "", "Strategy_Score": 1.56, "Dollar_Per_Score": "", "HR": 23.7819, "R": 68.1783, "RBI": 73.0258, "SB": 1.9633, "AVG": 0.23, "OBP": 0.32, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 160, "Name": "Tyler Soderstrom", "Team": "ATH", "Salary_M": "", "Strategy_Score": 1.53, "Dollar_Per_Score": "", "HR": 21.986, "R": 60.3932, "RBI": 67.2392, "SB": 4.8457, "AVG": 0.26, "OBP": 0.33, "SLG": 0.48, "Block_Type": "", "Rostered_By": ""}, {"Rank": 161, "Name": "William Contreras", "Team": "MIL", "Salary_M": "", "Strategy_Score": 1.53, "Dollar_Per_Score": "", "HR": 19.9153, "R": 74.3872, "RBI": 74.4436, "SB": 6.1572, "AVG": 0.27, "OBP": 0.36, "SLG": 0.44, "Block_Type": "", "Rostered_By": ""}, {"Rank": 168, "Name": "Willy Adames", "Team": "SFG", "Salary_M": "", "Strategy_Score": 1.42, "Dollar_Per_Score": "", "HR": 23.7966, "R": 77.679, "RBI": 73.3273, "SB": 10.9196, "AVG": 0.23, "OBP": 0.32, "SLG": 0.42, "Block_Type": "", "Rostered_By": ""}, {"Rank": 169, "Name": "Alec Burleson", "Team": "STL", "Salary_M": 5.0, "Strategy_Score": 1.41, "Dollar_Per_Score": 3.54, "HR": 20.2378, "R": 66.1361, "RBI": 72.862, "SB": 5.7734, "AVG": 0.28, "OBP": 0.33, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 170, "Name": "Matt Chapman", "Team": "SFG", "Salary_M": "", "Strategy_Score": 1.37, "Dollar_Per_Score": "", "HR": 22.163, "R": 70.8347, "RBI": 75.7314, "SB": 8.6897, "AVG": 0.24, "OBP": 0.33, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 173, "Name": "Christian Walker", "Team": "HOU", "Salary_M": "", "Strategy_Score": 1.33, "Dollar_Per_Score": "", "HR": 24.2686, "R": 62.7133, "RBI": 70.4376, "SB": 3.0341, "AVG": 0.23, "OBP": 0.3, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 174, "Name": "James Wood", "Team": "WSN", "Salary_M": 1.5, "Strategy_Score": 1.33, "Dollar_Per_Score": 1.13, "HR": 22.7992, "R": 73.72, "RBI": 60.9323, "SB": 14.3015, "AVG": 0.26, "OBP": 0.35, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}], "pitchers": [{"Rank": 1, "Name": "Mason Miller", "Team": "SDP", "Position": "RP", "Salary_M": "", "Strategy_Score": 10.79, "Dollar_Per_Score": "", "QS": 0.0, "SO": 104.456, "SV": 31.64, "HLD": 2.0092, "ERA": 2.38, "WHIP": 1.0, "Block_Type": "", "Rostered_By": ""}, {"Rank": 2, "Name": "Edwin D\u00edaz", "Team": "LAD", "Position": "RP", "Salary_M": 5.3, "Strategy_Score": 9.55, "Dollar_Per_Score": 0.55, "QS": 0.0, "SO": 90.6336, "SV": 35.543, "HLD": 2.9465, "ERA": 3.02, "WHIP": 1.09, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 3, "Name": "Cade Smith", "Team": "CLE", "Position": "RP", "Salary_M": 6.0, "Strategy_Score": 8.66, "Dollar_Per_Score": 0.69, "QS": 0.0, "SO": 87.9573, "SV": 29.961, "HLD": 3.3265, "ERA": 2.97, "WHIP": 1.1, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 4, "Name": "Jhoan Duran", "Team": "PHI", "Position": "RP", "Salary_M": 2.4, "Strategy_Score": 8.42, "Dollar_Per_Score": 0.28, "QS": 0.0, "SO": 83.8638, "SV": 28.586, "HLD": 3.1503, "ERA": 2.78, "WHIP": 1.13, "Block_Type": "", "Rostered_By": "Steve Cornish"}, {"Rank": 5, "Name": "Josh Hader", "Team": "HOU", "Position": "RP", "Salary_M": "", "Strategy_Score": 7.94, "Dollar_Per_Score": "", "QS": 0.0, "SO": 90.1743, "SV": 31.524, "HLD": 2.0198, "ERA": 3.29, "WHIP": 1.12, "Block_Type": "", "Rostered_By": ""}, {"Rank": 6, "Name": "Devin Williams", "Team": "NYM", "Position": "RP", "Salary_M": "", "Strategy_Score": 7.85, "Dollar_Per_Score": "", "QS": 0.0, "SO": 81.2321, "SV": 32.388, "HLD": 3.1109, "ERA": 3.14, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 7, "Name": "Aroldis Chapman", "Team": "BOS", "Position": "RP", "Salary_M": "", "Strategy_Score": 7.83, "Dollar_Per_Score": "", "QS": 0.0, "SO": 86.546, "SV": 31.041, "HLD": 1.9184, "ERA": 3.0, "WHIP": 1.18, "Block_Type": "", "Rostered_By": ""}, {"Rank": 8, "Name": "Andr\u00e9s Mu\u00f1oz", "Team": "SEA", "Position": "RP", "Salary_M": "", "Strategy_Score": 7.82, "Dollar_Per_Score": "", "QS": 0.0, "SO": 80.89, "SV": 28.127, "HLD": 3.357, "ERA": 2.91, "WHIP": 1.17, "Block_Type": "", "Rostered_By": ""}, {"Rank": 9, "Name": "David Bednar", "Team": "NYY", "Position": "RP", "Salary_M": "", "Strategy_Score": 7.79, "Dollar_Per_Score": "", "QS": 0.0, "SO": 78.6978, "SV": 32.897, "HLD": 1.559, "ERA": 3.3, "WHIP": 1.15, "Block_Type": "", "Rostered_By": ""}, {"Rank": 10, "Name": "Ryan Walker", "Team": "SFG", "Position": "RP", "Salary_M": "", "Strategy_Score": 7.34, "Dollar_Per_Score": "", "QS": 0.0, "SO": 67.9657, "SV": 30.328, "HLD": 3.891, "ERA": 3.3, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 12, "Name": "Jeff Hoffman", "Team": "TOR", "Position": "RP", "Salary_M": 3.0, "Strategy_Score": 6.43, "Dollar_Per_Score": 0.47, "QS": 0.0, "SO": 76.1347, "SV": 26.14, "HLD": 3.7746, "ERA": 3.46, "WHIP": 1.18, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 13, "Name": "Daniel Palencia", "Team": "CHC", "Position": "RP", "Salary_M": "", "Strategy_Score": 6.18, "Dollar_Per_Score": "", "QS": 0.0, "SO": 74.8633, "SV": 29.818, "HLD": 4.4788, "ERA": 3.62, "WHIP": 1.26, "Block_Type": "", "Rostered_By": ""}, {"Rank": 14, "Name": "Abner Uribe", "Team": "MIL", "Position": "RP", "Salary_M": "", "Strategy_Score": 6.13, "Dollar_Per_Score": "", "QS": 0.0, "SO": 86.7973, "SV": 23.838, "HLD": 4.3787, "ERA": 3.15, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}, {"Rank": 15, "Name": "Griffin Jax", "Team": "TBR", "Position": "RP", "Salary_M": 4.4, "Strategy_Score": 6.12, "Dollar_Per_Score": 0.72, "QS": 0.0, "SO": 82.1759, "SV": 11.918, "HLD": 9.7836, "ERA": 3.13, "WHIP": 1.13, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 16, "Name": "Ryan Helsley", "Team": "BAL", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.85, "Dollar_Per_Score": "", "QS": 0.0, "SO": 75.7117, "SV": 24.899, "HLD": 3.9374, "ERA": 3.47, "WHIP": 1.22, "Block_Type": "", "Rostered_By": ""}, {"Rank": 17, "Name": "Raisel Iglesias", "Team": "ATL", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.82, "Dollar_Per_Score": "", "QS": 0.0, "SO": 71.1986, "SV": 25.746, "HLD": 4.5192, "ERA": 3.71, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 18, "Name": "Pete Fairbanks", "Team": "MIA", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.82, "Dollar_Per_Score": "", "QS": 0.0, "SO": 65.6255, "SV": 26.502, "HLD": 4.1289, "ERA": 3.56, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 21, "Name": "Jeremiah Estrada", "Team": "SDP", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.26, "Dollar_Per_Score": "", "QS": 0.0, "SO": 92.3225, "SV": 1.079, "HLD": 17.5073, "ERA": 3.21, "WHIP": 1.16, "Block_Type": "", "Rostered_By": ""}, {"Rank": 23, "Name": "Robert Garcia", "Team": "TEX", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.15, "Dollar_Per_Score": "", "QS": 0.0, "SO": 69.8692, "SV": 19.522, "HLD": 6.3642, "ERA": 3.48, "WHIP": 1.24, "Block_Type": "", "Rostered_By": ""}, {"Rank": 24, "Name": "Jose A. Ferrer", "Team": "SEA", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.07, "Dollar_Per_Score": "", "QS": 0.0, "SO": 67.6667, "SV": 3.204, "HLD": 16.1713, "ERA": 3.1, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 25, "Name": "Garrett Cleavinger", "Team": "TBR", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.8, "Dollar_Per_Score": "", "QS": 0.0, "SO": 81.5411, "SV": 7.584, "HLD": 13.4299, "ERA": 3.43, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 26, "Name": "Grant Taylor", "Team": "CHW", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.75, "Dollar_Per_Score": "", "QS": 0.7513, "SO": 91.6465, "SV": 10.686, "HLD": 9.487, "ERA": 3.32, "WHIP": 1.22, "Block_Type": "", "Rostered_By": ""}, {"Rank": 27, "Name": "Bryan Abreu", "Team": "HOU", "Position": "RP", "Salary_M": 4.0, "Strategy_Score": 4.74, "Dollar_Per_Score": 0.84, "QS": 0.0, "SO": 88.2844, "SV": 3.224, "HLD": 13.5716, "ERA": 3.24, "WHIP": 1.17, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 28, "Name": "Matt Brash", "Team": "SEA", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.69, "Dollar_Per_Score": "", "QS": 0.0, "SO": 75.2737, "SV": 3.204, "HLD": 12.3151, "ERA": 3.04, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 29, "Name": "Hunter Harvey", "Team": "CHC", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.67, "Dollar_Per_Score": "", "QS": 0.0, "SO": 58.2646, "SV": 4.708, "HLD": 12.9543, "ERA": 3.35, "WHIP": 1.16, "Block_Type": "", "Rostered_By": ""}, {"Rank": 30, "Name": "Trevor Megill", "Team": "MIL", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.65, "Dollar_Per_Score": "", "QS": 0.0, "SO": 81.7375, "SV": 6.993, "HLD": 10.7699, "ERA": 3.41, "WHIP": 1.16, "Block_Type": "", "Rostered_By": ""}, {"Rank": 32, "Name": "Emilio Pag\u00e1n", "Team": "CIN", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.59, "Dollar_Per_Score": "", "QS": 0.0, "SO": 72.6125, "SV": 26.55, "HLD": 4.0578, "ERA": 4.17, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}, {"Rank": 33, "Name": "A.J. Minter", "Team": "NYM", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.53, "Dollar_Per_Score": "", "QS": 0.0, "SO": 68.4564, "SV": 2.37, "HLD": 15.4795, "ERA": 3.33, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 36, "Name": "Chris Martin", "Team": "TEX", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.4, "Dollar_Per_Score": "", "QS": 0.0, "SO": 54.8575, "SV": 3.84, "HLD": 12.3147, "ERA": 3.39, "WHIP": 1.15, "Block_Type": "", "Rostered_By": ""}, {"Rank": 37, "Name": "Robert Suarez", "Team": "ATL", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.36, "Dollar_Per_Score": "", "QS": 0.0, "SO": 73.2113, "SV": 8.465, "HLD": 11.1056, "ERA": 3.51, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 39, "Name": "Riley O'Brien", "Team": "STL", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.32, "Dollar_Per_Score": "", "QS": 0.0, "SO": 63.9606, "SV": 17.357, "HLD": 8.8854, "ERA": 3.54, "WHIP": 1.32, "Block_Type": "", "Rostered_By": ""}, {"Rank": 40, "Name": "Edwin Uceta", "Team": "TBR", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.29, "Dollar_Per_Score": "", "QS": 0.0, "SO": 78.9429, "SV": 12.279, "HLD": 11.7083, "ERA": 3.86, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 41, "Name": "Garrett Whitlock", "Team": "BOS", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.27, "Dollar_Per_Score": "", "QS": 0.0, "SO": 77.3732, "SV": 3.254, "HLD": 14.1255, "ERA": 3.46, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 42, "Name": "Fernando Cruz", "Team": "NYY", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.27, "Dollar_Per_Score": "", "QS": 0.0, "SO": 80.401, "SV": 1.097, "HLD": 16.0263, "ERA": 3.36, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 44, "Name": "Robert Stephenson", "Team": "LAA", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.22, "Dollar_Per_Score": "", "QS": 0.0, "SO": 66.4316, "SV": 17.039, "HLD": 7.7611, "ERA": 3.92, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 45, "Name": "Gabe Speier", "Team": "SEA", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.19, "Dollar_Per_Score": "", "QS": 0.0, "SO": 66.499, "SV": 0.0, "HLD": 11.7185, "ERA": 3.21, "WHIP": 1.13, "Block_Type": "", "Rostered_By": ""}, {"Rank": 46, "Name": "Will Vest", "Team": "DET", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.18, "Dollar_Per_Score": "", "QS": 0.0, "SO": 69.3945, "SV": 4.829, "HLD": 11.6707, "ERA": 3.27, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 47, "Name": "Dennis Santana", "Team": "PIT", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.15, "Dollar_Per_Score": "", "QS": 0.0, "SO": 63.6394, "SV": 26.002, "HLD": 4.6423, "ERA": 4.03, "WHIP": 1.32, "Block_Type": "", "Rostered_By": ""}, {"Rank": 50, "Name": "Adrian Morejon", "Team": "SDP", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.07, "Dollar_Per_Score": "", "QS": 0.0, "SO": 69.9791, "SV": 3.236, "HLD": 13.5005, "ERA": 3.35, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 51, "Name": "Kenley Jansen", "Team": "DET", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.05, "Dollar_Per_Score": "", "QS": 0.0, "SO": 62.502, "SV": 22.535, "HLD": 4.2261, "ERA": 4.09, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}, {"Rank": 52, "Name": "Carlos Est\u00e9vez", "Team": "KCR", "Position": "RP", "Salary_M": "", "Strategy_Score": 3.98, "Dollar_Per_Score": "", "QS": 0.0, "SO": 60.7099, "SV": 30.857, "HLD": 2.0065, "ERA": 4.29, "WHIP": 1.33, "Block_Type": "", "Rostered_By": ""}, {"Rank": 53, "Name": "Matt Strahm", "Team": "KCR", "Position": "RP", "Salary_M": "", "Strategy_Score": 3.98, "Dollar_Per_Score": "", "QS": 0.0, "SO": 72.1107, "SV": 1.052, "HLD": 16.738, "ERA": 3.66, "WHIP": 1.18, "Block_Type": "", "Rostered_By": ""}, {"Rank": 54, "Name": "Louis Varland", "Team": "TOR", "Position": "RP", "Salary_M": "", "Strategy_Score": 3.95, "Dollar_Per_Score": "", "QS": 0.0, "SO": 68.4056, "SV": 2.064, "HLD": 13.3784, "ERA": 3.44, "WHIP": 1.18, "Block_Type": "", "Rostered_By": ""}, {"Rank": 55, "Name": "Tanner Scott", "Team": "LAD", "Position": "RP", "Salary_M": 6.7, "Strategy_Score": 3.95, "Dollar_Per_Score": 1.7, "QS": 0.0, "SO": 73.2467, "SV": 3.763, "HLD": 14.6742, "ERA": 3.43, "WHIP": 1.24, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 56, "Name": "Alex Vesia", "Team": "LAD", "Position": "RP", "Salary_M": "", "Strategy_Score": 3.91, "Dollar_Per_Score": "", "QS": 0.0, "SO": 75.13, "SV": 1.254, "HLD": 17.8989, "ERA": 3.67, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 58, "Name": "Dylan Lee", "Team": "ATL", "Position": "RP", "Salary_M": "", "Strategy_Score": 3.9, "Dollar_Per_Score": "", "QS": 0.0, "SO": 71.3611, "SV": 1.058, "HLD": 16.2514, "ERA": 3.59, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 59, "Name": "Jos\u00e9 Alvarado", "Team": "PHI", "Position": "RP", "Salary_M": "", "Strategy_Score": 3.84, "Dollar_Per_Score": "", "QS": 0.0, "SO": 74.3573, "SV": 3.137, "HLD": 12.5227, "ERA": 3.27, "WHIP": 1.24, "Block_Type": "", "Rostered_By": ""}, {"Rank": 61, "Name": "Clayton Beeter", "Team": "WSN", "Position": "RP", "Salary_M": "", "Strategy_Score": 3.66, "Dollar_Per_Score": "", "QS": 0.0, "SO": 70.3743, "SV": 16.526, "HLD": 9.1443, "ERA": 3.78, "WHIP": 1.34, "Block_Type": "", "Rostered_By": ""}, {"Rank": 63, "Name": "Luke Weaver", "Team": "NYM", "Position": "RP", "Salary_M": "", "Strategy_Score": 3.63, "Dollar_Per_Score": "", "QS": 0.0, "SO": 71.1366, "SV": 3.555, "HLD": 14.1594, "ERA": 3.72, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 64, "Name": "JoJo Romero", "Team": "STL", "Position": "RP", "Salary_M": "", "Strategy_Score": 3.61, "Dollar_Per_Score": "", "QS": 0.0, "SO": 60.817, "SV": 13.584, "HLD": 9.2003, "ERA": 3.56, "WHIP": 1.33, "Block_Type": "", "Rostered_By": ""}]}, "speed_rates": {"name": "Speed + Rates", "description": "Target: SB, AVG, OBP + ERA, WHIP, K | Punt: HR, RBI, QS", "file": "draft_board_speed_rates.csv", "batters": [{"Rank": 1, "Name": "Ronald Acu\u00f1a Jr.", "Team": "ATL", "Salary_M": 44.0, "Strategy_Score": 6.84, "Dollar_Per_Score": 6.43, "HR": 30.7731, "R": 110.17, "RBI": 84.9044, "SB": 24.162, "AVG": 0.29, "OBP": 0.39, "SLG": 0.5, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 3, "Name": "Bobby Witt Jr.", "Team": "KCR", "Salary_M": 35.7, "Strategy_Score": 6.14, "Dollar_Per_Score": 5.82, "HR": 26.4269, "R": 97.2182, "RBI": 86.2704, "SB": 31.3062, "AVG": 0.29, "OBP": 0.35, "SLG": 0.51, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 6, "Name": "Xavier Edwards", "Team": "MIA", "Salary_M": 9.3, "Strategy_Score": 5.07, "Dollar_Per_Score": 1.84, "HR": 4.6292, "R": 67.4048, "RBI": 45.2465, "SB": 25.4598, "AVG": 0.29, "OBP": 0.35, "SLG": 0.37, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 7, "Name": "Elly De La Cruz", "Team": "CIN", "Salary_M": 15.1, "Strategy_Score": 4.79, "Dollar_Per_Score": 3.15, "HR": 23.2441, "R": 83.1261, "RBI": 81.8924, "SB": 37.6072, "AVG": 0.26, "OBP": 0.34, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Nolan Chidester"}, {"Rank": 9, "Name": "Fernando Tatis Jr.", "Team": "SDP", "Salary_M": 25.7, "Strategy_Score": 4.7, "Dollar_Per_Score": 5.47, "HR": 30.3064, "R": 97.4287, "RBI": 77.9354, "SB": 23.7437, "AVG": 0.27, "OBP": 0.36, "SLG": 0.5, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 11, "Name": "Jos\u00e9 Ram\u00edrez", "Team": "CLE", "Salary_M": 20.0, "Strategy_Score": 4.55, "Dollar_Per_Score": 4.4, "HR": 26.569, "R": 82.6963, "RBI": 87.0738, "SB": 29.8253, "AVG": 0.28, "OBP": 0.35, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 12, "Name": "Nico Hoerner", "Team": "CHC", "Salary_M": 5.0, "Strategy_Score": 4.48, "Dollar_Per_Score": 1.12, "HR": 8.6087, "R": 73.8093, "RBI": 59.2283, "SB": 24.9569, "AVG": 0.28, "OBP": 0.34, "SLG": 0.39, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 13, "Name": "Corbin Carroll", "Team": "ARI", "Salary_M": 33.0, "Strategy_Score": 4.46, "Dollar_Per_Score": 7.4, "HR": 26.8982, "R": 91.0918, "RBI": 85.6888, "SB": 32.5681, "AVG": 0.26, "OBP": 0.35, "SLG": 0.5, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 17, "Name": "Trea Turner", "Team": "PHI", "Salary_M": 17.8, "Strategy_Score": 4.2, "Dollar_Per_Score": 4.24, "HR": 17.9146, "R": 85.397, "RBI": 64.8545, "SB": 26.2152, "AVG": 0.28, "OBP": 0.33, "SLG": 0.44, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 18, "Name": "Maikel Garcia", "Team": "KCR", "Salary_M": "", "Strategy_Score": 4.18, "Dollar_Per_Score": "", "HR": 12.6126, "R": 80.6551, "RBI": 61.1925, "SB": 26.0936, "AVG": 0.28, "OBP": 0.34, "SLG": 0.41, "Block_Type": "", "Rostered_By": ""}, {"Rank": 20, "Name": "Geraldo Perdomo", "Team": "ARI", "Salary_M": "", "Strategy_Score": 4.02, "Dollar_Per_Score": "", "HR": 12.3213, "R": 77.2291, "RBI": 54.6165, "SB": 18.5628, "AVG": 0.27, "OBP": 0.36, "SLG": 0.41, "Block_Type": "", "Rostered_By": ""}, {"Rank": 22, "Name": "Luis Arraez", "Team": "", "Salary_M": 10.3, "Strategy_Score": 3.81, "Dollar_Per_Score": 2.7, "HR": 6.6706, "R": 70.646, "RBI": 53.7976, "SB": 8.8908, "AVG": 0.31, "OBP": 0.35, "SLG": 0.4, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 23, "Name": "Steven Kwan", "Team": "CLE", "Salary_M": 5.3, "Strategy_Score": 3.7, "Dollar_Per_Score": 1.43, "HR": 11.2665, "R": 77.3129, "RBI": 51.0949, "SB": 16.9728, "AVG": 0.28, "OBP": 0.35, "SLG": 0.4, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 27, "Name": "Yandy D\u00edaz", "Team": "TBR", "Salary_M": "", "Strategy_Score": 3.25, "Dollar_Per_Score": "", "HR": 21.3908, "R": 84.7058, "RBI": 72.6718, "SB": 2.6888, "AVG": 0.29, "OBP": 0.37, "SLG": 0.47, "Block_Type": "", "Rostered_By": ""}, {"Rank": 30, "Name": "Luke Keaschall", "Team": "MIN", "Salary_M": 1.0, "Strategy_Score": 3.04, "Dollar_Per_Score": 0.33, "HR": 9.8512, "R": 62.1762, "RBI": 48.227, "SB": 19.8896, "AVG": 0.27, "OBP": 0.35, "SLG": 0.4, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 31, "Name": "Brice Turang", "Team": "MIL", "Salary_M": "", "Strategy_Score": 3.04, "Dollar_Per_Score": "", "HR": 14.297, "R": 77.0404, "RBI": 61.6939, "SB": 26.372, "AVG": 0.26, "OBP": 0.33, "SLG": 0.4, "Block_Type": "", "Rostered_By": ""}, {"Rank": 34, "Name": "Julio Rodr\u00edguez", "Team": "SEA", "Salary_M": 33.1, "Strategy_Score": 2.99, "Dollar_Per_Score": 11.07, "HR": 29.7784, "R": 84.4803, "RBI": 90.6497, "SB": 22.5935, "AVG": 0.27, "OBP": 0.33, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 37, "Name": "Francisco Lindor", "Team": "NYM", "Salary_M": 16.6, "Strategy_Score": 2.88, "Dollar_Per_Score": 5.77, "HR": 26.2375, "R": 94.0617, "RBI": 73.2706, "SB": 22.9672, "AVG": 0.26, "OBP": 0.34, "SLG": 0.45, "Block_Type": "Partial", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 39, "Name": "Ketel Marte", "Team": "ARI", "Salary_M": "", "Strategy_Score": 2.82, "Dollar_Per_Score": "", "HR": 26.0001, "R": 90.264, "RBI": 79.3525, "SB": 5.8557, "AVG": 0.28, "OBP": 0.36, "SLG": 0.49, "Block_Type": "", "Rostered_By": ""}, {"Rank": 41, "Name": "Freddie Freeman", "Team": "LAD", "Salary_M": 24.6, "Strategy_Score": 2.77, "Dollar_Per_Score": 8.88, "HR": 23.9556, "R": 88.2507, "RBI": 91.6627, "SB": 7.4261, "AVG": 0.28, "OBP": 0.36, "SLG": 0.47, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 44, "Name": "Bryce Harper", "Team": "PHI", "Salary_M": 24.4, "Strategy_Score": 2.63, "Dollar_Per_Score": 9.27, "HR": 26.9251, "R": 82.7258, "RBI": 86.7633, "SB": 9.172, "AVG": 0.27, "OBP": 0.37, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 47, "Name": "Jacob Wilson", "Team": "ATH", "Salary_M": 1.0, "Strategy_Score": 2.51, "Dollar_Per_Score": 0.4, "HR": 11.3378, "R": 55.9526, "RBI": 54.6807, "SB": 4.7151, "AVG": 0.3, "OBP": 0.35, "SLG": 0.44, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 53, "Name": "Brendan Donovan", "Team": "STL", "Salary_M": "", "Strategy_Score": 2.24, "Dollar_Per_Score": "", "HR": 11.8235, "R": 69.2257, "RBI": 53.0867, "SB": 6.1579, "AVG": 0.28, "OBP": 0.35, "SLG": 0.41, "Block_Type": "", "Rostered_By": ""}, {"Rank": 54, "Name": "Jakob Marsee", "Team": "MIA", "Salary_M": "", "Strategy_Score": 2.16, "Dollar_Per_Score": "", "HR": 12.1604, "R": 69.1778, "RBI": 45.5453, "SB": 32.89, "AVG": 0.23, "OBP": 0.33, "SLG": 0.37, "Block_Type": "", "Rostered_By": ""}, {"Rank": 55, "Name": "Chase Meidroth", "Team": "CHW", "Salary_M": "", "Strategy_Score": 2.16, "Dollar_Per_Score": "", "HR": 8.7268, "R": 63.0797, "RBI": 40.7975, "SB": 12.5873, "AVG": 0.26, "OBP": 0.36, "SLG": 0.37, "Block_Type": "", "Rostered_By": ""}, {"Rank": 60, "Name": "Jeremy Pe\u00f1a", "Team": "HOU", "Salary_M": 5.0, "Strategy_Score": 2.08, "Dollar_Per_Score": 2.41, "HR": 17.8674, "R": 78.8479, "RBI": 64.4384, "SB": 16.2838, "AVG": 0.27, "OBP": 0.33, "SLG": 0.43, "Block_Type": "Partial", "Rostered_By": "Brian Frederick"}, {"Rank": 61, "Name": "Iv\u00e1n Herrera", "Team": "STL", "Salary_M": 1.5, "Strategy_Score": 2.06, "Dollar_Per_Score": 0.73, "HR": 15.867, "R": 63.6549, "RBI": 55.4906, "SB": 7.4171, "AVG": 0.27, "OBP": 0.36, "SLG": 0.44, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 63, "Name": "Nolan Schanuel", "Team": "LAA", "Salary_M": 1.5, "Strategy_Score": 2.01, "Dollar_Per_Score": 0.75, "HR": 15.5547, "R": 70.7192, "RBI": 57.0233, "SB": 5.729, "AVG": 0.27, "OBP": 0.36, "SLG": 0.42, "Block_Type": "", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 64, "Name": "Zach Neto", "Team": "LAA", "Salary_M": "", "Strategy_Score": 1.96, "Dollar_Per_Score": "", "HR": 26.0401, "R": 83.0504, "RBI": 69.3989, "SB": 26.8771, "AVG": 0.25, "OBP": 0.32, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 66, "Name": "James Wood", "Team": "WSN", "Salary_M": 1.5, "Strategy_Score": 1.94, "Dollar_Per_Score": 0.77, "HR": 22.7992, "R": 73.72, "RBI": 60.9323, "SB": 14.3015, "AVG": 0.26, "OBP": 0.35, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 67, "Name": "Jarren Duran", "Team": "BOS", "Salary_M": "", "Strategy_Score": 1.86, "Dollar_Per_Score": "", "HR": 15.1106, "R": 78.2898, "RBI": 61.3918, "SB": 20.4174, "AVG": 0.26, "OBP": 0.33, "SLG": 0.44, "Block_Type": "", "Rostered_By": ""}, {"Rank": 70, "Name": "William Contreras", "Team": "MIL", "Salary_M": "", "Strategy_Score": 1.73, "Dollar_Per_Score": "", "HR": 19.9153, "R": 74.3872, "RBI": 74.4436, "SB": 6.1572, "AVG": 0.27, "OBP": 0.36, "SLG": 0.44, "Block_Type": "", "Rostered_By": ""}, {"Rank": 71, "Name": "George Springer", "Team": "TOR", "Salary_M": 5.1, "Strategy_Score": 1.71, "Dollar_Per_Score": 2.98, "HR": 25.7437, "R": 86.5848, "RBI": 72.7428, "SB": 13.1382, "AVG": 0.26, "OBP": 0.34, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 75, "Name": "Sal Frelick", "Team": "MIL", "Salary_M": "", "Strategy_Score": 1.55, "Dollar_Per_Score": "", "HR": 8.1369, "R": 50.5348, "RBI": 46.268, "SB": 13.3886, "AVG": 0.27, "OBP": 0.34, "SLG": 0.39, "Block_Type": "", "Rostered_By": ""}, {"Rank": 77, "Name": "Bryson Stott", "Team": "PHI", "Salary_M": "", "Strategy_Score": 1.47, "Dollar_Per_Score": "", "HR": 12.5889, "R": 60.0268, "RBI": 56.5364, "SB": 21.3173, "AVG": 0.26, "OBP": 0.33, "SLG": 0.39, "Block_Type": "", "Rostered_By": ""}, {"Rank": 79, "Name": "Xander Bogaerts", "Team": "SDP", "Salary_M": "", "Strategy_Score": 1.43, "Dollar_Per_Score": "", "HR": 12.8372, "R": 57.614, "RBI": 56.7812, "SB": 13.6505, "AVG": 0.27, "OBP": 0.33, "SLG": 0.41, "Block_Type": "", "Rostered_By": ""}, {"Rank": 82, "Name": "Gabriel Moreno", "Team": "ARI", "Salary_M": "", "Strategy_Score": 1.34, "Dollar_Per_Score": "", "HR": 10.293, "R": 47.9653, "RBI": 49.8922, "SB": 3.923, "AVG": 0.28, "OBP": 0.35, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 84, "Name": "Corey Seager", "Team": "TEX", "Salary_M": "", "Strategy_Score": 1.3, "Dollar_Per_Score": "", "HR": 24.8444, "R": 70.871, "RBI": 73.8838, "SB": 2.4976, "AVG": 0.28, "OBP": 0.36, "SLG": 0.5, "Block_Type": "", "Rostered_By": ""}, {"Rank": 86, "Name": "Jung Hoo Lee", "Team": "SFG", "Salary_M": 7.1, "Strategy_Score": 1.29, "Dollar_Per_Score": 5.5, "HR": 8.5712, "R": 59.5818, "RBI": 45.7309, "SB": 8.7632, "AVG": 0.27, "OBP": 0.33, "SLG": 0.41, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 90, "Name": "Caleb Durbin", "Team": "MIL", "Salary_M": 1.0, "Strategy_Score": 1.2, "Dollar_Per_Score": 0.83, "HR": 10.0704, "R": 51.686, "RBI": 50.2559, "SB": 18.5107, "AVG": 0.26, "OBP": 0.33, "SLG": 0.4, "Block_Type": "", "Rostered_By": "Zack Semler"}, {"Rank": 91, "Name": "Jose Altuve", "Team": "HOU", "Salary_M": 11.0, "Strategy_Score": 1.19, "Dollar_Per_Score": 9.22, "HR": 20.2339, "R": 74.7848, "RBI": 72.4479, "SB": 11.7606, "AVG": 0.27, "OBP": 0.33, "SLG": 0.43, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 92, "Name": "Josh Naylor", "Team": "SEA", "Salary_M": "", "Strategy_Score": 1.18, "Dollar_Per_Score": "", "HR": 22.5343, "R": 70.5555, "RBI": 79.7969, "SB": 14.9529, "AVG": 0.27, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 97, "Name": "Otto Lopez", "Team": "MIA", "Salary_M": "", "Strategy_Score": 1.02, "Dollar_Per_Score": "", "HR": 9.9737, "R": 50.7057, "RBI": 51.6166, "SB": 13.7046, "AVG": 0.27, "OBP": 0.33, "SLG": 0.4, "Block_Type": "", "Rostered_By": ""}, {"Rank": 98, "Name": "Jurickson Profar", "Team": "ATL", "Salary_M": 6.3, "Strategy_Score": 0.98, "Dollar_Per_Score": 6.4, "HR": 17.9769, "R": 76.4785, "RBI": 70.0518, "SB": 8.6835, "AVG": 0.25, "OBP": 0.35, "SLG": 0.41, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 99, "Name": "Jazz Chisholm Jr.", "Team": "NYY", "Salary_M": "", "Strategy_Score": 0.97, "Dollar_Per_Score": "", "HR": 26.5708, "R": 72.5299, "RBI": 75.8234, "SB": 27.26, "AVG": 0.24, "OBP": 0.32, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 101, "Name": "Randy Arozarena", "Team": "SEA", "Salary_M": 7.0, "Strategy_Score": 0.94, "Dollar_Per_Score": 7.41, "HR": 21.3689, "R": 81.9202, "RBI": 66.9506, "SB": 22.3815, "AVG": 0.23, "OBP": 0.33, "SLG": 0.4, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 103, "Name": "Christian Yelich", "Team": "MIL", "Salary_M": 2.8, "Strategy_Score": 0.93, "Dollar_Per_Score": 3.0, "HR": 15.9102, "R": 57.2905, "RBI": 59.8078, "SB": 12.3424, "AVG": 0.26, "OBP": 0.34, "SLG": 0.42, "Block_Type": "Partial", "Rostered_By": "Brian Frederick"}, {"Rank": 104, "Name": "Spencer Horwitz", "Team": "PIT", "Salary_M": "", "Strategy_Score": 0.9, "Dollar_Per_Score": "", "HR": 10.7945, "R": 57.2202, "RBI": 43.1968, "SB": 2.4495, "AVG": 0.26, "OBP": 0.36, "SLG": 0.42, "Block_Type": "", "Rostered_By": ""}, {"Rank": 109, "Name": "Jackson Holliday", "Team": "BAL", "Salary_M": 1.5, "Strategy_Score": 0.86, "Dollar_Per_Score": 1.74, "HR": 13.717, "R": 66.2223, "RBI": 47.8392, "SB": 14.4623, "AVG": 0.25, "OBP": 0.33, "SLG": 0.4, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 110, "Name": "Alejandro Kirk", "Team": "TOR", "Salary_M": "", "Strategy_Score": 0.86, "Dollar_Per_Score": "", "HR": 14.1614, "R": 53.9039, "RBI": 55.7626, "SB": 0.9634, "AVG": 0.28, "OBP": 0.35, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}], "pitchers": [{"Rank": 2, "Name": "Garrett Crochet", "Team": "BOS", "Position": "SP", "Salary_M": "", "Strategy_Score": 6.83, "Dollar_Per_Score": "", "QS": 20.7616, "SO": 238.814, "SV": 0.0, "HLD": 0.0, "ERA": 3.01, "WHIP": 1.07, "Block_Type": "", "Rostered_By": ""}, {"Rank": 4, "Name": "Chris Sale", "Team": "ATL", "Position": "SP", "Salary_M": "", "Strategy_Score": 5.57, "Dollar_Per_Score": "", "QS": 17.736, "SO": 205.46, "SV": 0.0, "HLD": 0.0, "ERA": 3.19, "WHIP": 1.09, "Block_Type": "", "Rostered_By": ""}, {"Rank": 5, "Name": "Jacob deGrom", "Team": "TEX", "Position": "SP", "Salary_M": "", "Strategy_Score": 5.12, "Dollar_Per_Score": "", "QS": 18.2323, "SO": 213.722, "SV": 0.0, "HLD": 0.0, "ERA": 3.48, "WHIP": 1.09, "Block_Type": "", "Rostered_By": ""}, {"Rank": 8, "Name": "Cole Ragans", "Team": "KCR", "Position": "SP", "Salary_M": 11.0, "Strategy_Score": 4.76, "Dollar_Per_Score": 2.31, "QS": 17.6211, "SO": 210.53, "SV": 0.0, "HLD": 0.0, "ERA": 3.23, "WHIP": 1.17, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 10, "Name": "Logan Gilbert", "Team": "SEA", "Position": "SP", "Salary_M": 13.8, "Strategy_Score": 4.6, "Dollar_Per_Score": 3.0, "QS": 16.1895, "SO": 182.023, "SV": 0.0, "HLD": 0.0, "ERA": 3.39, "WHIP": 1.1, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 14, "Name": "Cristopher S\u00e1nchez", "Team": "PHI", "Position": "SP", "Salary_M": 2.0, "Strategy_Score": 4.43, "Dollar_Per_Score": 0.45, "QS": 21.089, "SO": 192.403, "SV": 0.0, "HLD": 0.0, "ERA": 3.16, "WHIP": 1.18, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 15, "Name": "Zack Wheeler", "Team": "PHI", "Position": "SP", "Salary_M": "", "Strategy_Score": 4.39, "Dollar_Per_Score": "", "QS": 13.0375, "SO": 145.14, "SV": 0.0, "HLD": 0.0, "ERA": 3.2, "WHIP": 1.09, "Block_Type": "", "Rostered_By": ""}, {"Rank": 16, "Name": "Michael Soroka", "Team": "ARI", "Position": "SP", "Salary_M": "", "Strategy_Score": 4.26, "Dollar_Per_Score": "", "QS": 9.0647, "SO": 145.866, "SV": 5.649, "HLD": 0.5678, "ERA": 4.23, "WHIP": 1.32, "Block_Type": "", "Rostered_By": ""}, {"Rank": 19, "Name": "Bryan Woo", "Team": "SEA", "Position": "SP", "Salary_M": "", "Strategy_Score": 4.13, "Dollar_Per_Score": "", "QS": 19.0891, "SO": 195.866, "SV": 0.0, "HLD": 0.0, "ERA": 3.59, "WHIP": 1.13, "Block_Type": "", "Rostered_By": ""}, {"Rank": 21, "Name": "George Kirby", "Team": "SEA", "Position": "SP", "Salary_M": 23.9, "Strategy_Score": 4.0, "Dollar_Per_Score": 5.98, "QS": 17.1252, "SO": 174.012, "SV": 0.0, "HLD": 0.0, "ERA": 3.5, "WHIP": 1.12, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 24, "Name": "Joe Ryan", "Team": "MIN", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.56, "Dollar_Per_Score": "", "QS": 16.6926, "SO": 199.467, "SV": 0.0, "HLD": 0.0, "ERA": 3.83, "WHIP": 1.14, "Block_Type": "", "Rostered_By": ""}, {"Rank": 25, "Name": "Dylan Cease", "Team": "TOR", "Position": "SP", "Salary_M": 14.6, "Strategy_Score": 3.53, "Dollar_Per_Score": 4.14, "QS": 17.3738, "SO": 216.007, "SV": 0.0, "HLD": 0.0, "ERA": 3.6, "WHIP": 1.22, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 26, "Name": "Jes\u00fas Luzardo", "Team": "PHI", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.49, "Dollar_Per_Score": "", "QS": 17.3246, "SO": 198.811, "SV": 0.0, "HLD": 0.0, "ERA": 3.57, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 28, "Name": "Hunter Greene", "Team": "CIN", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.21, "Dollar_Per_Score": "", "QS": 16.5559, "SO": 220.007, "SV": 0.0, "HLD": 0.0, "ERA": 3.94, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 29, "Name": "Yoshinobu Yamamoto", "Team": "LAD", "Position": "SP", "Salary_M": 23.8, "Strategy_Score": 3.1, "Dollar_Per_Score": 7.68, "QS": 15.8287, "SO": 169.568, "SV": 0.0, "HLD": 0.0, "ERA": 3.43, "WHIP": 1.2, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 32, "Name": "Hunter Brown", "Team": "HOU", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.03, "Dollar_Per_Score": "", "QS": 17.6519, "SO": 199.991, "SV": 0.0, "HLD": 0.0, "ERA": 3.63, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 33, "Name": "Blake Snell", "Team": "LAD", "Position": "SP", "Salary_M": 10.5, "Strategy_Score": 3.0, "Dollar_Per_Score": 3.5, "QS": 15.9606, "SO": 200.444, "SV": 0.0, "HLD": 0.0, "ERA": 3.52, "WHIP": 1.25, "Block_Type": "", "Rostered_By": "Nolan Chidester"}, {"Rank": 35, "Name": "Sonny Gray", "Team": "BOS", "Position": "SP", "Salary_M": 4.2, "Strategy_Score": 2.94, "Dollar_Per_Score": 1.43, "QS": 17.0218, "SO": 189.835, "SV": 0.0, "HLD": 0.0, "ERA": 3.68, "WHIP": 1.21, "Block_Type": "", "Rostered_By": "Steve Cornish"}, {"Rank": 36, "Name": "Nathan Eovaldi", "Team": "TEX", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.94, "Dollar_Per_Score": "", "QS": 16.8483, "SO": 171.35, "SV": 0.0, "HLD": 0.0, "ERA": 3.6, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 38, "Name": "Chase Burns", "Team": "CIN", "Position": "SP", "Salary_M": 1.0, "Strategy_Score": 2.86, "Dollar_Per_Score": 0.35, "QS": 10.7165, "SO": 152.31, "SV": 0.0, "HLD": 0.6661, "ERA": 3.73, "WHIP": 1.2, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 40, "Name": "Nick Pivetta", "Team": "SDP", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.81, "Dollar_Per_Score": "", "QS": 17.127, "SO": 209.948, "SV": 0.0, "HLD": 0.0, "ERA": 3.96, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 42, "Name": "Spencer Schwellenbach", "Team": "ATL", "Position": "SP", "Salary_M": 7.3, "Strategy_Score": 2.7, "Dollar_Per_Score": 2.7, "QS": 16.0494, "SO": 162.638, "SV": 0.0, "HLD": 0.0, "ERA": 3.65, "WHIP": 1.18, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 43, "Name": "Tyler Glasnow", "Team": "LAD", "Position": "SP", "Salary_M": 14.0, "Strategy_Score": 2.69, "Dollar_Per_Score": 5.21, "QS": 13.782, "SO": 171.981, "SV": 0.0, "HLD": 0.0, "ERA": 3.59, "WHIP": 1.21, "Block_Type": "", "Rostered_By": "Nolan Chidester"}, {"Rank": 45, "Name": "Shane McClanahan", "Team": "TBR", "Position": "SP", "Salary_M": 5.5, "Strategy_Score": 2.56, "Dollar_Per_Score": 2.15, "QS": 13.5896, "SO": 153.623, "SV": 0.0, "HLD": 0.0, "ERA": 3.56, "WHIP": 1.2, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 46, "Name": "Brandon Woodruff", "Team": "MIL", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.55, "Dollar_Per_Score": "", "QS": 14.3198, "SO": 168.101, "SV": 0.0, "HLD": 0.0, "ERA": 3.84, "WHIP": 1.17, "Block_Type": "", "Rostered_By": ""}, {"Rank": 48, "Name": "Pablo L\u00f3pez", "Team": "MIN", "Position": "SP", "Salary_M": 12.6, "Strategy_Score": 2.46, "Dollar_Per_Score": 5.12, "QS": 16.6539, "SO": 181.049, "SV": 0.0, "HLD": 0.0, "ERA": 3.81, "WHIP": 1.21, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 49, "Name": "Framber Valdez", "Team": "", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.38, "Dollar_Per_Score": "", "QS": 19.1945, "SO": 178.531, "SV": 0.0, "HLD": 0.0, "ERA": 3.47, "WHIP": 1.28, "Block_Type": "", "Rostered_By": ""}, {"Rank": 50, "Name": "Spencer Strider", "Team": "ATL", "Position": "SP", "Salary_M": 12.5, "Strategy_Score": 2.35, "Dollar_Per_Score": 5.32, "QS": 14.5594, "SO": 187.188, "SV": 0.0, "HLD": 0.0, "ERA": 3.83, "WHIP": 1.23, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 51, "Name": "Freddy Peralta", "Team": "MIL", "Position": "SP", "Salary_M": 7.5, "Strategy_Score": 2.35, "Dollar_Per_Score": 3.19, "QS": 15.6516, "SO": 199.68, "SV": 0.0, "HLD": 0.0, "ERA": 3.91, "WHIP": 1.23, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 52, "Name": "MacKenzie Gore", "Team": "WSN", "Position": "SP", "Salary_M": 2.0, "Strategy_Score": 2.34, "Dollar_Per_Score": 0.86, "QS": 15.8066, "SO": 192.89, "SV": 0.0, "HLD": 0.0, "ERA": 3.76, "WHIP": 1.25, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 56, "Name": "Emmet Sheehan", "Team": "LAD", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.13, "Dollar_Per_Score": "", "QS": 8.0583, "SO": 136.099, "SV": 0.0, "HLD": 0.7738, "ERA": 3.88, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 57, "Name": "Kyle Bradish", "Team": "BAL", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.13, "Dollar_Per_Score": "", "QS": 14.4754, "SO": 166.64, "SV": 0.0, "HLD": 0.0, "ERA": 3.7, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 58, "Name": "Michael King", "Team": "SDP", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.12, "Dollar_Per_Score": "", "QS": 15.7364, "SO": 182.292, "SV": 0.0, "HLD": 0.0, "ERA": 3.79, "WHIP": 1.24, "Block_Type": "", "Rostered_By": ""}, {"Rank": 59, "Name": "Ranger Su\u00e1rez", "Team": "", "Position": "SP", "Salary_M": 5.0, "Strategy_Score": 2.11, "Dollar_Per_Score": 2.37, "QS": 16.0555, "SO": 154.273, "SV": 0.0, "HLD": 0.0, "ERA": 3.55, "WHIP": 1.24, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 62, "Name": "Luis Castillo", "Team": "SEA", "Position": "SP", "Salary_M": 18.7, "Strategy_Score": 2.05, "Dollar_Per_Score": 9.11, "QS": 16.4458, "SO": 171.802, "SV": 0.0, "HLD": 0.0, "ERA": 3.86, "WHIP": 1.22, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 65, "Name": "Trey Yesavage", "Team": "TOR", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.96, "Dollar_Per_Score": "", "QS": 11.9141, "SO": 161.615, "SV": 0.0, "HLD": 0.6491, "ERA": 3.81, "WHIP": 1.28, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 68, "Name": "Aaron Nola", "Team": "PHI", "Position": "SP", "Salary_M": 11.1, "Strategy_Score": 1.81, "Dollar_Per_Score": 6.14, "QS": 15.8772, "SO": 175.84, "SV": 0.0, "HLD": 0.0, "ERA": 3.99, "WHIP": 1.22, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 69, "Name": "Eury P\u00e9rez", "Team": "MIA", "Position": "SP", "Salary_M": 15.7, "Strategy_Score": 1.74, "Dollar_Per_Score": 9.03, "QS": 12.9536, "SO": 171.754, "SV": 0.0, "HLD": 0.0, "ERA": 3.99, "WHIP": 1.22, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 72, "Name": "Joe Musgrove", "Team": "SDP", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.6, "Dollar_Per_Score": "", "QS": 14.0353, "SO": 150.212, "SV": 0.0, "HLD": 0.0, "ERA": 3.9, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 73, "Name": "Kris Bubic", "Team": "KCR", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.58, "Dollar_Per_Score": "", "QS": 12.3228, "SO": 147.764, "SV": 0.0, "HLD": 0.6688, "ERA": 3.8, "WHIP": 1.29, "Block_Type": "", "Rostered_By": ""}, {"Rank": 74, "Name": "Jack Flaherty", "Team": "DET", "Position": "SP", "Salary_M": 4.7, "Strategy_Score": 1.56, "Dollar_Per_Score": 3.02, "QS": 14.3886, "SO": 178.924, "SV": 0.0, "HLD": 0.0, "ERA": 3.91, "WHIP": 1.27, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 76, "Name": "Braxton Garrett", "Team": "MIA", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.48, "Dollar_Per_Score": "", "QS": 8.658, "SO": 108.706, "SV": 0.0, "HLD": 0.6413, "ERA": 3.76, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 78, "Name": "Matthew Boyd", "Team": "CHC", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.46, "Dollar_Per_Score": "", "QS": 16.5066, "SO": 164.94, "SV": 0.0, "HLD": 0.0, "ERA": 3.93, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}, {"Rank": 80, "Name": "Shota Imanaga", "Team": "CHC", "Position": "SP", "Salary_M": 1.5, "Strategy_Score": 1.4, "Dollar_Per_Score": 1.07, "QS": 14.6676, "SO": 155.64, "SV": 0.0, "HLD": 0.0, "ERA": 4.12, "WHIP": 1.2, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 81, "Name": "Cody Ponce", "Team": "TOR", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.37, "Dollar_Per_Score": "", "QS": 11.6436, "SO": 146.772, "SV": 0.0, "HLD": 0.6491, "ERA": 4.01, "WHIP": 1.27, "Block_Type": "", "Rostered_By": ""}, {"Rank": 83, "Name": "Zebby Matthews", "Team": "MIN", "Position": "SP", "Salary_M": 1.0, "Strategy_Score": 1.31, "Dollar_Per_Score": 0.76, "QS": 8.1538, "SO": 121.228, "SV": 0.0, "HLD": 0.6546, "ERA": 4.02, "WHIP": 1.22, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 85, "Name": "Carlos Rod\u00f3n", "Team": "NYY", "Position": "SP", "Salary_M": 5.0, "Strategy_Score": 1.3, "Dollar_Per_Score": 3.85, "QS": 14.0791, "SO": 174.421, "SV": 0.0, "HLD": 0.0, "ERA": 4.03, "WHIP": 1.26, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 87, "Name": "Reid Detmers", "Team": "LAA", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.28, "Dollar_Per_Score": "", "QS": 11.6323, "SO": 156.906, "SV": 0.0, "HLD": 0.6594, "ERA": 4.03, "WHIP": 1.29, "Block_Type": "", "Rostered_By": ""}, {"Rank": 88, "Name": "Drew Rasmussen", "Team": "TBR", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.23, "Dollar_Per_Score": "", "QS": 14.5429, "SO": 156.43, "SV": 0.0, "HLD": 0.0, "ERA": 3.92, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}, {"Rank": 89, "Name": "Shane Bieber", "Team": "TOR", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.22, "Dollar_Per_Score": "", "QS": 13.8616, "SO": 139.639, "SV": 0.0, "HLD": 0.0, "ERA": 3.86, "WHIP": 1.24, "Block_Type": "", "Rostered_By": ""}]}, "balanced": {"name": "Balanced", "description": "All categories weighted equally", "file": "draft_board_balanced.csv", "batters": [{"Rank": 1, "Name": "Ronald Acu\u00f1a Jr.", "Team": "ATL", "Salary_M": 44.0, "Strategy_Score": 9.98, "Dollar_Per_Score": 4.41, "HR": 30.7731, "R": 110.17, "RBI": 84.9044, "SB": 24.162, "AVG": 0.29, "OBP": 0.39, "SLG": 0.5, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 2, "Name": "Bobby Witt Jr.", "Team": "KCR", "Salary_M": 35.7, "Strategy_Score": 8.77, "Dollar_Per_Score": 4.07, "HR": 26.4269, "R": 97.2182, "RBI": 86.2704, "SB": 31.3062, "AVG": 0.29, "OBP": 0.35, "SLG": 0.51, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 3, "Name": "Fernando Tatis Jr.", "Team": "SDP", "Salary_M": 25.7, "Strategy_Score": 7.59, "Dollar_Per_Score": 3.38, "HR": 30.3064, "R": 97.4287, "RBI": 77.9354, "SB": 23.7437, "AVG": 0.27, "OBP": 0.36, "SLG": 0.5, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 4, "Name": "Corbin Carroll", "Team": "ARI", "Salary_M": 33.0, "Strategy_Score": 7.15, "Dollar_Per_Score": 4.62, "HR": 26.8982, "R": 91.0918, "RBI": 85.6888, "SB": 32.5681, "AVG": 0.26, "OBP": 0.35, "SLG": 0.5, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 5, "Name": "Jos\u00e9 Ram\u00edrez", "Team": "CLE", "Salary_M": 20.0, "Strategy_Score": 6.95, "Dollar_Per_Score": 2.88, "HR": 26.569, "R": 82.6963, "RBI": 87.0738, "SB": 29.8253, "AVG": 0.28, "OBP": 0.35, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 8, "Name": "Julio Rodr\u00edguez", "Team": "SEA", "Salary_M": 33.1, "Strategy_Score": 6.44, "Dollar_Per_Score": 5.14, "HR": 29.7784, "R": 84.4803, "RBI": 90.6497, "SB": 22.5935, "AVG": 0.27, "OBP": 0.33, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 9, "Name": "Elly De La Cruz", "Team": "CIN", "Salary_M": 15.1, "Strategy_Score": 5.95, "Dollar_Per_Score": 2.54, "HR": 23.2441, "R": 83.1261, "RBI": 81.8924, "SB": 37.6072, "AVG": 0.26, "OBP": 0.34, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Nolan Chidester"}, {"Rank": 10, "Name": "Bryce Harper", "Team": "PHI", "Salary_M": 24.4, "Strategy_Score": 5.77, "Dollar_Per_Score": 4.23, "HR": 26.9251, "R": 82.7258, "RBI": 86.7633, "SB": 9.172, "AVG": 0.27, "OBP": 0.37, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 11, "Name": "Ketel Marte", "Team": "ARI", "Salary_M": "", "Strategy_Score": 5.58, "Dollar_Per_Score": "", "HR": 26.0001, "R": 90.264, "RBI": 79.3525, "SB": 5.8557, "AVG": 0.28, "OBP": 0.36, "SLG": 0.49, "Block_Type": "", "Rostered_By": ""}, {"Rank": 12, "Name": "Freddie Freeman", "Team": "LAD", "Salary_M": 24.6, "Strategy_Score": 5.48, "Dollar_Per_Score": 4.49, "HR": 23.9556, "R": 88.2507, "RBI": 91.6627, "SB": 7.4261, "AVG": 0.28, "OBP": 0.36, "SLG": 0.47, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 13, "Name": "Pete Alonso", "Team": "BAL", "Salary_M": "", "Strategy_Score": 5.19, "Dollar_Per_Score": "", "HR": 35.1294, "R": 87.6208, "RBI": 101.037, "SB": 2.6104, "AVG": 0.25, "OBP": 0.34, "SLG": 0.49, "Block_Type": "", "Rostered_By": ""}, {"Rank": 17, "Name": "Matt Olson", "Team": "ATL", "Salary_M": 24.0, "Strategy_Score": 4.62, "Dollar_Per_Score": 5.2, "HR": 30.8217, "R": 93.5477, "RBI": 91.0061, "SB": 1.1675, "AVG": 0.26, "OBP": 0.35, "SLG": 0.48, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 19, "Name": "Francisco Lindor", "Team": "NYM", "Salary_M": 16.6, "Strategy_Score": 4.49, "Dollar_Per_Score": 3.69, "HR": 26.2375, "R": 94.0617, "RBI": 73.2706, "SB": 22.9672, "AVG": 0.26, "OBP": 0.34, "SLG": 0.45, "Block_Type": "Partial", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 20, "Name": "Yandy D\u00edaz", "Team": "TBR", "Salary_M": "", "Strategy_Score": 4.42, "Dollar_Per_Score": "", "HR": 21.3908, "R": 84.7058, "RBI": 72.6718, "SB": 2.6888, "AVG": 0.29, "OBP": 0.37, "SLG": 0.47, "Block_Type": "", "Rostered_By": ""}, {"Rank": 22, "Name": "Brent Rooker", "Team": "ATH", "Salary_M": "", "Strategy_Score": 4.15, "Dollar_Per_Score": "", "HR": 30.4818, "R": 82.3599, "RBI": 90.7507, "SB": 5.3677, "AVG": 0.26, "OBP": 0.33, "SLG": 0.49, "Block_Type": "", "Rostered_By": ""}, {"Rank": 26, "Name": "Trea Turner", "Team": "PHI", "Salary_M": 17.8, "Strategy_Score": 3.62, "Dollar_Per_Score": 4.91, "HR": 17.9146, "R": 85.397, "RBI": 64.8545, "SB": 26.2152, "AVG": 0.28, "OBP": 0.33, "SLG": 0.44, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 27, "Name": "Corey Seager", "Team": "TEX", "Salary_M": "", "Strategy_Score": 3.61, "Dollar_Per_Score": "", "HR": 24.8444, "R": 70.871, "RBI": 73.8838, "SB": 2.4976, "AVG": 0.28, "OBP": 0.36, "SLG": 0.5, "Block_Type": "", "Rostered_By": ""}, {"Rank": 30, "Name": "George Springer", "Team": "TOR", "Salary_M": 5.1, "Strategy_Score": 3.5, "Dollar_Per_Score": 1.46, "HR": 25.7437, "R": 86.5848, "RBI": 72.7428, "SB": 13.1382, "AVG": 0.26, "OBP": 0.34, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 32, "Name": "Zach Neto", "Team": "LAA", "Salary_M": "", "Strategy_Score": 3.34, "Dollar_Per_Score": "", "HR": 26.0401, "R": 83.0504, "RBI": 69.3989, "SB": 26.8771, "AVG": 0.25, "OBP": 0.32, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 34, "Name": "Manny Machado", "Team": "SDP", "Salary_M": 8.5, "Strategy_Score": 3.31, "Dollar_Per_Score": 2.57, "HR": 26.2769, "R": 75.1958, "RBI": 85.2932, "SB": 8.7805, "AVG": 0.27, "OBP": 0.33, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 41, "Name": "Rafael Devers", "Team": "SFG", "Salary_M": 18.4, "Strategy_Score": 2.94, "Dollar_Per_Score": 6.26, "HR": 28.6226, "R": 81.9221, "RBI": 83.3638, "SB": 2.1866, "AVG": 0.25, "OBP": 0.35, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 43, "Name": "James Wood", "Team": "WSN", "Salary_M": 1.5, "Strategy_Score": 2.69, "Dollar_Per_Score": 0.56, "HR": 22.7992, "R": 73.72, "RBI": 60.9323, "SB": 14.3015, "AVG": 0.26, "OBP": 0.35, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 44, "Name": "Jazz Chisholm Jr.", "Team": "NYY", "Salary_M": "", "Strategy_Score": 2.63, "Dollar_Per_Score": "", "HR": 26.5708, "R": 72.5299, "RBI": 75.8234, "SB": 27.26, "AVG": 0.24, "OBP": 0.32, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 46, "Name": "Josh Naylor", "Team": "SEA", "Salary_M": "", "Strategy_Score": 2.62, "Dollar_Per_Score": "", "HR": 22.5343, "R": 70.5555, "RBI": 79.7969, "SB": 14.9529, "AVG": 0.27, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 48, "Name": "William Contreras", "Team": "MIL", "Salary_M": "", "Strategy_Score": 2.51, "Dollar_Per_Score": "", "HR": 19.9153, "R": 74.3872, "RBI": 74.4436, "SB": 6.1572, "AVG": 0.27, "OBP": 0.36, "SLG": 0.44, "Block_Type": "", "Rostered_By": ""}, {"Rank": 49, "Name": "Cody Bellinger", "Team": "", "Salary_M": 7.8, "Strategy_Score": 2.51, "Dollar_Per_Score": 3.11, "HR": 22.1517, "R": 74.3627, "RBI": 80.6855, "SB": 9.9782, "AVG": 0.27, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 52, "Name": "Riley Greene", "Team": "DET", "Salary_M": 17.0, "Strategy_Score": 2.33, "Dollar_Per_Score": 7.3, "HR": 25.5058, "R": 73.2183, "RBI": 82.284, "SB": 3.2905, "AVG": 0.26, "OBP": 0.33, "SLG": 0.47, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 53, "Name": "Vinnie Pasquantino", "Team": "KCR", "Salary_M": 5.7, "Strategy_Score": 2.31, "Dollar_Per_Score": 2.47, "HR": 24.3882, "R": 71.9436, "RBI": 80.7921, "SB": 1.3744, "AVG": 0.27, "OBP": 0.34, "SLG": 0.47, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 54, "Name": "Alex Bregman", "Team": "", "Salary_M": 7.9, "Strategy_Score": 2.29, "Dollar_Per_Score": 3.45, "HR": 22.6218, "R": 81.8935, "RBI": 78.9974, "SB": 2.6924, "AVG": 0.26, "OBP": 0.35, "SLG": 0.44, "Block_Type": "Partial", "Rostered_By": "Ethan Gobetz"}, {"Rank": 56, "Name": "Austin Riley", "Team": "ATL", "Salary_M": 21.7, "Strategy_Score": 2.26, "Dollar_Per_Score": 9.6, "HR": 26.2878, "R": 77.1028, "RBI": 84.6615, "SB": 2.6802, "AVG": 0.26, "OBP": 0.32, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Steve Cornish"}, {"Rank": 60, "Name": "Maikel Garcia", "Team": "KCR", "Salary_M": "", "Strategy_Score": 2.19, "Dollar_Per_Score": "", "HR": 12.6126, "R": 80.6551, "RBI": 61.1925, "SB": 26.0936, "AVG": 0.28, "OBP": 0.34, "SLG": 0.41, "Block_Type": "", "Rostered_By": ""}, {"Rank": 66, "Name": "Seiya Suzuki", "Team": "CHC", "Salary_M": 4.0, "Strategy_Score": 1.93, "Dollar_Per_Score": 2.07, "HR": 23.8906, "R": 73.541, "RBI": 79.535, "SB": 6.9466, "AVG": 0.25, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 69, "Name": "Brandon Nimmo", "Team": "TEX", "Salary_M": 6.0, "Strategy_Score": 1.83, "Dollar_Per_Score": 3.29, "HR": 22.5643, "R": 84.5793, "RBI": 71.2424, "SB": 9.6937, "AVG": 0.26, "OBP": 0.34, "SLG": 0.43, "Block_Type": "", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 71, "Name": "Jose Altuve", "Team": "HOU", "Salary_M": 11.0, "Strategy_Score": 1.77, "Dollar_Per_Score": 6.2, "HR": 20.2339, "R": 74.7848, "RBI": 72.4479, "SB": 11.7606, "AVG": 0.27, "OBP": 0.33, "SLG": 0.43, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 72, "Name": "Alec Burleson", "Team": "STL", "Salary_M": 5.0, "Strategy_Score": 1.74, "Dollar_Per_Score": 2.87, "HR": 20.2378, "R": 66.1361, "RBI": 72.862, "SB": 5.7734, "AVG": 0.28, "OBP": 0.33, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 73, "Name": "Jeremy Pe\u00f1a", "Team": "HOU", "Salary_M": 5.0, "Strategy_Score": 1.69, "Dollar_Per_Score": 2.95, "HR": 17.8674, "R": 78.8479, "RBI": 64.4384, "SB": 16.2838, "AVG": 0.27, "OBP": 0.33, "SLG": 0.43, "Block_Type": "Partial", "Rostered_By": "Brian Frederick"}, {"Rank": 75, "Name": "Geraldo Perdomo", "Team": "ARI", "Salary_M": "", "Strategy_Score": 1.63, "Dollar_Per_Score": "", "HR": 12.3213, "R": 77.2291, "RBI": 54.6165, "SB": 18.5628, "AVG": 0.27, "OBP": 0.36, "SLG": 0.41, "Block_Type": "", "Rostered_By": ""}, {"Rank": 76, "Name": "Byron Buxton", "Team": "MIN", "Salary_M": 5.0, "Strategy_Score": 1.61, "Dollar_Per_Score": 3.1, "HR": 25.5534, "R": 71.7553, "RBI": 63.7502, "SB": 14.4183, "AVG": 0.25, "OBP": 0.32, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 77, "Name": "Jordan Westburg", "Team": "BAL", "Salary_M": "", "Strategy_Score": 1.56, "Dollar_Per_Score": "", "HR": 22.9251, "R": 74.6399, "RBI": 72.1468, "SB": 5.1886, "AVG": 0.26, "OBP": 0.32, "SLG": 0.47, "Block_Type": "", "Rostered_By": ""}, {"Rank": 87, "Name": "Nico Hoerner", "Team": "CHC", "Salary_M": 5.0, "Strategy_Score": 1.3, "Dollar_Per_Score": 3.84, "HR": 8.6087, "R": 73.8093, "RBI": 59.2283, "SB": 24.9569, "AVG": 0.28, "OBP": 0.34, "SLG": 0.39, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 90, "Name": "Munetaka Murakami", "Team": "CHW", "Salary_M": "", "Strategy_Score": 1.23, "Dollar_Per_Score": "", "HR": 29.6117, "R": 67.8949, "RBI": 74.7422, "SB": 8.7333, "AVG": 0.23, "OBP": 0.33, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 93, "Name": "Michael Harris II", "Team": "ATL", "Salary_M": 9.4, "Strategy_Score": 1.19, "Dollar_Per_Score": 7.9, "HR": 18.8138, "R": 61.3379, "RBI": 66.4634, "SB": 15.1928, "AVG": 0.27, "OBP": 0.31, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 94, "Name": "Teoscar Hern\u00e1ndez", "Team": "LAD", "Salary_M": "", "Strategy_Score": 1.18, "Dollar_Per_Score": "", "HR": 26.0267, "R": 69.2884, "RBI": 79.3912, "SB": 5.7187, "AVG": 0.25, "OBP": 0.31, "SLG": 0.46, "Block_Type": "", "Rostered_By": ""}, {"Rank": 95, "Name": "Brice Turang", "Team": "MIL", "Salary_M": "", "Strategy_Score": 1.14, "Dollar_Per_Score": "", "HR": 14.297, "R": 77.0404, "RBI": 61.6939, "SB": 26.372, "AVG": 0.26, "OBP": 0.33, "SLG": 0.4, "Block_Type": "", "Rostered_By": ""}, {"Rank": 98, "Name": "Jarren Duran", "Team": "BOS", "Salary_M": "", "Strategy_Score": 1.08, "Dollar_Per_Score": "", "HR": 15.1106, "R": 78.2898, "RBI": 61.3918, "SB": 20.4174, "AVG": 0.26, "OBP": 0.33, "SLG": 0.44, "Block_Type": "", "Rostered_By": ""}, {"Rank": 100, "Name": "Shea Langeliers", "Team": "ATH", "Salary_M": "", "Strategy_Score": 1.02, "Dollar_Per_Score": "", "HR": 26.6819, "R": 68.1468, "RBI": 71.5009, "SB": 5.0797, "AVG": 0.25, "OBP": 0.31, "SLG": 0.48, "Block_Type": "", "Rostered_By": ""}, {"Rank": 103, "Name": "Randy Arozarena", "Team": "SEA", "Salary_M": 7.0, "Strategy_Score": 0.95, "Dollar_Per_Score": 7.4, "HR": 21.3689, "R": 81.9202, "RBI": 66.9506, "SB": 22.3815, "AVG": 0.23, "OBP": 0.33, "SLG": 0.4, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 104, "Name": "Jurickson Profar", "Team": "ATL", "Salary_M": 6.3, "Strategy_Score": 0.91, "Dollar_Per_Score": 6.9, "HR": 17.9769, "R": 76.4785, "RBI": 70.0518, "SB": 8.6835, "AVG": 0.25, "OBP": 0.35, "SLG": 0.41, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 105, "Name": "Iv\u00e1n Herrera", "Team": "STL", "Salary_M": 1.5, "Strategy_Score": 0.9, "Dollar_Per_Score": 1.66, "HR": 15.867, "R": 63.6549, "RBI": 55.4906, "SB": 7.4171, "AVG": 0.27, "OBP": 0.36, "SLG": 0.44, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 107, "Name": "Steven Kwan", "Team": "CLE", "Salary_M": 5.3, "Strategy_Score": 0.85, "Dollar_Per_Score": 6.25, "HR": 11.2665, "R": 77.3129, "RBI": 51.0949, "SB": 16.9728, "AVG": 0.28, "OBP": 0.35, "SLG": 0.4, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}], "pitchers": [{"Rank": 6, "Name": "Garrett Crochet", "Team": "BOS", "Position": "SP", "Salary_M": "", "Strategy_Score": 6.8, "Dollar_Per_Score": "", "QS": 20.7616, "SO": 238.814, "SV": 0.0, "HLD": 0.0, "ERA": 3.01, "WHIP": 1.07, "Block_Type": "", "Rostered_By": ""}, {"Rank": 7, "Name": "Michael Soroka", "Team": "ARI", "Position": "SP", "Salary_M": "", "Strategy_Score": 6.75, "Dollar_Per_Score": "", "QS": 9.0647, "SO": 145.866, "SV": 5.649, "HLD": 0.5678, "ERA": 4.23, "WHIP": 1.32, "Block_Type": "", "Rostered_By": ""}, {"Rank": 14, "Name": "Chris Sale", "Team": "ATL", "Position": "SP", "Salary_M": "", "Strategy_Score": 5.15, "Dollar_Per_Score": "", "QS": 17.736, "SO": 205.46, "SV": 0.0, "HLD": 0.0, "ERA": 3.19, "WHIP": 1.09, "Block_Type": "", "Rostered_By": ""}, {"Rank": 15, "Name": "Jacob deGrom", "Team": "TEX", "Position": "SP", "Salary_M": "", "Strategy_Score": 4.98, "Dollar_Per_Score": "", "QS": 18.2323, "SO": 213.722, "SV": 0.0, "HLD": 0.0, "ERA": 3.48, "WHIP": 1.09, "Block_Type": "", "Rostered_By": ""}, {"Rank": 16, "Name": "Cristopher S\u00e1nchez", "Team": "PHI", "Position": "SP", "Salary_M": 2.0, "Strategy_Score": 4.9, "Dollar_Per_Score": 0.41, "QS": 21.089, "SO": 192.403, "SV": 0.0, "HLD": 0.0, "ERA": 3.16, "WHIP": 1.18, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 18, "Name": "Cole Ragans", "Team": "KCR", "Position": "SP", "Salary_M": 11.0, "Strategy_Score": 4.59, "Dollar_Per_Score": 2.39, "QS": 17.6211, "SO": 210.53, "SV": 0.0, "HLD": 0.0, "ERA": 3.23, "WHIP": 1.17, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 21, "Name": "Bryan Woo", "Team": "SEA", "Position": "SP", "Salary_M": "", "Strategy_Score": 4.34, "Dollar_Per_Score": "", "QS": 19.0891, "SO": 195.866, "SV": 0.0, "HLD": 0.0, "ERA": 3.59, "WHIP": 1.13, "Block_Type": "", "Rostered_By": ""}, {"Rank": 23, "Name": "Logan Gilbert", "Team": "SEA", "Position": "SP", "Salary_M": 13.8, "Strategy_Score": 4.04, "Dollar_Per_Score": 3.41, "QS": 16.1895, "SO": 182.023, "SV": 0.0, "HLD": 0.0, "ERA": 3.39, "WHIP": 1.1, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 24, "Name": "George Kirby", "Team": "SEA", "Position": "SP", "Salary_M": 23.9, "Strategy_Score": 3.75, "Dollar_Per_Score": 6.38, "QS": 17.1252, "SO": 174.012, "SV": 0.0, "HLD": 0.0, "ERA": 3.5, "WHIP": 1.12, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 25, "Name": "Dylan Cease", "Team": "TOR", "Position": "SP", "Salary_M": 14.6, "Strategy_Score": 3.72, "Dollar_Per_Score": 3.93, "QS": 17.3738, "SO": 216.007, "SV": 0.0, "HLD": 0.0, "ERA": 3.6, "WHIP": 1.22, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 28, "Name": "Jes\u00fas Luzardo", "Team": "PHI", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.58, "Dollar_Per_Score": "", "QS": 17.3246, "SO": 198.811, "SV": 0.0, "HLD": 0.0, "ERA": 3.57, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 29, "Name": "Joe Ryan", "Team": "MIN", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.51, "Dollar_Per_Score": "", "QS": 16.6926, "SO": 199.467, "SV": 0.0, "HLD": 0.0, "ERA": 3.83, "WHIP": 1.14, "Block_Type": "", "Rostered_By": ""}, {"Rank": 31, "Name": "Hunter Greene", "Team": "CIN", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.37, "Dollar_Per_Score": "", "QS": 16.5559, "SO": 220.007, "SV": 0.0, "HLD": 0.0, "ERA": 3.94, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 33, "Name": "Hunter Brown", "Team": "HOU", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.32, "Dollar_Per_Score": "", "QS": 17.6519, "SO": 199.991, "SV": 0.0, "HLD": 0.0, "ERA": 3.63, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 35, "Name": "Nick Pivetta", "Team": "SDP", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.13, "Dollar_Per_Score": "", "QS": 17.127, "SO": 209.948, "SV": 0.0, "HLD": 0.0, "ERA": 3.96, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 36, "Name": "Sonny Gray", "Team": "BOS", "Position": "SP", "Salary_M": 4.2, "Strategy_Score": 3.08, "Dollar_Per_Score": 1.36, "QS": 17.0218, "SO": 189.835, "SV": 0.0, "HLD": 0.0, "ERA": 3.68, "WHIP": 1.21, "Block_Type": "", "Rostered_By": "Steve Cornish"}, {"Rank": 37, "Name": "Zack Wheeler", "Team": "PHI", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.08, "Dollar_Per_Score": "", "QS": 13.0375, "SO": 145.14, "SV": 0.0, "HLD": 0.0, "ERA": 3.2, "WHIP": 1.09, "Block_Type": "", "Rostered_By": ""}, {"Rank": 38, "Name": "Framber Valdez", "Team": "", "Position": "SP", "Salary_M": "", "Strategy_Score": 3.03, "Dollar_Per_Score": "", "QS": 19.1945, "SO": 178.531, "SV": 0.0, "HLD": 0.0, "ERA": 3.47, "WHIP": 1.28, "Block_Type": "", "Rostered_By": ""}, {"Rank": 39, "Name": "Blake Snell", "Team": "LAD", "Position": "SP", "Salary_M": 10.5, "Strategy_Score": 2.99, "Dollar_Per_Score": 3.51, "QS": 15.9606, "SO": 200.444, "SV": 0.0, "HLD": 0.0, "ERA": 3.52, "WHIP": 1.25, "Block_Type": "", "Rostered_By": "Nolan Chidester"}, {"Rank": 40, "Name": "Nathan Eovaldi", "Team": "TEX", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.94, "Dollar_Per_Score": "", "QS": 16.8483, "SO": 171.35, "SV": 0.0, "HLD": 0.0, "ERA": 3.6, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 42, "Name": "Yoshinobu Yamamoto", "Team": "LAD", "Position": "SP", "Salary_M": 23.8, "Strategy_Score": 2.85, "Dollar_Per_Score": 8.35, "QS": 15.8287, "SO": 169.568, "SV": 0.0, "HLD": 0.0, "ERA": 3.43, "WHIP": 1.2, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 45, "Name": "Pablo L\u00f3pez", "Team": "MIN", "Position": "SP", "Salary_M": 12.6, "Strategy_Score": 2.63, "Dollar_Per_Score": 4.8, "QS": 16.6539, "SO": 181.049, "SV": 0.0, "HLD": 0.0, "ERA": 3.81, "WHIP": 1.21, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 47, "Name": "Spencer Schwellenbach", "Team": "ATL", "Position": "SP", "Salary_M": 7.3, "Strategy_Score": 2.57, "Dollar_Per_Score": 2.84, "QS": 16.0494, "SO": 162.638, "SV": 0.0, "HLD": 0.0, "ERA": 3.65, "WHIP": 1.18, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 50, "Name": "Freddy Peralta", "Team": "MIL", "Position": "SP", "Salary_M": 7.5, "Strategy_Score": 2.47, "Dollar_Per_Score": 3.03, "QS": 15.6516, "SO": 199.68, "SV": 0.0, "HLD": 0.0, "ERA": 3.91, "WHIP": 1.23, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 51, "Name": "MacKenzie Gore", "Team": "WSN", "Position": "SP", "Salary_M": 2.0, "Strategy_Score": 2.45, "Dollar_Per_Score": 0.82, "QS": 15.8066, "SO": 192.89, "SV": 0.0, "HLD": 0.0, "ERA": 3.76, "WHIP": 1.25, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 55, "Name": "Chase Burns", "Team": "CIN", "Position": "SP", "Salary_M": 1.0, "Strategy_Score": 2.26, "Dollar_Per_Score": 0.44, "QS": 10.7165, "SO": 152.31, "SV": 0.0, "HLD": 0.6661, "ERA": 3.73, "WHIP": 1.2, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 57, "Name": "Luis Castillo", "Team": "SEA", "Position": "SP", "Salary_M": 18.7, "Strategy_Score": 2.25, "Dollar_Per_Score": 8.33, "QS": 16.4458, "SO": 171.802, "SV": 0.0, "HLD": 0.0, "ERA": 3.86, "WHIP": 1.22, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 58, "Name": "Michael King", "Team": "SDP", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.23, "Dollar_Per_Score": "", "QS": 15.7364, "SO": 182.292, "SV": 0.0, "HLD": 0.0, "ERA": 3.79, "WHIP": 1.24, "Block_Type": "", "Rostered_By": ""}, {"Rank": 59, "Name": "Spencer Strider", "Team": "ATL", "Position": "SP", "Salary_M": 12.5, "Strategy_Score": 2.19, "Dollar_Per_Score": 5.7, "QS": 14.5594, "SO": 187.188, "SV": 0.0, "HLD": 0.0, "ERA": 3.83, "WHIP": 1.23, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 61, "Name": "Tyler Glasnow", "Team": "LAD", "Position": "SP", "Salary_M": 14.0, "Strategy_Score": 2.19, "Dollar_Per_Score": 6.39, "QS": 13.782, "SO": 171.981, "SV": 0.0, "HLD": 0.0, "ERA": 3.59, "WHIP": 1.21, "Block_Type": "", "Rostered_By": "Nolan Chidester"}, {"Rank": 62, "Name": "Brandon Woodruff", "Team": "MIL", "Position": "SP", "Salary_M": "", "Strategy_Score": 2.17, "Dollar_Per_Score": "", "QS": 14.3198, "SO": 168.101, "SV": 0.0, "HLD": 0.0, "ERA": 3.84, "WHIP": 1.17, "Block_Type": "", "Rostered_By": ""}, {"Rank": 63, "Name": "Ranger Su\u00e1rez", "Team": "", "Position": "SP", "Salary_M": 5.0, "Strategy_Score": 2.11, "Dollar_Per_Score": 2.37, "QS": 16.0555, "SO": 154.273, "SV": 0.0, "HLD": 0.0, "ERA": 3.55, "WHIP": 1.24, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 64, "Name": "Aaron Nola", "Team": "PHI", "Position": "SP", "Salary_M": 11.1, "Strategy_Score": 1.99, "Dollar_Per_Score": 5.57, "QS": 15.8772, "SO": 175.84, "SV": 0.0, "HLD": 0.0, "ERA": 3.99, "WHIP": 1.22, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 65, "Name": "Shane McClanahan", "Team": "TBR", "Position": "SP", "Salary_M": 5.5, "Strategy_Score": 1.96, "Dollar_Per_Score": 2.81, "QS": 13.5896, "SO": 153.623, "SV": 0.0, "HLD": 0.0, "ERA": 3.56, "WHIP": 1.2, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 67, "Name": "Kyle Bradish", "Team": "BAL", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.9, "Dollar_Per_Score": "", "QS": 14.4754, "SO": 166.64, "SV": 0.0, "HLD": 0.0, "ERA": 3.7, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 68, "Name": "Trey Yesavage", "Team": "TOR", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.89, "Dollar_Per_Score": "", "QS": 11.9141, "SO": 161.615, "SV": 0.0, "HLD": 0.6491, "ERA": 3.81, "WHIP": 1.28, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 70, "Name": "Matthew Boyd", "Team": "CHC", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.8, "Dollar_Per_Score": "", "QS": 16.5066, "SO": 164.94, "SV": 0.0, "HLD": 0.0, "ERA": 3.93, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}, {"Rank": 74, "Name": "Kris Bubic", "Team": "KCR", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.64, "Dollar_Per_Score": "", "QS": 12.3228, "SO": 147.764, "SV": 0.0, "HLD": 0.6688, "ERA": 3.8, "WHIP": 1.29, "Block_Type": "", "Rostered_By": ""}, {"Rank": 78, "Name": "Jack Flaherty", "Team": "DET", "Position": "SP", "Salary_M": 4.7, "Strategy_Score": 1.56, "Dollar_Per_Score": 3.02, "QS": 14.3886, "SO": 178.924, "SV": 0.0, "HLD": 0.0, "ERA": 3.91, "WHIP": 1.27, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 79, "Name": "Tanner Bibee", "Team": "CLE", "Position": "SP", "Salary_M": 3.9, "Strategy_Score": 1.42, "Dollar_Per_Score": 2.75, "QS": 15.8009, "SO": 171.217, "SV": 0.0, "HLD": 0.0, "ERA": 4.08, "WHIP": 1.27, "Block_Type": "Partial", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 80, "Name": "David Peterson", "Team": "NYM", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.42, "Dollar_Per_Score": "", "QS": 17.1399, "SO": 160.561, "SV": 0.0, "HLD": 0.0, "ERA": 3.68, "WHIP": 1.35, "Block_Type": "", "Rostered_By": ""}, {"Rank": 81, "Name": "Eury P\u00e9rez", "Team": "MIA", "Position": "SP", "Salary_M": 15.7, "Strategy_Score": 1.37, "Dollar_Per_Score": 11.46, "QS": 12.9536, "SO": 171.754, "SV": 0.0, "HLD": 0.0, "ERA": 3.99, "WHIP": 1.22, "Block_Type": "Partial", "Rostered_By": "JD Barnett"}, {"Rank": 82, "Name": "Shota Imanaga", "Team": "CHC", "Position": "SP", "Salary_M": 1.5, "Strategy_Score": 1.36, "Dollar_Per_Score": 1.11, "QS": 14.6676, "SO": 155.64, "SV": 0.0, "HLD": 0.0, "ERA": 4.12, "WHIP": 1.2, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 83, "Name": "Reid Detmers", "Team": "LAA", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.35, "Dollar_Per_Score": "", "QS": 11.6323, "SO": 156.906, "SV": 0.0, "HLD": 0.6594, "ERA": 4.03, "WHIP": 1.29, "Block_Type": "", "Rostered_By": ""}, {"Rank": 84, "Name": "Cody Ponce", "Team": "TOR", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.34, "Dollar_Per_Score": "", "QS": 11.6436, "SO": 146.772, "SV": 0.0, "HLD": 0.6491, "ERA": 4.01, "WHIP": 1.27, "Block_Type": "", "Rostered_By": ""}, {"Rank": 85, "Name": "Joe Musgrove", "Team": "SDP", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.34, "Dollar_Per_Score": "", "QS": 14.0353, "SO": 150.212, "SV": 0.0, "HLD": 0.0, "ERA": 3.9, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 86, "Name": "Yusei Kikuchi", "Team": "LAA", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.32, "Dollar_Per_Score": "", "QS": 15.0256, "SO": 181.773, "SV": 0.0, "HLD": 0.0, "ERA": 4.1, "WHIP": 1.28, "Block_Type": "", "Rostered_By": ""}, {"Rank": 88, "Name": "Carlos Rod\u00f3n", "Team": "NYY", "Position": "SP", "Salary_M": 5.0, "Strategy_Score": 1.29, "Dollar_Per_Score": 3.88, "QS": 14.0791, "SO": 174.421, "SV": 0.0, "HLD": 0.0, "ERA": 4.03, "WHIP": 1.26, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 89, "Name": "Emmet Sheehan", "Team": "LAD", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.26, "Dollar_Per_Score": "", "QS": 8.0583, "SO": 136.099, "SV": 0.0, "HLD": 0.7738, "ERA": 3.88, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 91, "Name": "Drew Rasmussen", "Team": "TBR", "Position": "SP", "Salary_M": "", "Strategy_Score": 1.22, "Dollar_Per_Score": "", "QS": 14.5429, "SO": 156.43, "SV": 0.0, "HLD": 0.0, "ERA": 3.92, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}]}, "elite_bullpen": {"name": "Elite Bullpen", "description": "Target: SV, HLD, ERA, WHIP + AVG, OBP | Punt: HR, QS, K", "file": "draft_board_elite_bullpen.csv", "batters": [{"Rank": 20, "Name": "Ronald Acu\u00f1a Jr.", "Team": "ATL", "Salary_M": 44.0, "Strategy_Score": 5.67, "Dollar_Per_Score": 7.76, "HR": 30.7731, "R": 110.17, "RBI": 84.9044, "SB": 24.162, "AVG": 0.29, "OBP": 0.39, "SLG": 0.5, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 37, "Name": "Bobby Witt Jr.", "Team": "KCR", "Salary_M": 35.7, "Strategy_Score": 4.75, "Dollar_Per_Score": 7.52, "HR": 26.4269, "R": 97.2182, "RBI": 86.2704, "SB": 31.3062, "AVG": 0.29, "OBP": 0.35, "SLG": 0.51, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 53, "Name": "Xavier Edwards", "Team": "MIA", "Salary_M": 9.3, "Strategy_Score": 4.11, "Dollar_Per_Score": 2.26, "HR": 4.6292, "R": 67.4048, "RBI": 45.2465, "SB": 25.4598, "AVG": 0.29, "OBP": 0.35, "SLG": 0.37, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 54, "Name": "Luis Arraez", "Team": "", "Salary_M": 10.3, "Strategy_Score": 4.02, "Dollar_Per_Score": 2.56, "HR": 6.6706, "R": 70.646, "RBI": 53.7976, "SB": 8.8908, "AVG": 0.31, "OBP": 0.35, "SLG": 0.4, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 61, "Name": "Yandy D\u00edaz", "Team": "TBR", "Salary_M": "", "Strategy_Score": 3.73, "Dollar_Per_Score": "", "HR": 21.3908, "R": 84.7058, "RBI": 72.6718, "SB": 2.6888, "AVG": 0.29, "OBP": 0.37, "SLG": 0.47, "Block_Type": "", "Rostered_By": ""}, {"Rank": 63, "Name": "Fernando Tatis Jr.", "Team": "SDP", "Salary_M": 25.7, "Strategy_Score": 3.62, "Dollar_Per_Score": 7.1, "HR": 30.3064, "R": 97.4287, "RBI": 77.9354, "SB": 23.7437, "AVG": 0.27, "OBP": 0.36, "SLG": 0.5, "Block_Type": "Partial", "Rostered_By": "Tyler Hart"}, {"Rank": 67, "Name": "Nico Hoerner", "Team": "CHC", "Salary_M": 5.0, "Strategy_Score": 3.57, "Dollar_Per_Score": 1.4, "HR": 8.6087, "R": 73.8093, "RBI": 59.2283, "SB": 24.9569, "AVG": 0.28, "OBP": 0.34, "SLG": 0.39, "Block_Type": "Partial", "Rostered_By": "Steve Cornish"}, {"Rank": 70, "Name": "Jos\u00e9 Ram\u00edrez", "Team": "CLE", "Salary_M": 20.0, "Strategy_Score": 3.36, "Dollar_Per_Score": 5.96, "HR": 26.569, "R": 82.6963, "RBI": 87.0738, "SB": 29.8253, "AVG": 0.28, "OBP": 0.35, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 72, "Name": "Geraldo Perdomo", "Team": "ARI", "Salary_M": "", "Strategy_Score": 3.34, "Dollar_Per_Score": "", "HR": 12.3213, "R": 77.2291, "RBI": 54.6165, "SB": 18.5628, "AVG": 0.27, "OBP": 0.36, "SLG": 0.41, "Block_Type": "", "Rostered_By": ""}, {"Rank": 82, "Name": "Jacob Wilson", "Team": "ATH", "Salary_M": 1.0, "Strategy_Score": 3.16, "Dollar_Per_Score": 0.32, "HR": 11.3378, "R": 55.9526, "RBI": 54.6807, "SB": 4.7151, "AVG": 0.3, "OBP": 0.35, "SLG": 0.44, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 83, "Name": "Steven Kwan", "Team": "CLE", "Salary_M": 5.3, "Strategy_Score": 3.14, "Dollar_Per_Score": 1.69, "HR": 11.2665, "R": 77.3129, "RBI": 51.0949, "SB": 16.9728, "AVG": 0.28, "OBP": 0.35, "SLG": 0.4, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 88, "Name": "Maikel Garcia", "Team": "KCR", "Salary_M": "", "Strategy_Score": 3.06, "Dollar_Per_Score": "", "HR": 12.6126, "R": 80.6551, "RBI": 61.1925, "SB": 26.0936, "AVG": 0.28, "OBP": 0.34, "SLG": 0.41, "Block_Type": "", "Rostered_By": ""}, {"Rank": 89, "Name": "Trea Turner", "Team": "PHI", "Salary_M": 17.8, "Strategy_Score": 3.06, "Dollar_Per_Score": 5.82, "HR": 17.9146, "R": 85.397, "RBI": 64.8545, "SB": 26.2152, "AVG": 0.28, "OBP": 0.33, "SLG": 0.44, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 92, "Name": "Elly De La Cruz", "Team": "CIN", "Salary_M": 15.1, "Strategy_Score": 3.0, "Dollar_Per_Score": 5.03, "HR": 23.2441, "R": 83.1261, "RBI": 81.8924, "SB": 37.6072, "AVG": 0.26, "OBP": 0.34, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Nolan Chidester"}, {"Rank": 93, "Name": "Ketel Marte", "Team": "ARI", "Salary_M": "", "Strategy_Score": 2.99, "Dollar_Per_Score": "", "HR": 26.0001, "R": 90.264, "RBI": 79.3525, "SB": 5.8557, "AVG": 0.28, "OBP": 0.36, "SLG": 0.49, "Block_Type": "", "Rostered_By": ""}, {"Rank": 94, "Name": "Freddie Freeman", "Team": "LAD", "Salary_M": 24.6, "Strategy_Score": 2.96, "Dollar_Per_Score": 8.32, "HR": 23.9556, "R": 88.2507, "RBI": 91.6627, "SB": 7.4261, "AVG": 0.28, "OBP": 0.36, "SLG": 0.47, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 96, "Name": "Corbin Carroll", "Team": "ARI", "Salary_M": 33.0, "Strategy_Score": 2.89, "Dollar_Per_Score": 11.43, "HR": 26.8982, "R": 91.0918, "RBI": 85.6888, "SB": 32.5681, "AVG": 0.26, "OBP": 0.35, "SLG": 0.5, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 103, "Name": "Bryce Harper", "Team": "PHI", "Salary_M": 24.4, "Strategy_Score": 2.71, "Dollar_Per_Score": 9.0, "HR": 26.9251, "R": 82.7258, "RBI": 86.7633, "SB": 9.172, "AVG": 0.27, "OBP": 0.37, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 108, "Name": "Brendan Donovan", "Team": "STL", "Salary_M": "", "Strategy_Score": 2.49, "Dollar_Per_Score": "", "HR": 11.8235, "R": 69.2257, "RBI": 53.0867, "SB": 6.1579, "AVG": 0.28, "OBP": 0.35, "SLG": 0.41, "Block_Type": "", "Rostered_By": ""}, {"Rank": 109, "Name": "Luke Keaschall", "Team": "MIN", "Salary_M": 1.0, "Strategy_Score": 2.42, "Dollar_Per_Score": 0.41, "HR": 9.8512, "R": 62.1762, "RBI": 48.227, "SB": 19.8896, "AVG": 0.27, "OBP": 0.35, "SLG": 0.4, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 119, "Name": "Iv\u00e1n Herrera", "Team": "STL", "Salary_M": 1.5, "Strategy_Score": 2.28, "Dollar_Per_Score": 0.66, "HR": 15.867, "R": 63.6549, "RBI": 55.4906, "SB": 7.4171, "AVG": 0.27, "OBP": 0.36, "SLG": 0.44, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 122, "Name": "Julio Rodr\u00edguez", "Team": "SEA", "Salary_M": 33.1, "Strategy_Score": 2.25, "Dollar_Per_Score": 14.72, "HR": 29.7784, "R": 84.4803, "RBI": 90.6497, "SB": 22.5935, "AVG": 0.27, "OBP": 0.33, "SLG": 0.49, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 125, "Name": "Nolan Schanuel", "Team": "LAA", "Salary_M": 1.5, "Strategy_Score": 2.23, "Dollar_Per_Score": 0.67, "HR": 15.5547, "R": 70.7192, "RBI": 57.0233, "SB": 5.729, "AVG": 0.27, "OBP": 0.36, "SLG": 0.42, "Block_Type": "", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 136, "Name": "William Contreras", "Team": "MIL", "Salary_M": "", "Strategy_Score": 2.0, "Dollar_Per_Score": "", "HR": 19.9153, "R": 74.3872, "RBI": 74.4436, "SB": 6.1572, "AVG": 0.27, "OBP": 0.36, "SLG": 0.44, "Block_Type": "", "Rostered_By": ""}, {"Rank": 137, "Name": "Gabriel Moreno", "Team": "ARI", "Salary_M": "", "Strategy_Score": 2.0, "Dollar_Per_Score": "", "HR": 10.293, "R": 47.9653, "RBI": 49.8922, "SB": 3.923, "AVG": 0.28, "OBP": 0.35, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 140, "Name": "Chase Meidroth", "Team": "CHW", "Salary_M": "", "Strategy_Score": 1.89, "Dollar_Per_Score": "", "HR": 8.7268, "R": 63.0797, "RBI": 40.7975, "SB": 12.5873, "AVG": 0.26, "OBP": 0.36, "SLG": 0.37, "Block_Type": "", "Rostered_By": ""}, {"Rank": 143, "Name": "Corey Seager", "Team": "TEX", "Salary_M": "", "Strategy_Score": 1.88, "Dollar_Per_Score": "", "HR": 24.8444, "R": 70.871, "RBI": 73.8838, "SB": 2.4976, "AVG": 0.28, "OBP": 0.36, "SLG": 0.5, "Block_Type": "", "Rostered_By": ""}, {"Rank": 144, "Name": "Brice Turang", "Team": "MIL", "Salary_M": "", "Strategy_Score": 1.87, "Dollar_Per_Score": "", "HR": 14.297, "R": 77.0404, "RBI": 61.6939, "SB": 26.372, "AVG": 0.26, "OBP": 0.33, "SLG": 0.4, "Block_Type": "", "Rostered_By": ""}, {"Rank": 147, "Name": "Francisco Lindor", "Team": "NYM", "Salary_M": 16.6, "Strategy_Score": 1.77, "Dollar_Per_Score": 9.39, "HR": 26.2375, "R": 94.0617, "RBI": 73.2706, "SB": 22.9672, "AVG": 0.26, "OBP": 0.34, "SLG": 0.45, "Block_Type": "Partial", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 156, "Name": "Alejandro Kirk", "Team": "TOR", "Salary_M": "", "Strategy_Score": 1.64, "Dollar_Per_Score": "", "HR": 14.1614, "R": 53.9039, "RBI": 55.7626, "SB": 0.9634, "AVG": 0.28, "OBP": 0.35, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 159, "Name": "Jeremy Pe\u00f1a", "Team": "HOU", "Salary_M": 5.0, "Strategy_Score": 1.6, "Dollar_Per_Score": 3.13, "HR": 17.8674, "R": 78.8479, "RBI": 64.4384, "SB": 16.2838, "AVG": 0.27, "OBP": 0.33, "SLG": 0.43, "Block_Type": "Partial", "Rostered_By": "Brian Frederick"}, {"Rank": 160, "Name": "James Wood", "Team": "WSN", "Salary_M": 1.5, "Strategy_Score": 1.56, "Dollar_Per_Score": 0.96, "HR": 22.7992, "R": 73.72, "RBI": 60.9323, "SB": 14.3015, "AVG": 0.26, "OBP": 0.35, "SLG": 0.47, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 168, "Name": "Sal Frelick", "Team": "MIL", "Salary_M": "", "Strategy_Score": 1.5, "Dollar_Per_Score": "", "HR": 8.1369, "R": 50.5348, "RBI": 46.268, "SB": 13.3886, "AVG": 0.27, "OBP": 0.34, "SLG": 0.39, "Block_Type": "", "Rostered_By": ""}, {"Rank": 174, "Name": "Jung Hoo Lee", "Team": "SFG", "Salary_M": 7.1, "Strategy_Score": 1.42, "Dollar_Per_Score": 5.0, "HR": 8.5712, "R": 59.5818, "RBI": 45.7309, "SB": 8.7632, "AVG": 0.27, "OBP": 0.33, "SLG": 0.41, "Block_Type": "", "Rostered_By": "Jake Levine & Johnny Drago"}, {"Rank": 177, "Name": "Spencer Horwitz", "Team": "PIT", "Salary_M": "", "Strategy_Score": 1.38, "Dollar_Per_Score": "", "HR": 10.7945, "R": 57.2202, "RBI": 43.1968, "SB": 2.4495, "AVG": 0.26, "OBP": 0.36, "SLG": 0.42, "Block_Type": "", "Rostered_By": ""}, {"Rank": 180, "Name": "Xander Bogaerts", "Team": "SDP", "Salary_M": "", "Strategy_Score": 1.34, "Dollar_Per_Score": "", "HR": 12.8372, "R": 57.614, "RBI": 56.7812, "SB": 13.6505, "AVG": 0.27, "OBP": 0.33, "SLG": 0.41, "Block_Type": "", "Rostered_By": ""}, {"Rank": 183, "Name": "George Springer", "Team": "TOR", "Salary_M": 5.1, "Strategy_Score": 1.32, "Dollar_Per_Score": 3.87, "HR": 25.7437, "R": 86.5848, "RBI": 72.7428, "SB": 13.1382, "AVG": 0.26, "OBP": 0.34, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 188, "Name": "Alec Burleson", "Team": "STL", "Salary_M": 5.0, "Strategy_Score": 1.24, "Dollar_Per_Score": 4.02, "HR": 20.2378, "R": 66.1361, "RBI": 72.862, "SB": 5.7734, "AVG": 0.28, "OBP": 0.33, "SLG": 0.46, "Block_Type": "", "Rostered_By": "Jake Zuckman & Andrew Meyers"}, {"Rank": 197, "Name": "Jose Altuve", "Team": "HOU", "Salary_M": 11.0, "Strategy_Score": 1.08, "Dollar_Per_Score": 10.21, "HR": 20.2339, "R": 74.7848, "RBI": 72.4479, "SB": 11.7606, "AVG": 0.27, "OBP": 0.33, "SLG": 0.43, "Block_Type": "Partial", "Rostered_By": "Zack Semler"}, {"Rank": 200, "Name": "Jarren Duran", "Team": "BOS", "Salary_M": "", "Strategy_Score": 1.03, "Dollar_Per_Score": "", "HR": 15.1106, "R": 78.2898, "RBI": 61.3918, "SB": 20.4174, "AVG": 0.26, "OBP": 0.33, "SLG": 0.44, "Block_Type": "", "Rostered_By": ""}, {"Rank": 202, "Name": "Gleyber Torres", "Team": "DET", "Salary_M": 3.7, "Strategy_Score": 1.01, "Dollar_Per_Score": 3.67, "HR": 17.5898, "R": 79.9757, "RBI": 65.8961, "SB": 4.9468, "AVG": 0.26, "OBP": 0.35, "SLG": 0.41, "Block_Type": "", "Rostered_By": "Steve Cornish"}, {"Rank": 203, "Name": "Otto Lopez", "Team": "MIA", "Salary_M": "", "Strategy_Score": 0.98, "Dollar_Per_Score": "", "HR": 9.9737, "R": 50.7057, "RBI": 51.6166, "SB": 13.7046, "AVG": 0.27, "OBP": 0.33, "SLG": 0.4, "Block_Type": "", "Rostered_By": ""}, {"Rank": 204, "Name": "Josh Naylor", "Team": "SEA", "Salary_M": "", "Strategy_Score": 0.97, "Dollar_Per_Score": "", "HR": 22.5343, "R": 70.5555, "RBI": 79.7969, "SB": 14.9529, "AVG": 0.27, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": ""}, {"Rank": 206, "Name": "Jurickson Profar", "Team": "ATL", "Salary_M": 6.3, "Strategy_Score": 0.95, "Dollar_Per_Score": 6.63, "HR": 17.9769, "R": 76.4785, "RBI": 70.0518, "SB": 8.6835, "AVG": 0.25, "OBP": 0.35, "SLG": 0.41, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 209, "Name": "Cody Bellinger", "Team": "", "Salary_M": 7.8, "Strategy_Score": 0.9, "Dollar_Per_Score": 8.7, "HR": 22.1517, "R": 74.3627, "RBI": 80.6855, "SB": 9.9782, "AVG": 0.27, "OBP": 0.33, "SLG": 0.45, "Block_Type": "", "Rostered_By": "Nick & Alex Gianaris"}, {"Rank": 210, "Name": "Alex Bregman", "Team": "", "Salary_M": 7.9, "Strategy_Score": 0.89, "Dollar_Per_Score": 8.87, "HR": 22.6218, "R": 81.8935, "RBI": 78.9974, "SB": 2.6924, "AVG": 0.26, "OBP": 0.35, "SLG": 0.44, "Block_Type": "Partial", "Rostered_By": "Ethan Gobetz"}, {"Rank": 212, "Name": "Christian Yelich", "Team": "MIL", "Salary_M": 2.8, "Strategy_Score": 0.88, "Dollar_Per_Score": 3.19, "HR": 15.9102, "R": 57.2905, "RBI": 59.8078, "SB": 12.3424, "AVG": 0.26, "OBP": 0.34, "SLG": 0.42, "Block_Type": "Partial", "Rostered_By": "Brian Frederick"}, {"Rank": 213, "Name": "Daylen Lile", "Team": "WSN", "Salary_M": "", "Strategy_Score": 0.86, "Dollar_Per_Score": "", "HR": 10.5167, "R": 51.3843, "RBI": 53.6012, "SB": 11.9211, "AVG": 0.27, "OBP": 0.33, "SLG": 0.43, "Block_Type": "", "Rostered_By": ""}, {"Rank": 216, "Name": "Bryson Stott", "Team": "PHI", "Salary_M": "", "Strategy_Score": 0.79, "Dollar_Per_Score": "", "HR": 12.5889, "R": 60.0268, "RBI": 56.5364, "SB": 21.3173, "AVG": 0.26, "OBP": 0.33, "SLG": 0.39, "Block_Type": "", "Rostered_By": ""}, {"Rank": 218, "Name": "Alec Bohm", "Team": "PHI", "Salary_M": "", "Strategy_Score": 0.78, "Dollar_Per_Score": "", "HR": 14.2503, "R": 60.805, "RBI": 67.1364, "SB": 2.5351, "AVG": 0.27, "OBP": 0.33, "SLG": 0.42, "Block_Type": "", "Rostered_By": ""}], "pitchers": [{"Rank": 1, "Name": "Mason Miller", "Team": "SDP", "Position": "RP", "Salary_M": "", "Strategy_Score": 11.34, "Dollar_Per_Score": "", "QS": 0.0, "SO": 104.456, "SV": 31.64, "HLD": 2.0092, "ERA": 2.38, "WHIP": 1.0, "Block_Type": "", "Rostered_By": ""}, {"Rank": 2, "Name": "Edwin D\u00edaz", "Team": "LAD", "Position": "RP", "Salary_M": 5.3, "Strategy_Score": 10.02, "Dollar_Per_Score": 0.53, "QS": 0.0, "SO": 90.6336, "SV": 35.543, "HLD": 2.9465, "ERA": 3.02, "WHIP": 1.09, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 3, "Name": "Cade Smith", "Team": "CLE", "Position": "RP", "Salary_M": 6.0, "Strategy_Score": 9.16, "Dollar_Per_Score": 0.65, "QS": 0.0, "SO": 87.9573, "SV": 29.961, "HLD": 3.3265, "ERA": 2.97, "WHIP": 1.1, "Block_Type": "", "Rostered_By": "Brenden Freedman"}, {"Rank": 4, "Name": "Jhoan Duran", "Team": "PHI", "Position": "RP", "Salary_M": 2.4, "Strategy_Score": 8.97, "Dollar_Per_Score": 0.27, "QS": 0.0, "SO": 83.8638, "SV": 28.586, "HLD": 3.1503, "ERA": 2.78, "WHIP": 1.13, "Block_Type": "", "Rostered_By": "Steve Cornish"}, {"Rank": 5, "Name": "Andr\u00e9s Mu\u00f1oz", "Team": "SEA", "Position": "RP", "Salary_M": "", "Strategy_Score": 8.34, "Dollar_Per_Score": "", "QS": 0.0, "SO": 80.89, "SV": 28.127, "HLD": 3.357, "ERA": 2.91, "WHIP": 1.17, "Block_Type": "", "Rostered_By": ""}, {"Rank": 6, "Name": "Josh Hader", "Team": "HOU", "Position": "RP", "Salary_M": "", "Strategy_Score": 8.3, "Dollar_Per_Score": "", "QS": 0.0, "SO": 90.1743, "SV": 31.524, "HLD": 2.0198, "ERA": 3.29, "WHIP": 1.12, "Block_Type": "", "Rostered_By": ""}, {"Rank": 7, "Name": "Devin Williams", "Team": "NYM", "Position": "RP", "Salary_M": "", "Strategy_Score": 8.28, "Dollar_Per_Score": "", "QS": 0.0, "SO": 81.2321, "SV": 32.388, "HLD": 3.1109, "ERA": 3.14, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 8, "Name": "David Bednar", "Team": "NYY", "Position": "RP", "Salary_M": "", "Strategy_Score": 8.23, "Dollar_Per_Score": "", "QS": 0.0, "SO": 78.6978, "SV": 32.897, "HLD": 1.559, "ERA": 3.3, "WHIP": 1.15, "Block_Type": "", "Rostered_By": ""}, {"Rank": 9, "Name": "Aroldis Chapman", "Team": "BOS", "Position": "RP", "Salary_M": "", "Strategy_Score": 8.23, "Dollar_Per_Score": "", "QS": 0.0, "SO": 86.546, "SV": 31.041, "HLD": 1.9184, "ERA": 3.0, "WHIP": 1.18, "Block_Type": "", "Rostered_By": ""}, {"Rank": 10, "Name": "Ryan Walker", "Team": "SFG", "Position": "RP", "Salary_M": "", "Strategy_Score": 7.89, "Dollar_Per_Score": "", "QS": 0.0, "SO": 67.9657, "SV": 30.328, "HLD": 3.891, "ERA": 3.3, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 11, "Name": "Jeff Hoffman", "Team": "TOR", "Position": "RP", "Salary_M": 3.0, "Strategy_Score": 6.87, "Dollar_Per_Score": 0.44, "QS": 0.0, "SO": 76.1347, "SV": 26.14, "HLD": 3.7746, "ERA": 3.46, "WHIP": 1.18, "Block_Type": "", "Rostered_By": "JD Barnett"}, {"Rank": 12, "Name": "Griffin Jax", "Team": "TBR", "Position": "RP", "Salary_M": 4.4, "Strategy_Score": 6.74, "Dollar_Per_Score": 0.65, "QS": 0.0, "SO": 82.1759, "SV": 11.918, "HLD": 9.7836, "ERA": 3.13, "WHIP": 1.13, "Block_Type": "Partial", "Rostered_By": "Ross & Jack Kantor"}, {"Rank": 13, "Name": "Daniel Palencia", "Team": "CHC", "Position": "RP", "Salary_M": "", "Strategy_Score": 6.52, "Dollar_Per_Score": "", "QS": 0.0, "SO": 74.8633, "SV": 29.818, "HLD": 4.4788, "ERA": 3.62, "WHIP": 1.26, "Block_Type": "", "Rostered_By": ""}, {"Rank": 14, "Name": "Abner Uribe", "Team": "MIL", "Position": "RP", "Salary_M": "", "Strategy_Score": 6.46, "Dollar_Per_Score": "", "QS": 0.0, "SO": 86.7973, "SV": 23.838, "HLD": 4.3787, "ERA": 3.15, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}, {"Rank": 15, "Name": "Pete Fairbanks", "Team": "MIA", "Position": "RP", "Salary_M": "", "Strategy_Score": 6.3, "Dollar_Per_Score": "", "QS": 0.0, "SO": 65.6255, "SV": 26.502, "HLD": 4.1289, "ERA": 3.56, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 16, "Name": "Ryan Helsley", "Team": "BAL", "Position": "RP", "Salary_M": "", "Strategy_Score": 6.25, "Dollar_Per_Score": "", "QS": 0.0, "SO": 75.7117, "SV": 24.899, "HLD": 3.9374, "ERA": 3.47, "WHIP": 1.22, "Block_Type": "", "Rostered_By": ""}, {"Rank": 17, "Name": "Raisel Iglesias", "Team": "ATL", "Position": "RP", "Salary_M": "", "Strategy_Score": 6.25, "Dollar_Per_Score": "", "QS": 0.0, "SO": 71.1986, "SV": 25.746, "HLD": 4.5192, "ERA": 3.71, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 18, "Name": "Jose A. Ferrer", "Team": "SEA", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.89, "Dollar_Per_Score": "", "QS": 0.0, "SO": 67.6667, "SV": 3.204, "HLD": 16.1713, "ERA": 3.1, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 19, "Name": "Jeremiah Estrada", "Team": "SDP", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.86, "Dollar_Per_Score": "", "QS": 0.0, "SO": 92.3225, "SV": 1.079, "HLD": 17.5073, "ERA": 3.21, "WHIP": 1.16, "Block_Type": "", "Rostered_By": ""}, {"Rank": 21, "Name": "Robert Garcia", "Team": "TEX", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.63, "Dollar_Per_Score": "", "QS": 0.0, "SO": 69.8692, "SV": 19.522, "HLD": 6.3642, "ERA": 3.48, "WHIP": 1.24, "Block_Type": "", "Rostered_By": ""}, {"Rank": 22, "Name": "Hunter Harvey", "Team": "CHC", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.52, "Dollar_Per_Score": "", "QS": 0.0, "SO": 58.2646, "SV": 4.708, "HLD": 12.9543, "ERA": 3.35, "WHIP": 1.16, "Block_Type": "", "Rostered_By": ""}, {"Rank": 23, "Name": "Matt Brash", "Team": "SEA", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.38, "Dollar_Per_Score": "", "QS": 0.0, "SO": 75.2737, "SV": 3.204, "HLD": 12.3151, "ERA": 3.04, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 24, "Name": "Garrett Cleavinger", "Team": "TBR", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.34, "Dollar_Per_Score": "", "QS": 0.0, "SO": 81.5411, "SV": 7.584, "HLD": 13.4299, "ERA": 3.43, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 25, "Name": "Bryan Abreu", "Team": "HOU", "Position": "RP", "Salary_M": 4.0, "Strategy_Score": 5.29, "Dollar_Per_Score": 0.76, "QS": 0.0, "SO": 88.2844, "SV": 3.224, "HLD": 13.5716, "ERA": 3.24, "WHIP": 1.17, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 26, "Name": "A.J. Minter", "Team": "NYM", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.29, "Dollar_Per_Score": "", "QS": 0.0, "SO": 68.4564, "SV": 2.37, "HLD": 15.4795, "ERA": 3.33, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 27, "Name": "Chris Martin", "Team": "TEX", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.27, "Dollar_Per_Score": "", "QS": 0.0, "SO": 54.8575, "SV": 3.84, "HLD": 12.3147, "ERA": 3.39, "WHIP": 1.15, "Block_Type": "", "Rostered_By": ""}, {"Rank": 28, "Name": "Trevor Megill", "Team": "MIL", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.19, "Dollar_Per_Score": "", "QS": 0.0, "SO": 81.7375, "SV": 6.993, "HLD": 10.7699, "ERA": 3.41, "WHIP": 1.16, "Block_Type": "", "Rostered_By": ""}, {"Rank": 29, "Name": "Grant Taylor", "Team": "CHW", "Position": "RP", "Salary_M": "", "Strategy_Score": 5.1, "Dollar_Per_Score": "", "QS": 0.7513, "SO": 91.6465, "SV": 10.686, "HLD": 9.487, "ERA": 3.32, "WHIP": 1.22, "Block_Type": "", "Rostered_By": ""}, {"Rank": 30, "Name": "Gabe Speier", "Team": "SEA", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.98, "Dollar_Per_Score": "", "QS": 0.0, "SO": 66.499, "SV": 0.0, "HLD": 11.7185, "ERA": 3.21, "WHIP": 1.13, "Block_Type": "", "Rostered_By": ""}, {"Rank": 31, "Name": "Robert Suarez", "Team": "ATL", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.92, "Dollar_Per_Score": "", "QS": 0.0, "SO": 73.2113, "SV": 8.465, "HLD": 11.1056, "ERA": 3.51, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 32, "Name": "Fernando Cruz", "Team": "NYY", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.88, "Dollar_Per_Score": "", "QS": 0.0, "SO": 80.401, "SV": 1.097, "HLD": 16.0263, "ERA": 3.36, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 33, "Name": "Garrett Whitlock", "Team": "BOS", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.88, "Dollar_Per_Score": "", "QS": 0.0, "SO": 77.3732, "SV": 3.254, "HLD": 14.1255, "ERA": 3.46, "WHIP": 1.19, "Block_Type": "", "Rostered_By": ""}, {"Rank": 34, "Name": "Will Vest", "Team": "DET", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.84, "Dollar_Per_Score": "", "QS": 0.0, "SO": 69.3945, "SV": 4.829, "HLD": 11.6707, "ERA": 3.27, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 35, "Name": "Emilio Pag\u00e1n", "Team": "CIN", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.83, "Dollar_Per_Score": "", "QS": 0.0, "SO": 72.6125, "SV": 26.55, "HLD": 4.0578, "ERA": 4.17, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}, {"Rank": 36, "Name": "Riley O'Brien", "Team": "STL", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.81, "Dollar_Per_Score": "", "QS": 0.0, "SO": 63.9606, "SV": 17.357, "HLD": 8.8854, "ERA": 3.54, "WHIP": 1.32, "Block_Type": "", "Rostered_By": ""}, {"Rank": 38, "Name": "Adrian Morejon", "Team": "SDP", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.74, "Dollar_Per_Score": "", "QS": 0.0, "SO": 69.9791, "SV": 3.236, "HLD": 13.5005, "ERA": 3.35, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 39, "Name": "Edwin Uceta", "Team": "TBR", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.7, "Dollar_Per_Score": "", "QS": 0.0, "SO": 78.9429, "SV": 12.279, "HLD": 11.7083, "ERA": 3.86, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 40, "Name": "Robert Stephenson", "Team": "LAA", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.67, "Dollar_Per_Score": "", "QS": 0.0, "SO": 66.4316, "SV": 17.039, "HLD": 7.7611, "ERA": 3.92, "WHIP": 1.23, "Block_Type": "", "Rostered_By": ""}, {"Rank": 41, "Name": "Matt Strahm", "Team": "KCR", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.65, "Dollar_Per_Score": "", "QS": 0.0, "SO": 72.1107, "SV": 1.052, "HLD": 16.738, "ERA": 3.66, "WHIP": 1.18, "Block_Type": "", "Rostered_By": ""}, {"Rank": 42, "Name": "Louis Varland", "Team": "TOR", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.64, "Dollar_Per_Score": "", "QS": 0.0, "SO": 68.4056, "SV": 2.064, "HLD": 13.3784, "ERA": 3.44, "WHIP": 1.18, "Block_Type": "", "Rostered_By": ""}, {"Rank": 43, "Name": "Dylan Lee", "Team": "ATL", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.57, "Dollar_Per_Score": "", "QS": 0.0, "SO": 71.3611, "SV": 1.058, "HLD": 16.2514, "ERA": 3.59, "WHIP": 1.2, "Block_Type": "", "Rostered_By": ""}, {"Rank": 44, "Name": "Tanner Scott", "Team": "LAD", "Position": "RP", "Salary_M": 6.7, "Strategy_Score": 4.55, "Dollar_Per_Score": 1.47, "QS": 0.0, "SO": 73.2467, "SV": 3.763, "HLD": 14.6742, "ERA": 3.43, "WHIP": 1.24, "Block_Type": "", "Rostered_By": "Tyler Hart"}, {"Rank": 45, "Name": "Alex Vesia", "Team": "LAD", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.53, "Dollar_Per_Score": "", "QS": 0.0, "SO": 75.13, "SV": 1.254, "HLD": 17.8989, "ERA": 3.67, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 46, "Name": "Dennis Santana", "Team": "PIT", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.45, "Dollar_Per_Score": "", "QS": 0.0, "SO": 63.6394, "SV": 26.002, "HLD": 4.6423, "ERA": 4.03, "WHIP": 1.32, "Block_Type": "", "Rostered_By": ""}, {"Rank": 47, "Name": "Jos\u00e9 Alvarado", "Team": "PHI", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.43, "Dollar_Per_Score": "", "QS": 0.0, "SO": 74.3573, "SV": 3.137, "HLD": 12.5227, "ERA": 3.27, "WHIP": 1.24, "Block_Type": "", "Rostered_By": ""}, {"Rank": 48, "Name": "Kenley Jansen", "Team": "DET", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.42, "Dollar_Per_Score": "", "QS": 0.0, "SO": 62.502, "SV": 22.535, "HLD": 4.2261, "ERA": 4.09, "WHIP": 1.25, "Block_Type": "", "Rostered_By": ""}, {"Rank": 49, "Name": "Jared Koenig", "Team": "MIL", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.23, "Dollar_Per_Score": "", "QS": 0.0, "SO": 68.4413, "SV": 0.954, "HLD": 15.5886, "ERA": 3.48, "WHIP": 1.24, "Block_Type": "", "Rostered_By": ""}, {"Rank": 50, "Name": "Luke Weaver", "Team": "NYM", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.22, "Dollar_Per_Score": "", "QS": 0.0, "SO": 71.1366, "SV": 3.555, "HLD": 14.1594, "ERA": 3.72, "WHIP": 1.21, "Block_Type": "", "Rostered_By": ""}, {"Rank": 51, "Name": "Carlos Est\u00e9vez", "Team": "KCR", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.2, "Dollar_Per_Score": "", "QS": 0.0, "SO": 60.7099, "SV": 30.857, "HLD": 2.0065, "ERA": 4.29, "WHIP": 1.33, "Block_Type": "", "Rostered_By": ""}, {"Rank": 52, "Name": "JoJo Romero", "Team": "STL", "Position": "RP", "Salary_M": "", "Strategy_Score": 4.12, "Dollar_Per_Score": "", "QS": 0.0, "SO": 60.817, "SV": 13.584, "HLD": 9.2003, "ERA": 3.56, "WHIP": 1.33, "Block_Type": "", "Rostered_By": ""}]}};
+        const LEAGUE_RESULTS = [{"place": 1, "team": "Tyler & Dustin Hart", "points": 137.0, "strategy": "POWER + ELITE RP", "power": 12.0, "speed": 8.0, "volsp": 3.5, "relief": 11.5, "rates": 11.7}, {"place": 2, "team": "Ross & Jack Kantor", "points": 128.0, "strategy": "SPEED + RATES", "power": 8.7, "speed": 11.0, "volsp": 11.0, "relief": 9.0, "rates": 7.7}, {"place": 3, "team": "Zack Semler", "points": 126.0, "strategy": "SPEED + RATES", "power": 7.3, "speed": 9.3, "volsp": 12.0, "relief": 10.0, "rates": 8.0}, {"place": 4, "team": "Jake Zuckman & Andrew Meyers", "points": 113.0, "strategy": "VOLUME + POWER", "power": 11.0, "speed": 7.7, "volsp": 10.0, "relief": 7.5, "rates": 3.7}, {"place": 5, "team": "JD Barnett", "points": 105.0, "strategy": "Power focus", "power": 9.7, "speed": 7.0, "volsp": 7.5, "relief": 8.0, "rates": 5.0}, {"place": 6, "team": "Nick & Alex Gianaris", "points": 101.5, "strategy": "Mixed", "power": 8.3, "speed": 7.7, "volsp": 5.8, "relief": 4.5, "rates": 7.7}, {"place": 7, "team": "Jake Levine & Johnny Drago", "points": 85.0, "strategy": "Mixed", "power": 5.7, "speed": 3.0, "volsp": 8.5, "relief": 5.5, "rates": 8.7}, {"place": 8, "team": "Brian Frederick", "points": 76.0, "strategy": "Mixed", "power": 4.2, "speed": 6.3, "volsp": 5.8, "relief": 4.5, "rates": 7.0}, {"place": 9, "team": "Brenden Freedman", "points": 71.5, "strategy": "Mixed", "power": 2.3, "speed": 7.0, "volsp": 6.8, "relief": 3.5, "rates": 7.0}, {"place": 10, "team": "Ethan Gobetz", "points": 67.0, "strategy": "Rebuild", "power": 3.3, "speed": 3.3, "volsp": 3.0, "relief": 6.0, "rates": 7.3}, {"place": 11, "team": "Steve Cornish", "points": 51.5, "strategy": "Rebuild", "power": 3.7, "speed": 5.3, "volsp": 3.2, "relief": 3.5, "rates": 3.3}, {"place": 12, "team": "Nolan Chidester", "points": 30.5, "strategy": "Rebuild", "power": 1.8, "speed": 2.3, "volsp": 1.0, "relief": 4.5, "rates": 1.0}];
+
+        function draftBoard() {
+            return {
+                strategies: STRATEGY_DATA,
+                leagueResults: LEAGUE_RESULTS,
+                activeStrategy: 'volume_power',
+                searchQuery: '',
+                showFAOnly: false,
+                hidePartialBlocks: false,
+                sortColumn: 'Rank',
+                sortDirection: 'asc',
+                sortType: 'batters',
+
+                sortBy(column, type) {
+                    if (this.sortColumn === column && this.sortType === type) {
+                        this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        this.sortColumn = column;
+                        this.sortType = type;
+                        this.sortDirection = 'asc';
+                    }
+                },
+
+                filterPlayers(players) {
+                    return players.filter(p => {
+                        if (this.searchQuery && !p.Name.toLowerCase().includes(this.searchQuery.toLowerCase())) {
+                            return false;
+                        }
+                        if (this.showFAOnly && p.Rostered_By) {
+                            return false;
+                        }
+                        if (this.hidePartialBlocks && p.Block_Type === 'Partial') {
+                            return false;
+                        }
+                        return true;
+                    });
+                },
+
+                sortPlayers(players, type) {
+                    if (this.sortType !== type) return players;
+
+                    return [...players].sort((a, b) => {
+                        let aVal = a[this.sortColumn];
+                        let bVal = b[this.sortColumn];
+
+                        // Handle empty values
+                        if (aVal === '' || aVal === null || aVal === undefined) aVal = this.sortDirection === 'asc' ? Infinity : -Infinity;
+                        if (bVal === '' || bVal === null || bVal === undefined) bVal = this.sortDirection === 'asc' ? Infinity : -Infinity;
+
+                        // Compare
+                        if (typeof aVal === 'string') {
+                            return this.sortDirection === 'asc'
+                                ? aVal.localeCompare(bVal)
+                                : bVal.localeCompare(aVal);
+                        }
+                        return this.sortDirection === 'asc' ? aVal - bVal : bVal - aVal;
+                    });
+                },
+
+                filteredBatters() {
+                    const batters = this.strategies[this.activeStrategy].batters;
+                    return this.sortPlayers(this.filterPlayers(batters), 'batters');
+                },
+
+                filteredPitchers() {
+                    const pitchers = this.strategies[this.activeStrategy].pitchers;
+                    return this.sortPlayers(this.filterPlayers(pitchers), 'pitchers');
+                },
+
+                formatSalary(val) {
+                    if (!val || val === '') return 'FA';
+                    return '$' + val.toFixed(1) + 'M';
+                },
+
+                formatDPS(val) {
+                    if (!val || val === '') return '-';
+                    return '$' + val.toFixed(2);
+                },
+
+                getRowClass(player) {
+                    if (!player.Rostered_By) return 'fa-row';
+                    if (player.Block_Type === 'Partial') return 'partial-row';
+                    return '';
+                },
+
+                getStatusBadge(player) {
+                    if (!player.Rostered_By) {
+                        return '<span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">FA</span>';
+                    }
+                    if (player.Block_Type === 'Partial') {
+                        return '<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs" title="' + player.Rostered_By + '">Partial</span>';
+                    }
+                    return '<span class="text-gray-400 text-xs">' + player.Rostered_By + '</span>';
+                }
+            }
+        }
+    </script>
 </body>
 </html>
