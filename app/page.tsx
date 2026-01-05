@@ -101,8 +101,8 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Data Infrastructure</h3>
               <p className="text-gray-600">
-                Modern cloud data architecture with Snowflake and GCP. Streamlined
-                pipelines that reduce complexity and maintenance overhead.
+                Modern cloud data architecture with Microsoft Fabric, Snowflake, and
+                Azure. Lakehouse design and ETL pipelines that scale with your business.
               </p>
             </div>
 
@@ -135,13 +135,13 @@ export default function Home() {
             <div className="bg-white p-8 rounded-2xl border border-gray-100">
               <div className="w-12 h-12 gradient-bg rounded-xl mb-6 flex items-center justify-center">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Data Migration</h3>
+              <h3 className="text-xl font-semibold mb-3">Subscription & Retention</h3>
               <p className="text-gray-600">
-                Seamless transitions across legacy systems and new integrations.
-                We ensure data alignment without disrupting operations.
+                Cohort analysis, LTV modeling, and retention metrics for
+                subscription businesses. Understand what keeps customers coming back.
               </p>
             </div>
           </div>
@@ -158,14 +158,14 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
+              { name: "Microsoft Fabric", desc: "Lakehouse & ETL" },
               { name: "Snowflake", desc: "Certified Partner" },
               { name: "Google Cloud", desc: "GCP Specialists" },
+              { name: "R / Shiny", desc: "Statistical Computing" },
+              { name: "Python / PySpark", desc: "Data Engineering" },
               { name: "React / Next.js", desc: "Full-Stack Apps" },
               { name: "Supabase", desc: "Backend & Realtime" },
-              { name: "PostgreSQL", desc: "Database Design" },
-              { name: "Python", desc: "Data Science" },
-              { name: "TypeScript", desc: "Type-Safe Code" },
-              { name: "Tableau", desc: "Visualization" },
+              { name: "Azure", desc: "Cloud Infrastructure" },
             ].map((tech) => (
               <div key={tech.name} className="p-6 border border-gray-100 rounded-xl hover:border-gray-200 transition-colors">
                 <h3 className="font-semibold mb-1">{tech.name}</h3>
@@ -206,15 +206,14 @@ export default function Home() {
             A sample of the challenges we've helped solve.
           </p>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="border border-gray-100 rounded-2xl p-8 hover:border-gray-200 transition-colors">
               <div className="text-sm font-medium text-purple-600 mb-3">Enterprise Healthcare</div>
               <h3 className="text-xl font-semibold mb-4">Consumer Platform Analytics</h3>
               <p className="text-gray-600 mb-6">
-                Led data science for a consumer-facing prescription management platform
-                generating $700M+ annually. Built customer behavior models, demand
-                forecasting systems, and cross-functional analytics during a major
-                platform migration.
+                Led data science for a consumer-facing prescription management platform.
+                Built customer behavior models, demand forecasting systems, and
+                cross-functional analytics during a major platform migration.
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-center gap-2">
@@ -234,6 +233,36 @@ export default function Home() {
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   Snowflake optimization
+                </li>
+              </ul>
+            </div>
+
+            <div className="border border-gray-100 rounded-2xl p-8 hover:border-gray-200 transition-colors">
+              <div className="text-sm font-medium mb-3" style={{ color: '#10B981' }}>DTC eCommerce</div>
+              <h3 className="text-xl font-semibold mb-4">Subscription Analytics Platform</h3>
+              <p className="text-gray-600 mb-6">
+                Built end-to-end analytics infrastructure for a subscription-based
+                DTC brand. Microsoft Fabric lakehouse, PySpark ETL pipelines, and
+                real-time Shiny dashboards for executive decision-making.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  LTV & cohort analysis
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Multi-channel attribution
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Real-time sales dashboards
                 </li>
               </ul>
             </div>
@@ -281,22 +310,22 @@ export default function Home() {
                 Colin G. Wilson is the founder of Catalyst Data Science, bringing years
                 of experience leading data science teams at scale. Based in Portland, Maine,
                 he's worked across healthcare, eCommerce, and consumer tech – from
-                enterprise platforms generating hundreds of millions in revenue to
-                early-stage startups shipping their first products.
+                enterprise platforms to subscription-based DTC brands and early-stage
+                startups shipping their first products.
               </p>
               <p className="text-gray-600 mb-6 leading-relaxed">
                 His approach combines deep technical expertise in cloud data infrastructure
-                with a practical focus on business outcomes. Whether it's building predictive
-                models that reduce acquisition costs, architecting data pipelines in
-                Snowflake, or shipping a full-stack application, the goal is always the
-                same: turn data into decisions.
+                with a practical focus on business outcomes. Whether it's building LTV models
+                for subscription businesses, architecting lakehouse pipelines in Microsoft
+                Fabric, or shipping interactive dashboards in R Shiny, the goal is always
+                the same: turn data into decisions.
               </p>
               <div className="flex flex-wrap gap-4">
                 <span className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm">
                   Snowflake Certified
                 </span>
                 <span className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm">
-                  GCP Specialist
+                  Microsoft Fabric
                 </span>
                 <span className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm">
                   Portland, ME
