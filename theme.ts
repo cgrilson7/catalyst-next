@@ -1,41 +1,47 @@
+/**
+ * Catalyst design tokens — TypeScript mirror of app/globals.css `:root`.
+ * globals.css is the source of truth; keep the two in sync when tweaking.
+ */
 export const theme = {
   colors: {
-    // Primary gradient colors (from logo swoosh)
-    purple: "#5B21B6",
-    coral: "#F97316",
-    gold: "#FACC15",
+    // Brand (from logo swoosh)
+    brand: "#5B21B6",
+    brandStrong: "#4C1D95",
+    accent: "#F97316",
+    accentStrong: "#EA580C",
+    highlight: "#FACC15",
 
-    // Accent (from presentation)
-    cyan: "#06B6D4",
+    // Ink — dark surfaces (hero, contact)
+    ink: "#150E2E",
+    inkRaised: "#1E1540",
+    onInk: "#F5F3FA",
+    onInkMuted: "#A9A3C4",
 
-    // Neutrals
-    black: "#000000",
-    white: "#FFFFFF",
-
-    // Grays
-    gray: {
-      50: "#FAFAFA",
-      100: "#F4F4F5",
-      200: "#E4E4E7",
-      300: "#D4D4D8",
-      400: "#A1A1AA",
-      500: "#71717A",
-      600: "#52525B",
-      700: "#3F3F46",
-      800: "#27272A",
-      900: "#18181B",
-    },
+    // Light surfaces
+    surface: "#FFFFFF",
+    surfaceDim: "#F8F7F5",
+    text: "#1A1523",
+    textMuted: "#5F5A6B",
+    textFaint: "#8F8A9B",
+    line: "#E8E5EF",
+    lineStrong: "#D6D1E2",
   },
 
   fonts: {
-    sans: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    sans: 'var(--font-nunito), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
     mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
   },
 
-  // Brand gradient (matches logo swoosh direction)
+  radii: {
+    sm: "0.5rem",
+    md: "0.75rem",
+    lg: "1rem",
+    pill: "999px",
+  },
+
+  // The "signal" — brand gradient used as data ink, not decoration
   gradients: {
-    brand: "linear-gradient(135deg, #5B21B6 0%, #F97316 50%, #FACC15 100%)",
-    brandReverse: "linear-gradient(-45deg, #FACC15 0%, #F97316 50%, #5B21B6 100%)",
+    signal: "linear-gradient(100deg, #5B21B6 0%, #F97316 55%, #FACC15 100%)",
   },
 } as const;
 

@@ -1,42 +1,169 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Catalyst styling suite
+   ------------------------------------------------------------
+   Every visual decision routes through the tokens below.
+   Tweak colors, radii, and the brand gradient here — the
+   components only ever reference semantic names.
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-  --purple: #5B21B6;
-  --coral: #F97316;
-  --gold: #FACC15;
-  --cyan: #06B6D4;
+  /* -- Brand ------------------------------------------------ */
+  --brand: #5b21b6;          /* logo purple — primary actions, links */
+  --brand-strong: #4c1d95;   /* hover / pressed */
+  --accent: #f97316;         /* logo coral — the single loud accent */
+  --accent-strong: #ea580c;  /* hover / pressed */
+  --highlight: #facc15;      /* logo gold — data highlights only */
+
+  /* -- Ink (dark surfaces: hero, contact) ------------------- */
+  --ink: #150e2e;            /* deep indigo derived from brand purple */
+  --ink-raised: #1e1540;     /* cards / chips on ink */
+  --on-ink: #f5f3fa;         /* text on ink */
+  --on-ink-muted: #a9a3c4;   /* secondary text on ink */
+  --line-on-ink: rgba(245, 243, 250, 0.14);
+
+  /* -- Light surfaces --------------------------------------- */
+  --surface: #ffffff;
+  --surface-dim: #f8f7f5;    /* alternating sections */
+  --surface-raised: #ffffff; /* cards */
+  --text: #1a1523;
+  --text-muted: #5f5a6b;
+  --text-faint: #8f8a9b;
+  --line: #e8e5ef;           /* borders, purple-tinted */
+  --line-strong: #d6d1e2;    /* hover borders */
+
+  /* -- Brand gradient (the "signal") ------------------------ */
+  --signal: linear-gradient(
+    100deg,
+    var(--brand) 0%,
+    var(--accent) 55%,
+    var(--highlight) 100%
+  );
+
+  /* -- Shape ------------------------------------------------ */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-pill: 999px;
+
+  /* -- Elevation -------------------------------------------- */
+  --shadow-card: 0 1px 2px rgba(21, 14, 46, 0.04),
+    0 8px 24px -12px rgba(21, 14, 46, 0.1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-purple: var(--purple);
-  --color-coral: var(--coral);
-  --color-gold: var(--gold);
-  --color-cyan: var(--cyan);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* Colors — usable as bg-*, text-*, border-* utilities */
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-highlight: var(--highlight);
+  --color-ink: var(--ink);
+  --color-ink-raised: var(--ink-raised);
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+  --color-line-on-ink: var(--line-on-ink);
+  --color-surface: var(--surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-raised: var(--surface-raised);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  /* Radii — usable as rounded-sm/md/lg/pill */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-pill: var(--radius-pill);
+
+  /* Type */
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--surface);
+  color: var(--text);
   font-family: var(--font-sans);
+  font-optical-sizing: auto;
 }
 
-.gradient-text {
-  background: linear-gradient(135deg, var(--purple) 0%, var(--coral) 50%, var(--gold) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* -- Reusable pieces ---------------------------------------- */
+
+/* Section eyebrow: small mono label that anchors each section */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.gradient-bg {
-  background: linear-gradient(135deg, var(--purple) 0%, var(--coral) 50%, var(--gold) 100%);
+/* The signal — brand gradient as data ink. Used sparingly. */
+.signal-bg {
+  background: var(--signal);
+}
+.signal-underline {
+  background: var(--signal);
+  height: 3px;
+  border-radius: var(--radius-pill);
 }
 
-.gradient-border {
-  border-image: linear-gradient(135deg, var(--purple) 0%, var(--coral) 50%, var(--gold) 100%) 1;
+/* Hero telemetry line draw-in */
+.signal-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: signal-draw 1.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+}
+.signal-dot {
+  opacity: 0;
+  animation: signal-appear 0.5s ease-out 1.9s forwards;
+}
+@keyframes signal-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes signal-appear {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Accessibility floor */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+.on-dark :focus-visible {
+  outline-color: var(--highlight);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .signal-path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .signal-dot {
+    animation: none;
+    opacity: 1;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

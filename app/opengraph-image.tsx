@@ -2,12 +2,20 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-export const alt = "Catalyst Data Science - eCommerce Analytics Consultancy";
+export const alt = "Catalyst Data Science — Data-Driven Product Development";
 export const size = {
   width: 1200,
   height: 630,
 };
 export const contentType = "image/png";
+
+// Tokens mirrored from app/globals.css :root
+const ink = "#150E2E";
+const onInk = "#F5F3FA";
+const onInkMuted = "#A9A3C4";
+const accent = "#F97316";
+const highlight = "#FACC15";
+const signal = "linear-gradient(100deg, #5B21B6 0%, #F97316 55%, #FACC15 100%)";
 
 export default async function Image() {
   return new ImageResponse(
@@ -18,106 +26,97 @@ export default async function Image() {
           width: "100%",
           display: "flex",
           flexDirection: "column",
-          alignItems: "flex-start",
           justifyContent: "center",
-          backgroundColor: "#ffffff",
+          backgroundColor: ink,
           padding: "80px",
+          position: "relative",
         }}
       >
+        {/* the signal — brand gradient as data ink */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: "10px",
+            background: signal,
+            display: "flex",
+          }}
+        />
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            marginBottom: "40px",
+            marginBottom: "48px",
           }}
         >
           <div
             style={{
-              width: "80px",
-              height: "80px",
-              borderRadius: "16px",
-              background: "linear-gradient(135deg, #9333ea 0%, #f97316 50%, #eab308 100%)",
+              width: "72px",
+              height: "72px",
+              borderRadius: "14px",
+              background: signal,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               marginRight: "24px",
             }}
           >
-            <span style={{ fontSize: "40px", fontWeight: "bold", color: "white" }}>C</span>
+            <span style={{ fontSize: "38px", fontWeight: 800, color: "white" }}>C</span>
           </div>
-          <span style={{ fontSize: "36px", fontWeight: "bold", color: "#111" }}>
+          <span style={{ fontSize: "34px", fontWeight: 700, color: onInk }}>
             Catalyst Data Science
           </span>
         </div>
         <div
           style={{
-            fontSize: "64px",
-            fontWeight: "bold",
-            color: "#111",
-            lineHeight: 1.2,
-            marginBottom: "24px",
+            fontSize: "78px",
+            fontWeight: 800,
+            color: onInk,
+            lineHeight: 1.1,
+            marginBottom: "28px",
+            display: "flex",
           }}
         >
-          Data that works{" "}
-          <span
-            style={{
-              background: "linear-gradient(135deg, #9333ea 0%, #f97316 50%, #eab308 100%)",
-              backgroundClip: "text",
-              color: "transparent",
-            }}
-          >
-            for you.
-          </span>
+          Data-driven products,&nbsp;
+          <span style={{ color: highlight }}>shipped.</span>
         </div>
         <div
           style={{
             fontSize: "28px",
-            color: "#6b7280",
-            maxWidth: "800px",
+            color: onInkMuted,
+            maxWidth: "860px",
+            lineHeight: 1.4,
+            display: "flex",
           }}
         >
-          Cloud-based data management, analytics, and data science solutions for eCommerce businesses.
+          Web, iOS, and Android applications with the intelligence designed in — not
+          bolted on.
         </div>
         <div
           style={{
             display: "flex",
-            gap: "16px",
-            marginTop: "40px",
+            gap: "14px",
+            marginTop: "48px",
           }}
         >
-          <div
-            style={{
-              padding: "12px 24px",
-              borderRadius: "9999px",
-              border: "2px solid #e5e7eb",
-              fontSize: "20px",
-              color: "#374151",
-            }}
-          >
-            Snowflake Certified
-          </div>
-          <div
-            style={{
-              padding: "12px 24px",
-              borderRadius: "9999px",
-              border: "2px solid #e5e7eb",
-              fontSize: "20px",
-              color: "#374151",
-            }}
-          >
-            Microsoft Fabric
-          </div>
-          <div
-            style={{
-              padding: "12px 24px",
-              borderRadius: "9999px",
-              border: "2px solid #e5e7eb",
-              fontSize: "20px",
-              color: "#374151",
-            }}
-          >
-            GCP Specialists
-          </div>
+          {["Web", "iOS", "Android", "ML built in"].map((chip) => (
+            <div
+              key={chip}
+              style={{
+                padding: "12px 26px",
+                borderRadius: "9999px",
+                border: `2px solid ${chip === "ML built in" ? accent : "rgba(245,243,250,0.22)"}`,
+                fontSize: "22px",
+                fontWeight: 600,
+                color: onInk,
+                display: "flex",
+              }}
+            >
+              {chip}
+            </div>
+          ))}
         </div>
       </div>
     ),

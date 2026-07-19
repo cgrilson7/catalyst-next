@@ -1,27 +1,41 @@
 import type { Metadata } from "next";
+import { Nunito } from "next/font/google";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import "./globals.css";
+
+// FontAwesome: CSS is imported above; stop the library injecting its own
+config.autoAddCss = false;
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  variable: "--font-nunito",
+  display: "swap",
+});
 
 const siteUrl = "https://catalystdatascience.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Catalyst Data Science | eCommerce Analytics Consultancy",
+    default: "Catalyst Data Science | Data-Driven Product Development",
     template: "%s | Catalyst Data Science",
   },
   description:
-    "Data that works for you. Cloud-based data management, analytics, and data science solutions for eCommerce businesses. Snowflake-certified, Microsoft Fabric, GCP specialists.",
+    "Catalyst builds data-driven applications for web, iOS, and Android. Machine learning, forecasting, and analytics designed into the product — not bolted on. Portland, Maine.",
   keywords: [
+    "product development",
+    "ios app development",
+    "android app development",
+    "react native",
+    "nextjs",
+    "supabase",
+    "machine learning",
     "data science",
-    "ecommerce analytics",
-    "data consultancy",
+    "data infrastructure",
     "snowflake",
     "microsoft fabric",
     "gcp",
-    "analytics",
-    "predictive modeling",
-    "customer analytics",
-    "data infrastructure",
     "portland maine",
   ],
   authors: [{ name: "Colin G. Wilson" }],
@@ -43,15 +57,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "Catalyst Data Science",
-    title: "Catalyst Data Science | eCommerce Analytics Consultancy",
+    title: "Catalyst Data Science | Data-Driven Product Development",
     description:
-      "Data that works for you. Cloud-based data management, analytics, and data science solutions for eCommerce businesses.",
+      "Catalyst builds data-driven applications for web, iOS, and Android — with the intelligence designed in, not bolted on.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Catalyst Data Science | eCommerce Analytics Consultancy",
+    title: "Catalyst Data Science | Data-Driven Product Development",
     description:
-      "Data that works for you. Cloud-based data management, analytics, and data science solutions for eCommerce businesses.",
+      "Catalyst builds data-driven applications for web, iOS, and Android — with the intelligence designed in, not bolted on.",
   },
   robots: {
     index: true,
@@ -72,10 +86,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
-        {children}
-      </body>
+    <html lang="en" className={nunito.variable}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
