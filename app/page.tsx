@@ -4,14 +4,12 @@ import {
   faMobileScreenButton,
   faBrain,
   faDatabase,
-  faChartLine,
   faCheck,
-  faBolt,
   faServer,
   faSnowflake,
   faLocationDot,
   faPaperPlane,
-  faArrowRight,
+  faRobot,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faReact,
@@ -28,22 +26,22 @@ const services = [
   {
     icon: faMobileScreenButton,
     title: "Product Development",
-    body: "Web, iOS, and Android applications built end to end — Next.js, React Native, and Supabase from concept to App Store, including review, release, and the unglamorous parts.",
+    body: "Web, iOS, and Android applications built end to end with Next.js, React Native, and Supabase. Design, build, release, and the iteration after launch.",
+  },
+  {
+    icon: faRobot,
+    title: "Agentic AI",
+    body: "Agents that do real work inside the product: multi-step workflows, tool use, orchestration, evals, and guardrails. Built on Claude, OpenAI, and Gemini.",
   },
   {
     icon: faBrain,
-    title: "Intelligent Features",
-    body: "What separates a product from a CRUD app: demand forecasting, recommendations, churn and LTV models, LLM integration, and real-time personalization.",
+    title: "Machine Learning",
+    body: "Demand forecasting, recommendations, churn and LTV models. Deployed inside the product and monitored in production.",
   },
   {
     icon: faDatabase,
-    title: "Data Infrastructure",
-    body: "The pipes underneath. Snowflake, Microsoft Fabric, GCP, and Supabase — PySpark ETL and lakehouse architecture that survives contact with growth.",
-  },
-  {
-    icon: faChartLine,
-    title: "Analytics & Reporting",
-    body: "Dashboards and decision support for the humans running the business. R/Shiny, embedded analytics, cohort and attribution reporting for executives.",
+    title: "Data & Analytics",
+    body: "Snowflake, Microsoft Fabric, GCP, and Supabase. Pipelines and lakehouse architecture underneath, dashboards and reporting on top.",
   },
 ];
 
@@ -52,18 +50,18 @@ const caseStudies = [
     tag: "Consumer Startup",
     tagColor: "text-accent",
     title: "Full-Stack Social Application",
-    body: "Architected and built a social productivity app from zero to App Store. React Native mobile apps, Next.js web platform, Supabase backend with realtime subscriptions, push notifications, and AI-powered features.",
+    body: "Architected and built a social productivity app from zero to App Store. React Native mobile apps, Next.js web platform, Supabase backend with real-time subscriptions, push notifications, and AI-powered features.",
     points: [
-      "iOS & Android apps, live",
-      "Realtime data architecture",
-      "LLM integration in production",
+      "iOS & Android apps (live)",
+      "Real-time data architecture",
+      "AI integration (OpenAI, Gemini)",
     ],
   },
   {
     tag: "Regulated Commerce",
     tagColor: "text-brand",
     title: "Prescription Platform Analytics",
-    body: "Led data science for a consumer prescription management platform in animal health — the models and infrastructure behind a product veterinary clinics and pet owners used directly, through a major platform migration.",
+    body: "Led data science for a consumer prescription management platform in animal health: the models and infrastructure behind a product veterinary clinics and pet owners used directly, through a major platform migration.",
     points: [
       "Churn prediction models",
       "Legacy system data alignment",
@@ -74,11 +72,11 @@ const caseStudies = [
     tag: "DTC Subscription",
     tagColor: "text-accent-strong",
     title: "Subscription Analytics Platform",
-    body: "End-to-end analytics infrastructure for a subscription DTC brand. Microsoft Fabric lakehouse, PySpark ETL pipelines, and realtime Shiny dashboards for executive decision-making.",
+    body: "End-to-end analytics infrastructure for a subscription DTC brand. Microsoft Fabric lakehouse, PySpark ETL pipelines, and real-time Shiny dashboards for executive decision-making.",
     points: [
       "LTV & cohort analysis",
       "Multi-channel attribution",
-      "Realtime sales dashboards",
+      "Real-time sales dashboards",
     ],
   },
 ];
@@ -88,18 +86,12 @@ const stack = [
   { icon: faApple, name: "React Native · iOS", desc: "App Store, native modules" },
   { icon: faAndroid, name: "Android", desc: "Play Store releases" },
   { icon: faServer, name: "Supabase", desc: "Backend & realtime" },
+  { icon: faRobot, name: "Claude · OpenAI · Gemini", desc: "Agent & LLM APIs" },
   { icon: faSnowflake, name: "Snowflake", desc: "Warehousing & optimization" },
   { icon: faMicrosoft, name: "Microsoft Fabric · Azure", desc: "Lakehouse & ETL" },
   { icon: faGoogle, name: "Google Cloud", desc: "Data & ML services" },
   { icon: faPython, name: "Python · PySpark", desc: "Data engineering" },
   { icon: faRProject, name: "R · Shiny", desc: "Statistical computing" },
-  { icon: faBolt, name: "LLM APIs", desc: "OpenAI, Gemini, Claude" },
-];
-
-const proof = [
-  { icon: faMobileScreenButton, text: "iOS & Android apps live in the App Store" },
-  { icon: faBolt, text: "Realtime backends running in production" },
-  { icon: faBrain, text: "ML models shipping inside products" },
 ];
 
 function CheckItem({ children }: { children: React.ReactNode }) {
@@ -124,12 +116,12 @@ export default function Home() {
           <div className="flex items-center gap-8 text-sm font-semibold text-on-ink-muted">
             <a href="#services" className="hidden transition-colors hover:text-on-ink md:inline">Services</a>
             <a href="#work" className="hidden transition-colors hover:text-on-ink md:inline">Work</a>
-            <a href="#about" className="hidden transition-colors hover:text-on-ink md:inline">About</a>
+            <a href="#stack" className="hidden transition-colors hover:text-on-ink md:inline">Stack</a>
             <a
               href="#contact"
               className="rounded-pill bg-accent px-5 py-2 font-bold text-white transition-colors hover:bg-accent-strong"
             >
-              Start a conversation
+              Get in touch
             </a>
           </div>
         </div>
@@ -137,7 +129,7 @@ export default function Home() {
 
       {/* ================= Hero ================= */}
       <header id="top" className="on-dark relative overflow-hidden bg-ink">
-        {/* faint chart gridlines — the hero is a reading */}
+        {/* faint chart gridlines */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           {[20, 40, 60, 80].map((y) => (
             <div
@@ -148,7 +140,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* the signal — brand gradient as data ink */}
+        {/* the signal: brand gradient as data ink */}
         <svg
           aria-hidden
           className="pointer-events-none absolute inset-0 hidden h-full w-full md:block"
@@ -156,8 +148,6 @@ export default function Home() {
           preserveAspectRatio="none"
           fill="none"
           style={{
-            // fade the line out toward the bottom so it never runs through
-            // the proof strip — the signal reads as emerging, not clipped
             maskImage: "linear-gradient(to top, transparent 16%, black 34%)",
             WebkitMaskImage: "linear-gradient(to top, transparent 16%, black 34%)",
           }}
@@ -181,25 +171,25 @@ export default function Home() {
           <circle className="signal-dot" cx="1120" cy="276" r="5" fill="#FACC15" />
         </svg>
 
-        <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-40 md:pb-24 md:pt-48">
+        <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-40 md:pb-32 md:pt-48">
           <p className="eyebrow mb-6 text-on-ink-muted">
             <FontAwesomeIcon icon={faLocationDot} className="mr-2 h-3 w-3 text-accent" />
-            Portland, Maine — product &amp; data studio
+            Portland, Maine
           </p>
           <h1 className="max-w-3xl text-5xl font-extrabold leading-[1.05] tracking-tight text-on-ink md:text-7xl">
-            Data-driven products, shipped.
+            Intelligent applications for web, iOS, and Android.
           </h1>
           <p className="mt-7 max-w-2xl text-lg leading-relaxed text-on-ink-muted md:text-xl">
-            Catalyst builds web, iOS, and Android applications with the intelligence
-            built in — forecasting, personalization, and machine learning designed
-            into the product from the first commit.
+            Catalyst designs and builds full-stack products with agentic AI,
+            machine learning, and the data infrastructure behind them, from
+            design through release.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <a
               href="#contact"
               className="rounded-pill bg-accent px-8 py-4 text-center font-bold text-white transition-colors hover:bg-accent-strong"
             >
-              Start a conversation
+              Get in touch
             </a>
             <a
               href="#work"
@@ -208,16 +198,6 @@ export default function Home() {
               See the work
             </a>
           </div>
-
-          {/* proof strip — true statements, not vanity stats */}
-          <ul className="mt-16 flex flex-col gap-4 border-t border-line-on-ink pt-8 sm:flex-row sm:gap-10">
-            {proof.map((p) => (
-              <li key={p.text} className="flex items-center gap-3 text-sm font-semibold text-on-ink-muted">
-                <FontAwesomeIcon icon={p.icon} className="h-4 w-4 text-highlight" />
-                {p.text}
-              </li>
-            ))}
-          </ul>
         </div>
       </header>
 
@@ -226,14 +206,8 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           <p className="eyebrow text-brand">Services</p>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">
-            One studio, both layers.
+            What Catalyst builds
           </h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-text-muted">
-            App studios and data consultancies rarely live under one roof — almost
-            never in one person. Catalyst carries a product from data model to App
-            Store, so the seam between &ldquo;the app&rdquo; and &ldquo;the data&rdquo;
-            never exists.
-          </p>
 
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {services.map((s) => (
@@ -256,13 +230,10 @@ export default function Home() {
       {/* ================= Work ================= */}
       <section id="work" className="scroll-mt-20 bg-surface-dim px-6 py-24">
         <div className="mx-auto max-w-6xl">
-          <p className="eyebrow text-brand">Select work</p>
+          <p className="eyebrow text-brand">Work</p>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">
-            Proof, in production.
+            Selected work
           </h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-text-muted">
-            A sample of what Catalyst has built and the problems behind it.
-          </p>
 
           <div className="mt-14 grid gap-6 lg:grid-cols-3">
             {caseStudies.map((c) => (
@@ -290,7 +261,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           <p className="eyebrow text-brand">Stack</p>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">
-            Tools that hold up in production.
+            Platform expertise
           </h2>
 
           <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-5">
@@ -308,48 +279,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= About ================= */}
-      <section id="about" className="scroll-mt-20 bg-surface-dim px-6 py-24">
-        <div className="mx-auto grid max-w-6xl items-center gap-16 md:grid-cols-2">
-          <div>
-            <p className="eyebrow text-brand">About</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">
-              Catalyst is Colin Wilson.
-            </h2>
-            <div className="signal-underline mt-6 w-16" />
-            <p className="mt-6 leading-relaxed text-text-muted">
-              A Portland, Maine practice building intelligent applications. Colin has
-              led data science teams at scale across regulated commerce, DTC
-              subscription brands, and early-stage consumer products — the
-              through-line is building things people actually use: prescription
-              platforms, subscription analytics, social apps on the App Store.
-            </p>
-            <p className="mt-5 leading-relaxed text-text-muted">
-              Working with Catalyst means working with the principal. No account
-              manager, no handoff between the team that models your data and the
-              team that ships your app — because they&rsquo;re the same person.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              {["Data science leadership", "Full-stack delivery", "Portland, ME"].map((chip) => (
-                <span
-                  key={chip}
-                  className="rounded-pill border border-line bg-surface px-4 py-2 text-sm font-semibold text-text-muted"
-                >
-                  {chip}
-                </span>
-              ))}
-            </div>
-          </div>
-          <div className="relative">
-            <div className="flex aspect-square items-center justify-center rounded-lg bg-ink">
-              <span className="text-7xl font-extrabold text-on-ink">
-                C<span className="text-accent">W</span>
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ================= Contact ================= */}
       <section id="contact" className="on-dark scroll-mt-20 bg-ink px-6 py-24">
         <div className="mx-auto max-w-3xl text-center">
@@ -358,24 +287,15 @@ export default function Home() {
             Have a product in mind?
           </h2>
           <p className="mx-auto mt-4 max-w-xl leading-relaxed text-on-ink-muted">
-            Whether you&rsquo;re building something new or making an existing product
-            smarter — start with an email. You&rsquo;ll get a reply from the person
-            who&rsquo;d do the work.
+            Start with an email.
           </p>
           <a
-            href="mailto:colin@catalystdatascience.com"
+            href="mailto:team@catalystdatascience.com"
             className="mt-9 inline-flex items-center gap-3 rounded-pill bg-accent px-8 py-4 font-bold text-white transition-colors hover:bg-accent-strong"
           >
             <FontAwesomeIcon icon={faPaperPlane} className="h-4 w-4" />
-            colin@catalystdatascience.com
+            team@catalystdatascience.com
           </a>
-          <p className="mt-6 text-sm text-on-ink-muted">
-            Prefer specifics first?{" "}
-            <a href="#work" className="font-semibold text-on-ink underline decoration-accent underline-offset-4">
-              See the work
-              <FontAwesomeIcon icon={faArrowRight} className="ml-1.5 h-3 w-3" />
-            </a>
-          </p>
         </div>
       </section>
 

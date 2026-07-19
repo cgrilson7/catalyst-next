@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-export const alt = "Catalyst Data Science — Data-Driven Product Development";
+export const alt = "Catalyst Data Science — Intelligent Applications";
 export const size = {
   width: 1200,
   height: 630,
@@ -71,7 +71,7 @@ export default async function Image() {
         </div>
         <div
           style={{
-            fontSize: "78px",
+            fontSize: "72px",
             fontWeight: 800,
             color: onInk,
             lineHeight: 1.1,
@@ -79,8 +79,7 @@ export default async function Image() {
             display: "flex",
           }}
         >
-          Data-driven products,&nbsp;
-          <span style={{ color: highlight }}>shipped.</span>
+          Intelligent&nbsp;<span style={{ color: highlight }}>applications.</span>
         </div>
         <div
           style={{
@@ -91,8 +90,8 @@ export default async function Image() {
             display: "flex",
           }}
         >
-          Web, iOS, and Android applications with the intelligence designed in from
-          the first commit.
+          Agentic AI, machine learning, and full-stack product development for web,
+          iOS, and Android.
         </div>
         <div
           style={{
@@ -101,13 +100,13 @@ export default async function Image() {
             marginTop: "48px",
           }}
         >
-          {["Web", "iOS", "Android", "ML built in"].map((chip) => (
+          {["Web", "iOS", "Android", "Agentic AI"].map((chip) => (
             <div
               key={chip}
               style={{
                 padding: "12px 26px",
                 borderRadius: "9999px",
-                border: `2px solid ${chip === "ML built in" ? accent : "rgba(245,243,250,0.22)"}`,
+                border: `2px solid ${chip === "Agentic AI" ? accent : "rgba(245,243,250,0.22)"}`,
                 fontSize: "22px",
                 fontWeight: 600,
                 color: onInk,

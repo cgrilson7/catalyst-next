@@ -18,12 +18,14 @@ const siteUrl = "https://catalystdatascience.com";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Catalyst Data Science | Data-Driven Product Development",
+    default: "Catalyst Data Science | Intelligent Applications",
     template: "%s | Catalyst Data Science",
   },
   description:
-    "Catalyst builds data-driven applications for web, iOS, and Android. Machine learning, forecasting, and analytics designed into the product from the first commit. Portland, Maine.",
+    "Catalyst designs and builds intelligent applications for web, iOS, and Android: agentic AI, machine learning, and the data infrastructure behind them. Portland, Maine.",
   keywords: [
+    "agentic ai",
+    "ai agents",
     "product development",
     "ios app development",
     "android app development",
@@ -57,15 +59,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "Catalyst Data Science",
-    title: "Catalyst Data Science | Data-Driven Product Development",
+    title: "Catalyst Data Science | Intelligent Applications",
     description:
-      "Catalyst builds data-driven applications for web, iOS, and Android — with the intelligence designed in from the first commit.",
+      "Catalyst designs and builds intelligent applications for web, iOS, and Android: agentic AI, machine learning, and the data infrastructure behind them.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Catalyst Data Science | Data-Driven Product Development",
+    title: "Catalyst Data Science | Intelligent Applications",
     description:
-      "Catalyst builds data-driven applications for web, iOS, and Android — with the intelligence designed in from the first commit.",
+      "Catalyst designs and builds intelligent applications for web, iOS, and Android: agentic AI, machine learning, and the data infrastructure behind them.",
   },
   robots: {
     index: true,
