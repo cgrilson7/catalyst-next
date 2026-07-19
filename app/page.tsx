@@ -192,7 +192,7 @@ export default function Home() {
           <p className="mt-7 max-w-2xl text-lg leading-relaxed text-on-ink-muted md:text-xl">
             Catalyst builds web, iOS, and Android applications with the intelligence
             built in — forecasting, personalization, and machine learning designed
-            into the product from the first commit, not bolted on afterward.
+            into the product from the first commit.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <a
@@ -290,7 +290,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           <p className="eyebrow text-brand">Stack</p>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">
-            Tools chosen for production, not novelty.
+            Tools that hold up in production.
           </h2>
 
           <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-5">

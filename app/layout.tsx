@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | Catalyst Data Science",
   },
   description:
-    "Catalyst builds data-driven applications for web, iOS, and Android. Machine learning, forecasting, and analytics designed into the product — not bolted on. Portland, Maine.",
+    "Catalyst builds data-driven applications for web, iOS, and Android. Machine learning, forecasting, and analytics designed into the product from the first commit. Portland, Maine.",
   keywords: [
     "product development",
     "ios app development",
@@ -59,13 +59,13 @@ export const metadata: Metadata = {
     siteName: "Catalyst Data Science",
     title: "Catalyst Data Science | Data-Driven Product Development",
     description:
-      "Catalyst builds data-driven applications for web, iOS, and Android — with the intelligence designed in, not bolted on.",
+      "Catalyst builds data-driven applications for web, iOS, and Android — with the intelligence designed in from the first commit.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Catalyst Data Science | Data-Driven Product Development",
     description:
-      "Catalyst builds data-driven applications for web, iOS, and Android — with the intelligence designed in, not bolted on.",
+      "Catalyst builds data-driven applications for web, iOS, and Android — with the intelligence designed in from the first commit.",
   },
   robots: {
     index: true,

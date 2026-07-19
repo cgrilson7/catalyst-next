@@ -91,8 +91,8 @@ export default async function Image() {
             display: "flex",
           }}
         >
-          Web, iOS, and Android applications with the intelligence designed in — not
-          bolted on.
+          Web, iOS, and Android applications with the intelligence designed in from
+          the first commit.
         </div>
         <div
           style={{
